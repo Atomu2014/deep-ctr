@@ -48,13 +48,15 @@ if advertiser == '2997':  #
     lambda1 = 0.0
     lambda_fm = 0.1
 
-name_field = {'weekday': 0, 'hour': 1, 'useragent': 2, 'IP': 3, 'region': 4, 'city': 5, 'adexchange': 6, 'domain': 7,
+name_field = {'weekday': 0, 'hour': 1, 'useragent': 2, 'IP': 3, 'region': 4, 'city': 5, 'adexchange': 6,
+              'domain': 7,
               'slotid': 8, 'slotwidth': 9, 'slotheight': 10, 'slotvisibility': 11, 'slotformat': 12, 'creative': 13,
               'advertiser': 14, 'slotprice': 15}
 
 
 def log_p(msg, m=""):
-    ut.logfile(msg, "fm" + str(advertiser))
+    # ut.logfile(msg, "fm" + str(advertiser))
+    print msg
 
 
 log_p('ad:' + str(advertiser))
@@ -115,28 +117,14 @@ else:
 
 bb1 = numpy.zeros(hidden1)
 
-v = rng.uniform(low=-numpy.sqrt(6. / (hidden1 + hidden2)),
-                high=numpy.sqrt(6. / (hidden1 + hidden2)),
-                size=(hidden1, hidden2))
-if acti_type == 'sigmoid':
-    ww2 = numpy.asarray((v))
-elif acti_type == 'tanh':
-    ww2 = numpy.asarray((v * 4))
-else:
-    ww2 = numpy.asarray(rng.uniform(-1, 1, size=(hidden1, hidden2)))
-
-bb2 = numpy.zeros(hidden2)
-
-ww3 = numpy.zeros(hidden2)
+ww3 = numpy.zeros(hidden1)
 
 # Declare Theano symbolic variables
 x = T.matrix("x")
 y = T.vector("y")
 w1 = theano.shared(ww1, name="w1")
-w2 = theano.shared(ww2, name="w2")
-w3 = theano.shared(ww3, name="w3")
 b1 = theano.shared(bb1, name="b1")
-b2 = theano.shared(bb2, name="b2")
+w3 = theano.shared(ww3, name="w3")
 b3 = theano.shared(0., name="b3")
 
 # Construct Theano expression graph
@@ -154,31 +142,18 @@ elif acti_type == 'tanh':
 r1 = srng.binomial(size=(1, hidden1), n=1, p=dropout)
 d1 = h1 * r1[0]
 
-z2 = T.dot(h1, w2) + b2
-if acti_type == 'sigmoid':
-    h2 = 1 / (1 + T.exp(-z2))  # hidden layer 2
-elif acti_type == 'linear':
-    h2 = z2
-elif acti_type == 'tanh':
-    h2 = T.tanh(z2)
-
-d2 = T.tanh(T.dot(d1, w2) + b2)
-r2 = srng.binomial(size=(1, hidden2), n=1, p=dropout)
-d2 = d2 * r2[0]
-
-p_drop = (1 / (1 + T.exp(-T.dot(d2, w3) - b3)))
-p_1 = 1 / (1 + T.exp(-T.dot(h2, w3) - b3))  # Probability that target = 1
+p_drop = (1 / (1 + T.exp(-T.dot(d1, w3) - b3)))
+p_1 = 1 / (1 + T.exp(-T.dot(h1, w3) - b3))  # Probability that target = 1
 prediction = p_1  # > 0.5                                   # The prediction thresholded
 xent = - y * T.log(p_drop) - (1 - y) * T.log(1 - p_drop)  # Cross-entropy loss function
 cost = xent.sum() + lambda1 * ((w3 ** 2).sum() + (b3 ** 2))  # The cost to minimize
-gw3, gb3, gw2, gb2, gw1, gb1, gx = T.grad(cost, [w3, b3, w2, b2, w1, b1, x])  # Compute the gradient of the cost
+gw3, gb3, gw1, gb1, gx = T.grad(cost, [w3, b3, w1, b1, x])  # Compute the gradient of the cost
 
 # Compile
 train = theano.function(
         inputs=[x, y],
-        outputs=[gx, w1, w2, w3, b1, b2, b3], updates=(
+        outputs=[gx, w1, w3, b1, b3], updates=(
             (w1, w1 - lr * gw1), (b1, b1 - lr * gb1),
-            (w2, w2 - lr * gw2), (b2, b2 - lr * gb2),
             (w3, w3 - lr * gw3), (b3, b3 - lr * gb3)))
 predict = theano.function(inputs=[x], outputs=prediction)
 
@@ -254,12 +229,10 @@ def get_fxy(line):
 
 
 # print_err(test_file,'InitTestErr:')
-def get_pred(file, best_w1, best_w2, best_w3, best_b1, best_b2, best_b3):
+def get_pred(file, best_w1, best_w3, best_b1, best_b3):
     w1.set_value(best_w1)
-    w2.set_value(best_w2)
     w3.set_value(best_w3)
     b1.set_value(best_b1)
-    b2.set_value(best_b2)
     b3.set_value(best_b3)
     yp = []
     fi = open(file, 'r')
@@ -279,14 +252,13 @@ def get_pred(file, best_w1, best_w2, best_w3, best_b1, best_b2, best_b3):
 # Train
 print "Training model:"
 best_w1 = w1.get_value()
-best_w2 = w2.get_value()
 best_w3 = w1.get_value()
 best_b1 = b1.get_value()
-best_b2 = b2.get_value()
 best_b3 = b3.get_value()
 min_err = 0
 min_err_epoch = 0
 times_reduce = 0
+
 for i in range(epoch):
     start_time = time.time()
     index = 1
@@ -294,8 +266,9 @@ for i in range(epoch):
         if index > train_size:
             break
         f, x, y = get_batch_data(train_file, index, batch_size)
+
         index += batch_size
-        gx, w1t, w2t, w3t, b1t, b2t, b3t = train(x, y)
+        gx, w1t, w3t, b1t, b3t = train(x, y)
         b_size = len(f)
         for t in range(b_size):
             ft = f[t]
@@ -328,10 +301,8 @@ for i in range(epoch):
     # stop training when no improvement for a while
     if auc > min_err:
         best_w1 = w1t
-        best_w2 = w2t
         best_w3 = w3t
         best_b1 = b1t
-        best_b2 = b2t
         best_b3 = b3t
         min_err = auc
         min_err_epoch = i
@@ -341,8 +312,9 @@ for i in range(epoch):
         times_reduce -= 1
     if times_reduce < 0:
         break
+
 log_p('Minimal test error is ' + str(min_err) + ' , at EPOCH ' + str(min_err_epoch))
 ut.save_weights("mlp3fm_train_" + advertiser + ".p",
-                get_pred(train_file, best_w1, best_w2, best_w3, best_b1, best_b2, best_b3))
+                get_pred(train_file, best_w1, best_w3, best_b1, best_b3))
 ut.save_weights("mlp3fm_test_" + advertiser + ".p",
-                get_pred(test_file, best_w1, best_w2, best_w3, best_b1, best_b2, best_b3))
+                get_pred(test_file, best_w1, best_w3, best_b1, best_b3))
