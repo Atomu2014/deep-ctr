@@ -4,7 +4,14 @@ LR (xgb): 0.578476
 day_0_train, day_0_test
 
 LR dim < 10000
+[ 3  5  6  7  8 12 13 14 15 16 17 18 24 25] 28313
 eval-auc:0.708240	train-auc:0.815836
+sample * 10
+eval-auc:0.728586	train-auc:0.764369
+sample * 15
+eval-auc:0.735025	train-auc:0.757772
+sample * 30
+eval-auc:0.738229	train-auc:0.754945
 
 LR dim < 1000
 eval-auc:0.688261	train-auc:0.690440

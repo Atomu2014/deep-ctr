@@ -58,17 +58,17 @@ def make_data():
                     fout_concat.write(buf_concat)
 
 
-def sample():
+def sample(train_path, test_path, alpha=0.02):
     with open('../data/day_0_scale', 'r') as fin:
-        with open('../data/day_0_train', 'w') as train_out:
-            with open('../data/day_0_test', 'w') as test_out:
+        with open(train_path, 'w') as train_out:
+            with open(test_path, 'w') as test_out:
                 cnt = 0
                 buffer = ''
                 for line in fin:
                     cnt += 1
                     buffer += line
                     if cnt % 1000 == 0:
-                        if random.random() < 0.002:
+                        if random.random() < alpha:
                             if random.random() < 0.3:
                                 test_out.write(buffer)
                             else:
@@ -116,8 +116,10 @@ def concat(file_name, mask):
 
 
 if __name__ == '__main__':
-    # sample()
-    # pos_neg_ratio('../data/day_0_train')
-    # pos_neg_ratio('../data/day_0_test')
-    concat('../data/day_0_train', np.where(cat_sizes < 10000)[0])
-    concat('../data/day_0_test', np.where(cat_sizes < 10000)[0])
+    train_path = '../data/day_0_train_x30'
+    test_path = '../data/day_0_test_x30'
+    sample(train_path, test_path, alpha=0.06)
+    pos_neg_ratio(train_path)
+    pos_neg_ratio(test_path)
+    concat(train_path, np.where(cat_sizes < 10000)[0])
+    concat(test_path, np.where(cat_sizes < 10000)[0])
