@@ -1,2 +1,16 @@
 FNN (2 hidden layer): 0.606657819905
 LR (xgb): 0.578476
+
+day_0_train, day_0_test
+
+LR dim < 10000
+eval-auc:0.708240	train-auc:0.815836
+
+LR dim < 1000
+eval-auc:0.688261	train-auc:0.690440
+
+LR dim < 100000
+eval-auc:0.700934	train-auc:0.877140
+
+LR dim > 0
+eval-auc:0.694772	train-auc:0.952268

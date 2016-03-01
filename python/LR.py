@@ -15,8 +15,10 @@ import dl_utils as ut
 
 
 def lr_via_xgb(eval_metric='auc'):
-    train_path = '../data/train.fm.txt'
-    test_path = '../data/test.fm.txt'
+    # train_path = '../data/train.fm.txt'
+    # test_path = '../data/test.fm.txt'
+    train_path = '../data/day_0_train_concat'
+    test_path = '../data/day_0_test_concat'
 
     dtrain = xgb.DMatrix(train_path)
     dtest = xgb.DMatrix(test_path)
@@ -313,5 +315,5 @@ def lr_via_theano():
 
 
 if __name__ == '__main__':
-    lr_via_theano()
-    # lr_via_xgb('auc')
+    # lr_via_theano()
+    lr_via_xgb('auc')
