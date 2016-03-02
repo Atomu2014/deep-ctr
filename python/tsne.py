@@ -165,26 +165,6 @@ def tsne(X=Math.array([]), no_dims=2, initial_dims=50, perplexity=30.0):
     return Y
 
 
-def sparse_to_plain(rows):
-    import scipy.sparse as spr
-    import numpy as np
-
-    r = 0
-    data = []
-    row_ind = []
-    col_ind = []
-    Y = []
-    for row in rows:
-        Y.append(int(row[0]))
-        row = row[2:]
-        for fea in row.split():
-            i, d = fea.split(':')
-            data.append(float(d))
-            col_ind.append(int(i))
-            row_ind.append(r)
-        r += 1
-    return spr.csr_matrix((data, (row_ind, col_ind))).toarray(), np.array(Y)
-
 if __name__ == "__main__":
     # print "Run Y = tsne.tsne(X, no_dims, perplexity) to perform t-SNE on your dataset."
     # print "Running example on 2,500 MNIST digits..."

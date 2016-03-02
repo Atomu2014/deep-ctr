@@ -122,4 +122,4 @@ if __name__ == '__main__':
     pos_neg_ratio(train_path)
     pos_neg_ratio(test_path)
     concat(train_path, np.where(cat_sizes < 10000)[0])
-    concat(test_path, np.where(cat_sizes < 10000)[0])
+    concat(test_path, np.where(cat_sizes < 10000)[0])  #

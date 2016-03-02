@@ -21,3 +21,16 @@ eval-auc:0.700934	train-auc:0.877140
 
 LR dim > 0
 eval-auc:0.694772	train-auc:0.952268
+
+
+FM
+
+50 100 0.001
+train auc: 0.8957	test auc: 0.6786
+50 100 0.001 x10
+train auc: 0.7615	test auc: 0.7190
+
+10 100 0.001
+train auc: 0.8320	test auc: 0.6886
+10 100 0.001 x10
+train auc: 0.7483	test auc: 0.7156

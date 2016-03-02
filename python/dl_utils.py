@@ -120,3 +120,24 @@ def feats_len(fname):
     with open(fname) as f:
         l = len(f.readline().split(','))
     return (l - 1)
+
+
+def libsvm_2_sparse(rows, r_begin=0):
+    import scipy.sparse as spr
+    import numpy as np
+
+    r = r_begin
+    data = []
+    row_ind = []
+    col_ind = []
+    Y = []
+    for row in rows:
+        Y.append(int(row[0]))
+        row = row[2:]
+        for fea in row.split():
+            i, d = fea.split(':')
+            data.append(float(d))
+            col_ind.append(int(i))
+            row_ind.append(r)
+        r += 1
+    return spr.csr_matrix((data, (row_ind, col_ind))), np.array(Y)
