@@ -141,3 +141,17 @@ def libsvm_2_sparse(rows, r_begin=0):
             row_ind.append(r)
         r += 1
     return spr.csr_matrix((data, (row_ind, col_ind))), np.array(Y)
+
+
+def load_svmlight(file_name):
+    from sklearn.externals.joblib import Memory
+    from sklearn.datasets import load_svmlight_file
+    mem = Memory('./mycache')
+
+    @mem.cache
+    def get_data():
+        data = load_svmlight_file(file_name)
+        return data[0], data[1]
+
+    X, y = get_data()
+    return X, y
