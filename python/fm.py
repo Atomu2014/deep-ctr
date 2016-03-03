@@ -35,9 +35,9 @@ def fm_pyfm(X_train, y_train, X_test, y_test, num_factors=10, num_iter=100, lear
 
 
 if __name__ == '__main__':
-    path = 'train'
-    train_path = '../data/day_0_train_concat'
-    test_path = '../data/day_0_test_concat'
+    path = 'train_x10'
+    train_path = '../data/day_0_train_x10_concat'
+    test_path = '../data/day_0_test_x10_concat'
 
     with open(train_path, 'r') as fin:
         rows = []
@@ -63,9 +63,10 @@ if __name__ == '__main__':
     y_test *= 2
     y_test -= 1
 
-    n_iter = 10000000
+    # n_iter = 10000000
     rank = 2
-    for init_stdev in [0.000005, 0.000008, 0.00001, 0.00002]:
-        for step_size in [0.0011, 0.0012, 0.0013, 0.0014]:
-            fm_fastfm(X_train, y_train, X_test, y_test, n_iter=n_iter, init_stdev=init_stdev, rank=rank,
+    for n_iter in [60000000, 70000000, 80000000]:
+        for init_stdev in [0.003, 0.004, 0.005]:
+            for step_size in [0.0009, 0.001, 0.0011]:
+                fm_fastfm(X_train, y_train, X_test, y_test, n_iter=n_iter, init_stdev=init_stdev, rank=rank,
                       step_size=step_size, path=path)
