@@ -5,8 +5,6 @@ import tensorflow as tf
 from scipy.sparse import csr_matrix
 from sklearn.metrics import roc_auc_score
 
-from dl_utils import load_svmlight
-
 max_vals = [65535, 8000, 2330, 746810, 8000, 57199, 5277, 225635, 3565, 14, 310, 25304793, 21836]
 cat_sizes = np.array(
     [18576837, 29427, 15127, 7295, 19901, 3, 6465, 1310, 61, 11700067, 622921, 219556, 10, 2209, 9779, 71, 4, 963, 14,
@@ -35,36 +33,36 @@ def get_fxy(line):
 
 
 def get_batch_sparse_tensor(file_name, start_index, size, row_start=0):
-	labels = []
-	indices = []
-	values = []
-	for i in range(start_index, start_index + size):
-		line = linecache.getline(file_name, i)
-		if len(line.strip()):
-			y, f, x = get_fxy(line)
-			indices.extend([[row_start + len(labels), f[i]] for i in range(len(f))])
-			values.extend([x for x in values])
-			labels.append(y)
-		else:
-			break
+    labels = []
+    indices = []
+    values = []
+    for i in range(start_index, start_index + size):
+        line = linecache.getline(file_name, i)
+        if len(line.strip()):
+            y, f, x = get_fxy(line)
+            indices.extend([[row_start + len(labels), f[i]] for i in range(len(f))])
+            values.extend([x for x in values])
+            labels.append(y)
+        else:
+            break
 
-	return labels, indices, values
+    return labels, indices, values
 
 
 def get_batch_xy():
-	global file_index, line_index, batch_size
-	labels, indices, values = get_batch_sparse_tensor(file_list[file_index], line_index, batch_size)
-	if len(labels) == batch_size:
-		line_index += batch_size
-		return labels, indices, batch_size
+    global file_index, line_index, batch_size
+    labels, indices, values = get_batch_sparse_tensor(file_list[file_index], line_index, batch_size)
+    if len(labels) == batch_size:
+        line_index += batch_size
+        return labels, indices, batch_size
 
-	file_index = (file_index + 1) % len(file_list)
-	line_index = batch_size - len(labels)
-	l, i, v = get_batch_sparse_tensor(file_list[file_index], 0, batch_size - len(labels))
-	labels.extend(l)
-	indices.extend(i)
-	values.extend(v)
-	return labels, indices, values
+    file_index = (file_index + 1) % len(file_list)
+    line_index = batch_size - len(labels)
+    l, i, v = get_batch_sparse_tensor(file_list[file_index], 0, batch_size - len(labels))
+    labels.extend(l)
+    indices.extend(i)
+    values.extend(v)
+    return labels, indices, values
 
 
 def get_batch_csr(batch_size):
@@ -118,22 +116,24 @@ _learning_rate = 0.001
 _l2_param = 0.001
 _keep_prob = 0.5
 
-
 print 'batch_size: %d, learning_rate: %f, l2_param: %f, keep_prob: %f' % (
     batch_size, _learning_rate, _l2_param, _keep_prob)
 
 graph = tf.Graph()
 with graph.as_default():
-	tf_train_indices = tf.placeholder(tf.float32, shape=(batch_size * (13 + len(mask)), 2))
-	tf_train_values = tf.placeholder(tf.float32, shape=(batch_size * (13 + len(mask))))
-    tf_train_dataset = tf.SparseTensor(tf_train_indices, tf_train_values, [batch_size * X_dim])
-    tf_train_labels = tf.placeholder(tf.float32, shape=(batch_size, 1))
-    tf_valid_dataset = tf.constant(tf.SparseTensor())
+    tf_sp_indices = tf.placeholder(tf.int64, shape=[batch_size * (13 + len(mask)), 2])
+    tf_sp_values = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
+    tf_sp_ids = tf.SparseTensor(tf_sp_indices, tf_sp_values, shape=[batch_size, 13 + len(mask)])
+    # tf_sp_weights =
+    tf_train_labels = tf.placeholder(tf.float32, shape=[batch_size, 1])
+    # tf_valid_dataset = tf.constant(tf.SparseTensor())
     # tf_test_dataset = tf.constant(test_dataset)
 
     weights = tf.Variable(tf.truncated_normal([X_dim, 1]))
     bias = tf.Variable(tf.zeros([1]))
 
+    # logits = tf.sparse_matmul(tf_train_dataset, weights, a_is_sparse=True) + bias
+    tf.nn.embedding_lookup_sparse(weights, tf_train_indices, tf_train_values, combiner='sum')
     logits = tf.matmul(tf_train_dataset, weights, a_is_sparse=True) + bias
     loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels))
 
@@ -150,13 +150,14 @@ with tf.Session(graph=graph) as session:
     step = 0
     while True:
         step += 1
-        batch_labels, batch_indices, batch_values = get_batch_xy(batch_size)
+        batch_labels, batch_indices, batch_values = get_batch_xy()
 
-        feed_dict = {tf_train_dataset: batch_data, tf_train_labels: batch_labels}
+        feed_dict = {tf_train_dataset: tf.sparse_to_dense(batch_indices, [batch_size, X_dim], batch_values),
+                     tf_train_labels: batch_labels}
         _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
         if step % 100 == 0:
             print 'loss as step %d: %f' % (step, l)
             print 'train-auc: %f%%\teval-auc: %f%%' % (
-                roc_auc_score(batch_labels, pred), 
-                #roc_auc_score(valid_labels, valid_pred))
-				0)
+                roc_auc_score(batch_labels, pred),
+                # roc_auc_score(valid_labels, valid_pred))
+                0)
