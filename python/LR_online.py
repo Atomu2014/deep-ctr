@@ -100,47 +100,105 @@ for i in range(valid_num_row):
     for j in range(13 + len(mask)):
         valid_rows.append([i, j])
 
-graph = tf.Graph()
-with graph.as_default():
-    tf_sp_id_vals = tf.placeholder(tf.int64, shape=[batch_size * (13 + len(mask))])
-    tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
-    tf_sp_ids = tf.SparseTensor(sp_indices, tf_sp_id_vals, shape=[batch_size, 13 + len(mask)])
-    tf_sp_weights = tf.SparseTensor(sp_indices, tf_sp_weight_vals, shape=[batch_size, 13 + len(mask)])
-    tf_train_labels = tf.placeholder(tf.float32, shape=[batch_size])
-    tf_valid_ids = tf.SparseTensor(valid_rows, valid_cols, shape=[len(valid_labels), 13 + len(mask)])
-    tf_valid_weights = tf.SparseTensor(valid_rows, valid_vals, shape=[len(valid_labels), 13 + len(mask)])
 
-    weights = tf.Variable(tf.truncated_normal([X_dim, 1]))
-    bias = tf.Variable(tf.zeros([1]))
+def lr():
+    graph = tf.Graph()
+    with graph.as_default():
+        tf_sp_id_vals = tf.placeholder(tf.int64, shape=[batch_size * (13 + len(mask))])
+        tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
+        tf_sp_ids = tf.SparseTensor(sp_indices, tf_sp_id_vals, shape=[batch_size, 13 + len(mask)])
+        tf_sp_weights = tf.SparseTensor(sp_indices, tf_sp_weight_vals, shape=[batch_size, 13 + len(mask)])
+        tf_train_labels = tf.placeholder(tf.float32, shape=[batch_size])
+        tf_valid_ids = tf.SparseTensor(valid_rows, valid_cols, shape=[len(valid_labels), 13 + len(mask)])
+        tf_valid_weights = tf.SparseTensor(valid_rows, valid_vals, shape=[len(valid_labels), 13 + len(mask)])
 
-    logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
-    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels)) + _lambda * tf.nn.l2_loss(
-        weights)
+        weights = tf.Variable(tf.truncated_normal([X_dim, 1]))
+        bias = tf.Variable(0)
 
-    optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
+        logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
+        loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels)) + _lambda * tf.nn.l2_loss(
+            weights)
 
-    train_pred = tf.sigmoid(logits)
-    valid_pred = tf.sigmoid(
-        tf.nn.embedding_lookup_sparse(weights, tf_valid_ids, tf_valid_weights, combiner='sum') + bias)
+        optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
 
-with tf.Session(graph=graph) as session:
-    tf.initialize_all_variables().run()
-    print 'initialized'
+        train_pred = tf.sigmoid(logits)
+        valid_pred = tf.sigmoid(
+            tf.nn.embedding_lookup_sparse(weights, tf_valid_ids, tf_valid_weights, combiner='sum') + bias)
 
-    step = 0
-    while True:
-        step += 1
-        batch_labels, _, batch_cols, batch_values = get_batch_xy()
+    with tf.Session(graph=graph) as session:
+        tf.initialize_all_variables().run()
+        print 'initialized'
 
-        feed_dict = {tf_sp_id_vals: batch_cols, tf_sp_weight_vals: batch_values,
-                     tf_train_labels: batch_labels}
-        _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
-        if step % epoch == 0:
-            print 'loss as step %d: %f' % (step, l)
-            try:
-                batch_auc = roc_auc_score(batch_labels, pred)
-                valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-                print 'train-auc: %.4f\teval-auc: %.4f' % (
-                    batch_auc, valid_auc)
-            except ValueError as e:
-                print 'train-auc: None'
+        step = 0
+        while True:
+            step += 1
+            batch_labels, _, batch_cols, batch_values = get_batch_xy()
+
+            feed_dict = {tf_sp_id_vals: batch_cols, tf_sp_weight_vals: batch_values,
+                         tf_train_labels: batch_labels}
+            _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
+            if step % epoch == 0:
+                print 'loss as step %d: %f' % (step, l)
+                try:
+                    batch_auc = roc_auc_score(batch_labels, pred)
+                    valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
+                    print 'train-auc: %.4f\teval-auc: %.4f' % (
+                        batch_auc, valid_auc)
+                except ValueError as e:
+                    print 'train-auc: None'
+
+
+def fm():
+    _rank = 10
+
+    graph = tf.Graph()
+    with graph.as_default():
+        tf_sp_id_vals = tf.placeholder(tf.int64, shape=[batch_size * (13 + len(mask))])
+        tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
+        tf_sp_ids = tf.SparseTensor(sp_indices, tf_sp_id_vals, shape=[batch_size, 13 + len(mask)])
+        tf_sp_weights = tf.SparseTensor(sp_indices, tf_sp_weight_vals, shape=[batch_size, 13 + len(mask)])
+        tf_train_labels = tf.placeholder(tf.float32, shape=[batch_size])
+        tf_valid_ids = tf.SparseTensor(valid_rows, valid_cols, shape=[len(valid_labels), 13 + len(mask)])
+        tf_valid_weights = tf.SparseTensor(valid_rows, valid_vals, shape=[len(valid_labels), 13 + len(mask)])
+
+        # weights = tf.Variable(tf.truncated_normal([X_dim, 1]))
+        # bias = tf.Variable(tf.zeros([1]))
+
+        # logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
+        # loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels)) + _lambda * tf.nn.l2_loss(
+            # weights)
+
+        W = tf.Variable(tf.truncated_normal([X_dim, 1]))
+        bias = tf.Variable(0)
+        V = tf.Variable(tf.truncated_normal([X_dim, _rank]))
+
+        loss1 = tf.nn.embedding_lookup_sparse(W, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
+        
+
+        optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
+
+        train_pred = tf.sigmoid(logits)
+        # valid_pred = tf.sigmoid(
+            # tf.nn.embedding_lookup_sparse(weights, tf_valid_ids, tf_valid_weights, combiner='sum') + bias)
+
+    with tf.Session(graph=graph) as session:
+        tf.initialize_all_variables().run()
+        print 'initialized'
+
+        step = 0
+        while True:
+            step += 1
+            batch_labels, _, batch_cols, batch_values = get_batch_xy()
+
+            feed_dict = {tf_sp_id_vals: batch_cols, tf_sp_weight_vals: batch_values,
+                         tf_train_labels: batch_labels}
+            _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
+            if step % epoch == 0:
+                print 'loss as step %d: %f' % (step, l)
+                try:
+                    batch_auc = roc_auc_score(batch_labels, pred)
+                    valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
+                    print 'train-auc: %.4f\teval-auc: %.4f' % (
+                        batch_auc, valid_auc)
+                except ValueError as e:
+                    print 'train-auc: None'
