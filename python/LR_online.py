@@ -6,7 +6,7 @@ max_vals = [65535, 8000, 2330, 746810, 8000, 57199, 5277, 225635, 3565, 14, 310,
 cat_sizes = np.array(
     [18576837, 29427, 15127, 7295, 19901, 3, 6465, 1310, 61, 11700067, 622921, 219556, 10, 2209, 9779, 71, 4, 963, 14,
      22022124, 4384510, 15960286, 290588, 10829, 95, 34])
-mask = np.where(cat_sizes < 10000)[0]
+mask = np.where(cat_sizes < 1000000)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
 
@@ -16,11 +16,11 @@ fin = None
 file_list = ['../data/day_0_scale', '../data/day_0_scale']
 file_index = 0
 line_index = 0
-batch_size = 10000
-epoch = 10
+batch_size = 100
+epoch = 1000
 sp_indices = []
-_learning_rate = 0.5
-_lambda = 0.0001
+_learning_rate = 0.001
+_lambda = 0
 _alpha = 1
 _keep_prob = 0.5
 
@@ -81,17 +81,17 @@ def get_batch_xy():
 print 'batch_size: %d, learning_rate: %f, alpha: %f, lambda: %f, keep_prob: %f' % (
     batch_size, _learning_rate, _alpha, _lambda, _keep_prob)
 
-with open('../data/day_0_test_x30_concat', 'r') as valid_fin:
+with open('../data/day_0_test_x30', 'r') as valid_fin:
     valid_labels = []
     valid_cols = []
     valid_vals = []
     valid_num_row = 0
     for line in valid_fin:
-        fields = line.replace(':', ' ').split()
-        valid_labels.append(int(fields[0]))
+        y, f, x = get_fxy(line)
+        valid_cols.extend(f)
+        valid_vals.extend(x)
+        valid_labels.append(y)
         valid_num_row += 1
-        valid_cols.extend([int(fields[i]) for i in range(1, len(fields), 2)])
-        valid_vals.extend([float(fields[i]) for i in range(2, len(fields), 2)])
         if valid_num_row == 10000:
             break
 
