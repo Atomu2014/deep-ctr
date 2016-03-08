@@ -12,7 +12,10 @@ cat_sizes = np.array(
 mask = np.where(cat_sizes < 10000)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
-
+sp_indices = []
+for i in range(batch_size):
+	for j in range(13 + len(mask)):
+		sp_indices.append([i, j])
 # valid_dataset, valid_labels = load_svmlight('../data/day_0_test_x30_concat')
 
 file_list = ['../data/day_0_train_x30', '../data/day_0_train_x30']
@@ -121,10 +124,11 @@ print 'batch_size: %d, learning_rate: %f, l2_param: %f, keep_prob: %f' % (
 
 graph = tf.Graph()
 with graph.as_default():
-    tf_sp_indices = tf.placeholder(tf.int64, shape=[batch_size * (13 + len(mask)), 2])
-    tf_sp_values = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
-    tf_sp_ids = tf.SparseTensor(tf_sp_indices, tf_sp_values, shape=[batch_size, 13 + len(mask)])
-    # tf_sp_weights =
+    tf_sp_indices = tf.constant(sp_indices)
+    tf_sp_id_vals = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
+    tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[batch_size * (13 + len(mask))])
+    tf_sp_ids = tf.SparseTensor(tf_sp_indices, tf_sp_id_vals, shape=[batch_size, 13 + len(mask)])
+    tf_sp_weights = tf.SparseTensor(tf_sp_indices, tf_sp_weight_vals, shape=[batch_size, 13 + len(mask)])
     tf_train_labels = tf.placeholder(tf.float32, shape=[batch_size, 1])
     # tf_valid_dataset = tf.constant(tf.SparseTensor())
     # tf_test_dataset = tf.constant(test_dataset)
@@ -133,8 +137,8 @@ with graph.as_default():
     bias = tf.Variable(tf.zeros([1]))
 
     # logits = tf.sparse_matmul(tf_train_dataset, weights, a_is_sparse=True) + bias
-    tf.nn.embedding_lookup_sparse(weights, tf_train_indices, tf_train_values, combiner='sum')
-    logits = tf.matmul(tf_train_dataset, weights, a_is_sparse=True) + bias
+    logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
+    # logits = tf.matmul(tf_train_dataset, weights, a_is_sparse=True) + bias
     loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels))
 
     optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
@@ -152,7 +156,7 @@ with tf.Session(graph=graph) as session:
         step += 1
         batch_labels, batch_indices, batch_values = get_batch_xy()
 
-        feed_dict = {tf_train_dataset: tf.sparse_to_dense(batch_indices, [batch_size, X_dim], batch_values),
+        feed_dict = {tf_sp_id_vals: np.array(batch_indices)[:, 1], tf_sp_weight_vals: batch_values,
                      tf_train_labels: batch_labels}
         _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
         if step % 100 == 0:
