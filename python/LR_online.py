@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-from scipy.sparse import csr_matrix
 from sklearn.metrics import roc_auc_score
 
 max_vals = [65535, 8000, 2330, 746810, 8000, 57199, 5277, 225635, 3565, 14, 310, 25304793, 21836]
@@ -11,13 +10,11 @@ mask = np.where(cat_sizes < 10000)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
 
-# valid_dataset, valid_labels = load_svmlight('../data/day_0_test_x30_concat')
-
 fin = None
 file_list = ['../data/day_0_scale', '../data/day_0_scale']
 file_index = 0
 line_index = 0
-batch_size = 100
+batch_size = 1000
 sp_indices = []
 for i in range(batch_size):
     for j in range(13 + len(mask)):
@@ -74,55 +71,31 @@ def get_batch_xy():
     return np.array(labels), np.array(rows), np.array(cols), np.array(values)
 
 
-# def get_batch_csr(batch_size):
-#     global line_index, file_index
-#     labels = []
-#     rows = []
-#     cols = []
-#     vals = []
-#     num_rows = 0
-#     for i in range(line_index, line_index + batch_size):
-#         line = linecache.getline(file_list[file_index], i)
-#         num_rows += 1
-#         if line.strip() != '':
-#             y, f, x = get_fxy(line)
-#             labels.append(y)
-#             rows.extend([num_rows - 1] * len(f))
-#             cols.extend(f)
-#             vals.extend(x)
-#         else:
-#             break
-#
-#     if num_rows == batch_size:
-#         line_index += batch_size
-#         return labels, csr_matrix((vals, (rows, cols)))
-#
-#     file_index += 1
-#     file_index %= len(file_list)
-#     linecache.clearcache()
-#     line_index = batch_size - len(labels)
-#
-#     for i in range(0, batch_size - len(labels)):
-#         line = linecache.getline(file_list[file_index], i)
-#         num_rows += 1
-#         if line.strip() != '':
-#             y, f, x = get_fxy(line)
-#             labels.append(y)
-#             rows.extend([num_rows - 1] * len(f))
-#             cols.extend(f)
-#             vals.extend(x)
-#         else:
-#             break
-#
-#     return labels, csr_matrix((vals, (rows, cols)))
-
-
 _learning_rate = 0.001
 _l2_param = 0.001
 _keep_prob = 0.5
 
 print 'batch_size: %d, learning_rate: %f, l2_param: %f, keep_prob: %f' % (
     batch_size, _learning_rate, _l2_param, _keep_prob)
+
+with open('../data/day_0_test_x30_concat', 'r') as valid_fin:
+    valid_labels = []
+    valid_cols = []
+    valid_vals = []
+    valid_num_row = 0
+    for line in valid_fin:
+        fields = line.replace(':', ' ').split()
+        valid_labels.append(int(fields[0]))
+        valid_num_row += 1
+        valid_cols.extend([int(fields[i]) for i in range(1, len(fields), 2)])
+        valid_vals.extend([float(fields[i]) for i in range(2, len(fields), 2)])
+        if valid_num_row == 10000:
+            break
+
+valid_rows = []
+for i in range(valid_num_row):
+    for j in range(13 + len(mask)):
+        valid_rows.append([i, j])
 
 graph = tf.Graph()
 with graph.as_default():
@@ -131,8 +104,8 @@ with graph.as_default():
     tf_sp_ids = tf.SparseTensor(sp_indices, tf_sp_id_vals, shape=[batch_size, 13 + len(mask)])
     tf_sp_weights = tf.SparseTensor(sp_indices, tf_sp_weight_vals, shape=[batch_size, 13 + len(mask)])
     tf_train_labels = tf.placeholder(tf.float32, shape=[batch_size])
-    # tf_valid_dataset = tf.constant(tf.SparseTensor())
-    # tf_test_dataset = tf.constant(test_dataset)
+    tf_valid_ids = tf.SparseTensor(valid_rows, valid_cols, shape=[len(valid_labels), 13 + len(mask)])
+    tf_valid_weights = tf.SparseTensor(valid_rows, valid_vals, shape=[len(valid_labels), 13 + len(mask)])
 
     weights = tf.Variable(tf.truncated_normal([X_dim, 1]))
     bias = tf.Variable(tf.zeros([1]))
@@ -143,6 +116,8 @@ with graph.as_default():
     optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
 
     train_pred = tf.sigmoid(logits)
+    valid_pred = tf.sigmoid(
+        tf.nn.embedding_lookup_sparse(weights, tf_valid_ids, tf_valid_weights, combiner='sum') + bias)
     # valid_pred = tf.sigmoid(tf.matmul(tf_valid_dataset, weights, a_is_sparse=True) + bias)
     # test_pred = tf.sigmoid(tf.matmul(tf_test_dataset, weights, a_is_sparse=True) + bias)
 
@@ -160,9 +135,10 @@ with tf.Session(graph=graph) as session:
         _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
         if step % 100 == 0:
             print 'loss as step %d: %f' % (step, l)
-            print 'train-auc: %f%%\teval-auc: %f%%' % (
-                roc_auc_score(batch_labels, pred),
-                # roc_auc_score(valid_labels, valid_pred))
-                0)
-        if step == 1000:
-            break
+            try:
+                batch_auc = roc_auc_score(batch_labels, pred)
+                valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
+                print 'train-auc: %.4f\teval-auc: %.4f' % (
+                    batch_auc, valid_auc)
+            except ValueError as e:
+                print 'train-auc: None'
