@@ -10,12 +10,20 @@ mask = np.where(cat_sizes < 10000)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
 
+print len(mask), np.sum(cat_sizes[mask])
+
 fin = None
 file_list = ['../data/day_0_scale', '../data/day_0_scale']
 file_index = 0
 line_index = 0
-batch_size = 1000
+batch_size = 10000
+epoch = 10
 sp_indices = []
+_learning_rate = 0.5
+_lambda = 0.0001
+_alpha = 1
+_keep_prob = 0.5
+
 for i in range(batch_size):
     for j in range(13 + len(mask)):
         sp_indices.append([i, j])
@@ -70,13 +78,8 @@ def get_batch_xy():
     values.extend(v)
     return np.array(labels), np.array(rows), np.array(cols), np.array(values)
 
-
-_learning_rate = 0.001
-_l2_param = 0.001
-_keep_prob = 0.5
-
-print 'batch_size: %d, learning_rate: %f, l2_param: %f, keep_prob: %f' % (
-    batch_size, _learning_rate, _l2_param, _keep_prob)
+print 'batch_size: %d, learning_rate: %f, alpha: %f, lambda: %f, keep_prob: %f' % (
+    batch_size, _learning_rate, _alpha, _lambda, _keep_prob)
 
 with open('../data/day_0_test_x30_concat', 'r') as valid_fin:
     valid_labels = []
@@ -111,15 +114,14 @@ with graph.as_default():
     bias = tf.Variable(tf.zeros([1]))
 
     logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
-    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels))
+    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_labels)) + _lambda * tf.nn.l2_loss(
+        weights)
 
     optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
 
     train_pred = tf.sigmoid(logits)
     valid_pred = tf.sigmoid(
         tf.nn.embedding_lookup_sparse(weights, tf_valid_ids, tf_valid_weights, combiner='sum') + bias)
-    # valid_pred = tf.sigmoid(tf.matmul(tf_valid_dataset, weights, a_is_sparse=True) + bias)
-    # test_pred = tf.sigmoid(tf.matmul(tf_test_dataset, weights, a_is_sparse=True) + bias)
 
 with tf.Session(graph=graph) as session:
     tf.initialize_all_variables().run()
@@ -133,7 +135,7 @@ with tf.Session(graph=graph) as session:
         feed_dict = {tf_sp_id_vals: batch_cols, tf_sp_weight_vals: batch_values,
                      tf_train_labels: batch_labels}
         _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
-        if step % 100 == 0:
+        if step % epoch == 0:
             print 'loss as step %d: %f' % (step, l)
             try:
                 batch_auc = roc_auc_score(batch_labels, pred)
