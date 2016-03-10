@@ -6,7 +6,7 @@ max_vals = [65535, 8000, 2330, 746810, 8000, 57199, 5277, 225635, 3565, 14, 310,
 cat_sizes = np.array(
     [18576837, 29427, 15127, 7295, 19901, 3, 6465, 1310, 61, 11700067, 622921, 219556, 10, 2209, 9779, 71, 4, 963, 14,
      22022124, 4384510, 15960286, 290588, 10829, 95, 34])
-mask = np.where(cat_sizes < 10000000)[0]
+mask = np.where(cat_sizes < 10000)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
 
@@ -46,14 +46,18 @@ def get_batch_sparse_tensor(file_name, start_index, size, row_start=0):
     labels = []
     cols = []
     values = []
+    indices = []
+    row_num = row_start
     for i in range(start_index, start_index + size):
         try:
             line = next(fin)
             if len(line.strip()):
                 y, f, x = get_fxy(line)
+                indices.extend([[row_num, c] for c in f])
                 cols.extend(f)
                 values.extend(x)
                 labels.append(y)
+                row_num += 1
             else:
                 break
         except StopIteration as e:
@@ -61,23 +65,24 @@ def get_batch_sparse_tensor(file_name, start_index, size, row_start=0):
             fin = None
             break
 
-    return labels, cols, values
+    return labels, indices, cols, values
 
 
 def get_batch_xy(size):
     global file_index, line_index
-    labels, cols, values = get_batch_sparse_tensor(file_list[file_index], line_index, size)
+    labels, indices, cols, values = get_batch_sparse_tensor(file_list[file_index], line_index, size)
     if len(labels) == size:
         line_index += size
-        return np.array(labels), np.array(cols), np.array(values)
+        return np.array(labels), np.array(indices), np.array(cols), np.array(values)
 
     file_index = (file_index + 1) % len(file_list)
     line_index = size - len(labels)
-    l, c, v = get_batch_sparse_tensor(file_list[file_index], 0, size - len(labels))
+    l, i, c, v = get_batch_sparse_tensor(file_list[file_index], 0, size - len(labels))
     labels.extend(l)
+    indices.extend(i)
     cols.extend(c)
     values.extend(v)
-    return np.array(labels), np.array(cols), np.array(values)
+    return np.array(labels), np.array(indices), np.array(cols), np.array(values)
 
 
 print 'batch_size: %d, epoch: %d, learning_rate: %f, alpha: %f, lambda: %f, keep_prob: %f, stddev: %f' % (
@@ -85,11 +90,13 @@ print 'batch_size: %d, epoch: %d, learning_rate: %f, alpha: %f, lambda: %f, keep
 
 with open('../data/day_0_test_x30', 'r') as valid_fin:
     valid_labels = []
+    valid_inds = []
     valid_cols = []
     valid_vals = []
     valid_num_row = 0
     for line in valid_fin:
         y, f, x = get_fxy(line)
+        valid_inds.extend([[valid_num_row, c] for c in f])
         valid_cols.extend(f)
         valid_vals.extend(x)
         valid_labels.append(y)
@@ -199,27 +206,23 @@ def lr_sgd():
                     valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
                     print 'eval-auc: %.4f' % valid_auc
                 except ValueError as e:
-                    print 'train-auc: None'
+                    print 'None'
 
 
 def fm_sgd():
     assert (batch_size == 1), 'batch size should be zero'
-    u = np.ones((X_dim,))
 
     graph = tf.Graph()
 
-    # def factorization(sp_ids, sp_weights):
-    #     U = tf.constant(u)
-    #
-    #     yhat = tf.nn.embedding_lookup_sparse(W, tf_sp_ids, tf_sp_weights, combiner='sum') + b
-    #     for i in range(tf.shape(V).eval()[1]):
-    #         vf = tf.slice(V, [0, i], [tf.shape(V).eval()[0], 1])
-    #         vv = tf.matmul(vf, vf)
-    #         ux = tf.nn.embedding_lookup_sparse(U, sp_ids, sp_weights, combiner='sum')
-    #         xx = tf.nn.embedding_lookup_sparse(ux, sp_ids, sp_weights, combiner='sum')
-    #         yhat += 0.5 * (tf.square(tf.nn.embedding_lookup_sparse(vf, sp_ids, sp_weights, combiner='sum')) - tf.matmul(vv, xx))
-    #
-    #     return yhat
+    def factorization(sp_ids, sp_weights, x):
+        yhat = tf.nn.embedding_lookup_sparse(W, sp_ids, sp_weights, combiner='sum') + b
+        wb_shape = tf.shape(yhat)
+        # vx = tf.nn.embedding_lookup_sparse(V, sp_ids, sp_weights, combiner='sum')
+        vx = tf.matmul(x, V)
+        vx_shape = tf.shape(vx)
+        yhat += 0.5 * (tf.reduce_sum(tf.matmul(vx, vx, transpose_a=True), 1) - tf.reduce_sum(
+            tf.matmul(tf.square(x), tf.square(V)), 1))
+        return yhat, wb_shape, vx_shape
 
     with graph.as_default():
         tf_sp_id_vals = tf.placeholder(tf.int64, shape=[13 + len(mask)])
@@ -227,33 +230,23 @@ def fm_sgd():
         tf_sp_ids = tf.SparseTensor(sp_indices, tf_sp_id_vals, shape=[batch_size, 13 + len(mask)])
         tf_sp_weights = tf.SparseTensor(sp_indices, tf_sp_weight_vals, shape=[batch_size, 13 + len(mask)])
         tf_train_label = tf.placeholder(tf.float32, shape=[1])
-        # tf_valid_ids = tf.SparseTensor(valid_rows, valid_cols, shape=[batch_size, 13 + len(mask)])
-        # tf_valid_weights = tf.SparseTensor(valid_rows, valid_vals, shape=[batch_size, 13 + len(mask)])
+        tf_train_indices = tf.placeholder(tf.int64, shape=[batch_size * (13 + len(mask)), 2])
+        tf_train = tf.sparse_to_dense(tf_train_indices, [batch_size, X_dim], tf_sp_weight_vals)
+        tf_valid_ids = tf.SparseTensor(valid_rows, valid_cols, shape=[valid_num_row, 13 + len(mask)])
+        tf_valid_weights = tf.SparseTensor(valid_rows, valid_vals, shape=[valid_num_row, 13 + len(mask)])
+        tf_valid = tf.sparse_to_dense(valid_inds, [valid_num_row, X_dim], valid_vals)
 
         W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
         b = tf.Variable(0.0)
         V = tf.Variable(tf.truncated_normal([X_dim, _rank], stddev=_stddev))
-        U = tf.Variable(tf.ones([X_dim]))
 
-        wxb = tf.nn.embedding_lookup_sparse(W, tf_sp_ids, tf_sp_weights, combiner='sum') + b
-        ux = tf.nn.embedding_lookup_sparse(U, tf_sp_ids, tf_sp_weights, combiner='sum')
-        ux4d = tf.reshape(ux, [1, X_dim, 1, 1])
-        v4d = tf.reshape(V, [1, X_dim, _rank, 1])
-        conv_x = tf.nn.conv2d(ux4d, ux4d, [1, 1, 1, 1], 'VALID')
-        conv_v = tf.nn.conv2d(v4d, v4d, [1, 1, 1, 1], 'VALID')
-        vx = tf.nn.embedding_lookup_sparse(V, tf_sp_ids, tf_sp_weights, combiner='sum')
-        vx4d = tf.reshape(vx, [1, _rank, 1, 1])
-        conv_vx = tf.nn.conv2d(vx4d, vx4d, [1, 1, 1, 1], 'VALID')
-        logits = tf.sigmoid(wxb + 0.5 * (conv_vx - conv_x * conv_v))
-        # logits = tf.sigmoid(factorization(tf_sp_ids, tf_sp_weights))
-
-        loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_label) + _lambda * (
-            tf.nn.l2_loss(W) + tf.nn.l2_loss(V) + tf.square(b))
-
+        logit, _, _ = factorization(tf_sp_ids, tf_sp_weights, tf_train)
+        loss = tf.nn.sigmoid_cross_entropy_with_logits(logit, tf_train_label)
         optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
-        # train_pred = tf.sigmoid(logits)
-        # valid_pred = tf.sigmoid(
-        #     tf.nn.embedding_lookup_sparse(weights, tf_valid_ids, tf_valid_weights, combiner='sum') + bias)
+        train_pred = tf.sigmoid(logit)
+        valid_logits, wb_shape, vx_shape = factorization(tf_valid_ids, tf_valid_weights, tf_valid)
+        valid_pred = tf.sigmoid(valid_logits)
+        vp_shape = tf.shape(valid_pred)
 
     with tf.Session(graph=graph) as session:
         tf.initialize_all_variables().run()
@@ -262,17 +255,22 @@ def fm_sgd():
         step = 0
         while True:
             step += 1
-            _label, _cols, _values = get_batch_xy(1)
+            _label, _ind, _cols, _values = get_batch_xy(1)
 
-            feed_dict = {tf_sp_id_vals: _cols, tf_sp_weight_vals: _values, tf_train_label: _label}
-            # _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
-            # if step % epoch == 0:
-            #     print 'loss as step %d: %f' % (step, l)
-            #     try:
-            # valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-            # print 'eval-auc: %.4f' % valid_auc
-            # except ValueError as e:
-            #     print 'train-auc: None'
+            feed_dict = {tf_sp_id_vals: _cols, tf_sp_weight_vals: _values, tf_train_label: _label,
+                         tf_train_indices: _ind}
+            _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
+            # print lg
+            if step % epoch == 0:
+                print 'loss as step %d: %f' % (step, l)
+                try:
+                    print wb_shape.eval()
+                    print vx_shape.eval()
+                    print vp_shape.eval()
+                    valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
+                    print 'eval-auc: %.4f' % valid_auc
+                except ValueError as e:
+                    print 'None'
 
 
 if __name__ == '__main__':
