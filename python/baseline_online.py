@@ -6,7 +6,7 @@ max_vals = [65535, 8000, 2330, 746810, 8000, 57199, 5277, 225635, 3565, 14, 310,
 cat_sizes = np.array(
     [18576837, 29427, 15127, 7295, 19901, 3, 6465, 1310, 61, 11700067, 622921, 219556, 10, 2209, 9779, 71, 4, 963, 14,
      22022124, 4384510, 15960286, 290588, 10829, 95, 34])
-mask = np.where(cat_sizes < 10000)[0]
+mask = np.where(cat_sizes < 1000)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
 
@@ -20,12 +20,12 @@ line_index = 0
 batch_size = 1
 epoch = 1000
 
-_learning_rate = 0.01
+_learning_rate = 0.001
 _alpha = 1
-_lambda = 0
+_lambda = 0.001
 _keep_prob = 0.5
-_stddev = 0.1
-_rank = 10
+_stddev = 0.01
+_rank = 20
 
 
 def get_fxy(line):
@@ -85,8 +85,8 @@ def get_batch_xy(size):
     return np.array(labels), np.array(indices), np.array(cols), np.array(values)
 
 
-print 'batch_size: %d, epoch: %d, learning_rate: %f, alpha: %f, lambda: %f, keep_prob: %f, stddev: %f' % (
-    batch_size, epoch, _learning_rate, _alpha, _lambda, _keep_prob, _stddev)
+print 'batch: %d, epoch: %d, lr: %.4f, lambda: %.4f, stddev: %.4f, keep_prob: %.4f, alpha: %.4f' % (
+    batch_size, epoch, _learning_rate, _lambda, _stddev, _keep_prob, _alpha)
 
 with open('../data/day_0_test_x30', 'r') as valid_fin:
     valid_labels = []
@@ -211,18 +211,33 @@ def lr_sgd():
 
 def fm_sgd():
     assert (batch_size == 1), 'batch size should be zero'
+    print 'rank: %d' % _rank
 
     graph = tf.Graph()
 
     def factorization(sp_ids, sp_weights, x):
         yhat = tf.nn.embedding_lookup_sparse(W, sp_ids, sp_weights, combiner='sum') + b
-        wb_shape = tf.shape(yhat)
-        # vx = tf.nn.embedding_lookup_sparse(V, sp_ids, sp_weights, combiner='sum')
-        vx = tf.matmul(x, V)
-        vx_shape = tf.shape(vx)
-        yhat += 0.5 * (tf.reduce_sum(tf.matmul(vx, vx, transpose_a=True), 1) - tf.reduce_sum(
-            tf.matmul(tf.square(x), tf.square(V)), 1))
-        return yhat, wb_shape, vx_shape
+        # wb_shape = tf.shape(yhat)
+        vx = tf.nn.embedding_lookup_sparse(V, sp_ids, sp_weights, combiner='sum')
+        # vx = tf.matmul(x, V)
+        # vx_shape = tf.shape(vx)
+        # vxvx = tf.matmul(vx, vx, transpose_b=True)
+        # vxvx_shape = tf.shape(vxvx)
+        # vxvxs = tf.reduce_sum(vxvx, 1)
+        # vxvxs_shape = tf.shape(vxvxs)
+        # x2 = tf.square(x)
+        # x2_shape = tf.shape(x2)
+        # V2 = tf.square(V)
+        # V2_shape = tf.shape(V2)
+        # x2v2 = tf.matmul(x2, V2)
+        # x2v2_shape = tf.shape(x2v2)
+        # x2v2s = tf.reduce_sum(x2v2, 1)
+        # x2v2s_shape = tf.shape(x2v2s)
+        yhat += 0.5 * tf.reshape(
+            tf.reduce_sum(tf.matmul(vx, vx, transpose_b=True), 1) - tf.reduce_sum(tf.matmul(tf.square(x), tf.square(V)),
+                                                                                  1), shape=[-1, 1])
+        return yhat
+        # , wb_shape, vx_shape, vxvx_shape, vxvxs_shape, x2_shape, V2_shape, x2v2_shape, x2v2s_shape
 
     with graph.as_default():
         tf_sp_id_vals = tf.placeholder(tf.int64, shape=[13 + len(mask)])
@@ -240,13 +255,14 @@ def fm_sgd():
         b = tf.Variable(0.0)
         V = tf.Variable(tf.truncated_normal([X_dim, _rank], stddev=_stddev))
 
-        logit, _, _ = factorization(tf_sp_ids, tf_sp_weights, tf_train)
-        loss = tf.nn.sigmoid_cross_entropy_with_logits(logit, tf_train_label)
+        logit = factorization(tf_sp_ids, tf_sp_weights, tf_train)
+        loss = tf.nn.sigmoid_cross_entropy_with_logits(logit, tf_train_label) + _lambda * (
+            tf.nn.l2_loss(W) + tf.nn.l2_loss(V) + tf.nn.l2_loss(b))
         optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
         train_pred = tf.sigmoid(logit)
-        valid_logits, wb_shape, vx_shape = factorization(tf_valid_ids, tf_valid_weights, tf_valid)
+        valid_logits = factorization(tf_valid_ids, tf_valid_weights, tf_valid)
         valid_pred = tf.sigmoid(valid_logits)
-        vp_shape = tf.shape(valid_pred)
+        # vp_shape = tf.shape(valid_pred)
 
     with tf.Session(graph=graph) as session:
         tf.initialize_all_variables().run()
@@ -259,14 +275,19 @@ def fm_sgd():
 
             feed_dict = {tf_sp_id_vals: _cols, tf_sp_weight_vals: _values, tf_train_label: _label,
                          tf_train_indices: _ind}
-            _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
-            # print lg
+            _, l, pred, lg = session.run([optimizer, loss, train_pred, logit], feed_dict=feed_dict)
             if step % epoch == 0:
                 print 'loss as step %d: %f' % (step, l)
                 try:
-                    print wb_shape.eval()
-                    print vx_shape.eval()
-                    print vp_shape.eval()
+                    # print 'wb', wb_shape.eval()
+                    # print 'vx', vx_shape.eval()
+                    # print 'vxvx', vxvx_shape.eval()
+                    # print 'vxvxs', vxvxs_shape.eval()
+                    # print 'x2', x2_shape.eval()
+                    # print 'V2', V2_shape.eval()
+                    # print 'x2v2', x2v2_shape.eval()
+                    # print 'x2v2s', x2v2s_shape.eval()
+                    # print 'vp', vp_shape.eval()
                     valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
                     print 'eval-auc: %.4f' % valid_auc
                 except ValueError as e:

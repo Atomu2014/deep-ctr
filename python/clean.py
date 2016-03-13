@@ -1,3 +1,4 @@
+import cPickle as pickle
 import random
 import time
 
@@ -11,51 +12,72 @@ cat_sizes = np.array(
      22022124, 4384510, 15960286, 290588, 10829, 95, 34])
 
 
-def make_data():
-    with open('../data/day_0', 'r') as fin:
-        with open('../data/day_0_scale', 'w') as fout_scale:
-            with open('../data/day_0_scale_concat', 'w') as fout_concat:
-                cnt = 0
-                sets = [{} for i in range(26)]
-                offset = [13 + sum(cat_sizes[:i]) for i in range(26)]
-                buf_scale = ''
-                buf_concat = ''
-                start_time = time.time()
-                end_time = 0
-                for line in fin:
-                    fields = line.strip().split('\t')
+def stat(file_name, sets, long_tails, max_vals):
+    cnt = 0
+    with open(file_name, 'r') as fin:
+        start_time = time.time()
+        for line in fin:
+            fields = line.strip().split('\t')
 
-                    vals = [max(x, '0') for x in fields[1:14]]
-                    # vals = [int(x) for x in vals]
-                    cats = [int(max(x, '0'), 16) for x in fields[14:]]
+            vals = [int(max(x, '0')) for x in fields[1:14]]
+            max_vals = [max(max_vals[i], vals[i]) for i in range(13)]
+            cats = [int(max(x, '0'), 16) for x in fields[14:]]
 
-                    for i in range(26):
-                        if cats[i] not in sets[i]:
-                            sets[i][cats[i]] = len(sets[i])
+            for i in range(26):
+                if cats[i] in long_tails[i]:
+                    long_tails[i].remove(cats[i])
+                    sets[i][cats[i]] = 2
+                elif cats[i] in sets[i]:
+                    sets[i][cats[i]] += 1
+                else:
+                    long_tails[i].add(cats[i])
 
-                    cnt += 1
+            cnt += 1
+            if cnt % 10000000 == 0:
+                end_time = time.time()
+                print cnt, end_time - start_time
+                start_time = end_time
+                print max_vals
+                print [len(x) for x in sets]
+                print [len(x) for x in long_tails]
+    print 'finish', file_name, max_vals, [len(x) for x in sets], [len(x) for x in long_tails]
 
-                    buf_scale += fields[0] + '\t' + '\t'.join(vals) + '\t' + '\t'.join(
-                        str(sets[i][cats[i]]) for i in range(26)) + '\n'
-                    buf_concat += fields[0] + '\t' + '\t'.join(
-                        [str(i) + ':' + vals[i] for i in range(13)]) + '\t' + '\t'.join(
-                        str(sets[i][cats[i]] + offset[i]) + ':1' for i in range(26)) + '\n'
 
-                    if cnt % 10000 == 0:
-                        fout_scale.write(buf_scale)
-                        buf_scale = ''
-                        fout_concat.write(buf_concat)
-                        buf_concat = ''
+def make_data(file_name):
+    with open(file_name, 'r') as fin:
+        with open(file_name + '.one-hot', 'w') as fout_scale:
+            cnt = 0
+            sets = [{} for i in range(26)]
+            buf_scale = ''
+            start_time = time.time()
+            for line in fin:
+                fields = line.strip().split('\t')
 
-                    if cnt % 1000000 == 0:
-                        end_time = time.time()
-                        print cnt, end_time - start_time
-                        start_time = end_time
+                vals = [max(x, '0') for x in fields[1:14]]
+                # vals = [int(x) for x in vals]
+                cats = [int(max(x, '0'), 16) for x in fields[14:]]
 
-                print cnt
-                if cnt % 10000:
+                for i in range(26):
+                    if cats[i] not in sets[i]:
+                        sets[i][cats[i]] = len(sets[i])
+
+                cnt += 1
+
+                buf_scale += fields[0] + '\t' + '\t'.join(vals) + '\t' + '\t'.join(
+                    str(sets[i][cats[i]]) for i in range(26)) + '\n'
+
+                if cnt % 10000 == 0:
                     fout_scale.write(buf_scale)
-                    fout_concat.write(buf_concat)
+                    buf_scale = ''
+
+                if cnt % 1000000 == 0:
+                    end_time = time.time()
+                    print cnt, end_time - start_time
+                    start_time = end_time
+
+            print cnt
+            if cnt % 10000:
+                fout_scale.write(buf_scale)
 
 
 def sample(train_path, test_path, alpha=0.02):
@@ -116,10 +138,18 @@ def concat(file_name, mask):
 
 
 if __name__ == '__main__':
-    train_path = '../data/day_0_train_x30'
-    test_path = '../data/day_0_test_x30'
-    sample(train_path, test_path, alpha=0.06)
-    pos_neg_ratio(train_path)
-    pos_neg_ratio(test_path)
-    concat(train_path, np.where(cat_sizes < 10000)[0])
-    concat(test_path, np.where(cat_sizes < 10000)[0])  #
+    # train_path = '../data/day_0_train_x30'
+    # test_path = '../data/day_0_test_x30'
+    # sample(train_path, test_path, alpha=0.06)
+    # pos_neg_ratio(train_path)
+    # pos_neg_ratio(test_path)
+    # concat(train_path, np.where(cat_sizes < 10000)[0])
+    # concat(test_path, np.where(cat_sizes < 10000)[0])
+    max_vals = [0] * 13
+    sets = [{} for i in range(26)]
+    long_tails = [set() for i in range(26)]
+
+    for i in range(7, 15):
+        print 'processing day_' + str(i)
+        stat('../data/day_' + str(i), sets, long_tails, max_vals)
+        pickle.dump({'max_vals': max_vals, 'sets': sets, 'long_tails': long_tails}, open('../data/stat.pickle', 'wb'))
