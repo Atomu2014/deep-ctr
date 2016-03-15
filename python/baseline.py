@@ -28,7 +28,8 @@ _learning_rate = 0.001
 _lambda = 0.001
 _keep_prob = 0.5
 _stddev = 0.01
-_rank = 20
+_rank = 1
+_nds_rate = 0.1
 
 
 def get_fxy(line):
@@ -91,31 +92,55 @@ def get_batch_xy(size):
 print 'batch: %d, epoch: %d, lr: %.4f, lambda: %.4f, stddev: %.4f, keep_prob: %.4f' % (
     batch_size, epoch, _learning_rate, _lambda, _stddev, _keep_prob)
 
-valid_labels = []
-valid_cols = []
-valid_vals = []
 sp_train_inds = []
-sp_valid_inds = []
-valid_num_row = 0
+sp_nds_valid_inds = []
+sp_unif_valid_inds = []
+
+nds_valid_labels = []
+nds_valid_cols = []
+nds_valid_vals = []
+nds_valid_num_row = 0
+
+unif_valid_labels = []
+unif_valid_cols = []
+unif_valid_vals = []
+unif_valid_num_row = 0
 
 with open('../data/test.nds.10.shuf.ind', 'r') as valid_fin:
     buf = []
     for line in valid_fin:
         buf.append(line)
-        valid_num_row += 1
-        if valid_num_row == eval_size:
+        nds_valid_num_row += 1
+        if nds_valid_num_row == eval_size:
             break
     for line in buf:
         y, f, x = get_fxy(line)
-        valid_cols.extend(f)
-        valid_vals.extend(x)
-        valid_labels.append(y)
+        nds_valid_cols.extend(f)
+        nds_valid_vals.extend(x)
+        nds_valid_labels.append(y)
 
-for i in range(valid_num_row):
+with open('../data/test.unif.10.shuf.ind', 'r') as valid_fin:
+    buf = []
+    for line in valid_fin:
+        buf.append(line)
+        unif_valid_num_row += 1
+        if unif_valid_num_row == eval_size:
+            break
+    for line in buf:
+        y, f, x = get_fxy(line)
+        unif_valid_cols.extend(f)
+        unif_valid_vals.extend(x)
+        unif_valid_labels.append(y)
+
+for i in range(nds_valid_num_row):
     for j in range(X_feas):
-        sp_valid_inds.append([i, j])
+        sp_nds_valid_inds.append([i, j])
+for i in range(unif_valid_num_row):
+    for j in range(X_feas):
+        sp_unif_valid_inds.append([i, j])
 
-valid_sq_vals = np.array(valid_vals) ** 2
+nds_valid_vals2 = np.array(nds_valid_vals) ** 2
+unif_valid_vals2 = np.array(unif_valid_vals) ** 2
 
 for i in range(batch_size):
     for j in range(X_feas):
@@ -132,8 +157,10 @@ def lr_sgd():
         tf_sp_ids = tf.SparseTensor(sp_train_inds, tf_sp_id_vals, shape=[1, X_feas])
         tf_sp_weights = tf.SparseTensor(sp_train_inds, tf_sp_weight_vals, shape=[1, X_feas])
         tf_train_label = tf.placeholder(tf.float32)
-        tf_sp_valid_ids = tf.SparseTensor(sp_valid_inds, valid_cols, shape=[1, X_feas])
-        tf_sp_valid_weights = tf.SparseTensor(sp_valid_inds, valid_vals, shape=[1, X_feas])
+        tf_sp_nds_valid_ids = tf.SparseTensor(sp_nds_valid_inds, nds_valid_cols, shape=[1, X_feas])
+        tf_sp_nds_valid_weights = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals, shape=[1, X_feas])
+        tf_sp_unif_valid_ids = tf.SparseTensor(sp_unif_valid_inds, unif_valid_cols, shape=[1, X_feas])
+        tf_sp_unif_valid_weights = tf.SparseTensor(sp_unif_valid_inds, unif_valid_vals, shape=[1, X_feas])
 
         weights = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
         bias = tf.Variable(0.0)
@@ -144,8 +171,13 @@ def lr_sgd():
         optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
 
         train_pred = tf.sigmoid(logits)
-        valid_pred = tf.sigmoid(
-            tf.nn.embedding_lookup_sparse(weights, tf_sp_valid_ids, tf_sp_valid_weights, combiner='sum') + bias)
+        nds_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_nds_valid_ids, tf_sp_nds_valid_weights,
+                                                         combiner='sum') + bias
+        nds_valid_pred = tf.sigmoid(nds_valid_logits)
+        unif_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_unif_valid_ids, tf_sp_unif_valid_weights,
+                                                          combiner='sum')
+        unif_valid_pred = tf.sigmoid(unif_valid_logits)
+        unif_valid_pred = unif_valid_pred / (unif_valid_pred + (1 - unif_valid_pred) / _nds_rate)
 
     with tf.Session(graph=graph) as session:
         tf.initialize_all_variables().run()
@@ -161,8 +193,9 @@ def lr_sgd():
                 if step % epoch == 0:
                     print 'loss as step %d: %f' % (step, l)
                     try:
-                        valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-                        print 'eval-auc: %.4f' % valid_auc
+                        nds_valid_auc = roc_auc_score(nds_valid_labels, nds_valid_pred.eval())
+                        unif_valid_auc = roc_auc_score(unif_valid_labels, unif_valid_pred.eval())
+                        print 'eval-auc(nds): %.4f\teval-auc(unif): %.4f' % (nds_valid_auc, unif_valid_auc)
                     except ValueError as e:
                         print 'None'
 
@@ -189,9 +222,9 @@ def fm_sgd():
         tf_train_label = tf.placeholder(tf.float32)
         tf_sp_weight2_vals = tf.placeholder(tf.float32, shape=[X_feas])
         tf_sp_weights2 = tf.SparseTensor(sp_train_inds, tf_sp_weight2_vals, shape=[1, X_feas])
-        tf_sp_valid_ids = tf.SparseTensor(sp_valid_inds, valid_cols, shape=[valid_num_row, X_feas])
-        tf_sp_valid_weights = tf.SparseTensor(sp_valid_inds, valid_vals, shape=[valid_num_row, X_feas])
-        tf_sp_valid_weights2 = tf.SparseTensor(sp_valid_inds, valid_sq_vals, shape=[valid_num_row, X_feas])
+        tf_sp_valid_ids = tf.SparseTensor(sp_nds_valid_inds, nds_valid_cols, shape=[nds_valid_num_row, X_feas])
+        tf_sp_valid_weights = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals, shape=[nds_valid_num_row, X_feas])
+        tf_sp_valid_weights2 = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals2, shape=[nds_valid_num_row, X_feas])
 
         W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
         b = tf.Variable(0.0)
@@ -224,7 +257,7 @@ def fm_sgd():
                 if step % epoch == 0:
                     print 'loss as step %d: %f' % (step, l)
                     try:
-                        valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
+                        valid_auc = roc_auc_score(nds_valid_labels, valid_pred.eval())
                         print 'eval-auc: %.4f' % valid_auc
                     except ValueError as e:
                         print 'None'
