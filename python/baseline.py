@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 import tensorflow as tf
 from sklearn.metrics import roc_auc_score
@@ -6,7 +8,7 @@ max_vals = [65535, 8000, 705, 249000, 7974, 14159, 946, 43970, 5448, 11, 471, 35
 cat_sizes = np.array(
     [631839, 25297, 15534, 7109, 19273, 4, 6754, 1303, 55, 527815, 147691, 110674, 11, 2202, 9023, 63, 5, 946, 15,
      639542, 357567, 600328, 118442, 10217, 78, 34])
-mask = np.where(cat_sizes < 100000)[0]
+mask = np.where(cat_sizes > 0)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
 X_dim = 13 + np.sum(cat_sizes[mask])
 X_feas = 13 + len(mask)
@@ -19,16 +21,21 @@ file_index = 0
 line_index = 0
 
 batch_size = 1
-buffer_size = 10000
-eval_size = 10000
-epoch = 1000
+buffer_size = 100000
+eval_size = 1000
+epoch = 100
 
-_learning_rate = 0.001
+_learning_rate = 0.0001
 # _alpha = 1
-_lambda = 0.001
+_lambda = 0.01
 _keep_prob = 0.5
-_stddev = 0.01
-_rank = 1
+_stddev = 0.0001
+_rank = 2
+# 'normal', 't-normal', 'uniform'(default)
+_init_method = 'uniform'
+_min_val = -0.001
+_max_val = -1 * _min_val
+
 _nds_rate = 0.1
 
 
@@ -89,8 +96,9 @@ def get_batch_xy(size):
     return np.array(labels), np.array(rows), np.array(cols), np.array(values)
 
 
-print 'batch: %d, epoch: %d, lr: %.4f, lambda: %.4f, stddev: %.4f, keep_prob: %.4f' % (
+print 'batch: %d, epoch: %d, lr: %f, lambda: %f, stddev: %f, keep_prob: %f' % (
     batch_size, epoch, _learning_rate, _lambda, _stddev, _keep_prob)
+print 'init method: %s, interval: [%f, %f]' % (_init_method, _min_val, _max_val)
 
 sp_train_inds = []
 sp_nds_valid_inds = []
@@ -148,32 +156,38 @@ for i in range(batch_size):
 
 
 def lr_sgd():
-    assert (batch_size == 1), 'batch size should be zero'
+    # assert (batch_size == 1), 'batch size should be one'
 
     graph = tf.Graph()
     with graph.as_default():
-        tf_sp_id_vals = tf.placeholder(tf.int64, shape=[X_feas])
-        tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[X_feas])
-        tf_sp_ids = tf.SparseTensor(sp_train_inds, tf_sp_id_vals, shape=[1, X_feas])
-        tf_sp_weights = tf.SparseTensor(sp_train_inds, tf_sp_weight_vals, shape=[1, X_feas])
+        tf_sp_id_vals = tf.placeholder(tf.int64, shape=[batch_size * X_feas])
+        tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
+        tf_sp_ids = tf.SparseTensor(sp_train_inds, tf_sp_id_vals, shape=[batch_size, X_feas])
+        tf_sp_weights = tf.SparseTensor(sp_train_inds, tf_sp_weight_vals, shape=[batch_size, X_feas])
         tf_train_label = tf.placeholder(tf.float32)
-        tf_sp_nds_valid_ids = tf.SparseTensor(sp_nds_valid_inds, nds_valid_cols, shape=[1, X_feas])
-        tf_sp_nds_valid_weights = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals, shape=[1, X_feas])
-        tf_sp_unif_valid_ids = tf.SparseTensor(sp_unif_valid_inds, unif_valid_cols, shape=[1, X_feas])
-        tf_sp_unif_valid_weights = tf.SparseTensor(sp_unif_valid_inds, unif_valid_vals, shape=[1, X_feas])
+        # tf_sp_nds_valid_ids = tf.SparseTensor(sp_nds_valid_inds, nds_valid_cols, shape=[1, X_feas])
+        # tf_sp_nds_valid_weights = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals, shape=[1, X_feas])
+        tf_sp_unif_valid_ids = tf.SparseTensor(sp_unif_valid_inds, unif_valid_cols, shape=[unif_valid_num_row, X_feas])
+        tf_sp_unif_valid_weights = tf.SparseTensor(sp_unif_valid_inds, unif_valid_vals,
+                                                   shape=[unif_valid_num_row, X_feas])
 
-        weights = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
+        if _init_method == 'normal':
+            weights = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev))
+        elif _init_method == 't-normal':
+            weights = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
+        else:
+            weights = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val))
         bias = tf.Variable(0.0)
 
         logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
-        loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_label) + _lambda * (
+        loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_label)) + _lambda * (
             tf.nn.l2_loss(weights) + tf.nn.l2_loss(bias))
         optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
 
         train_pred = tf.sigmoid(logits)
-        nds_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_nds_valid_ids, tf_sp_nds_valid_weights,
-                                                         combiner='sum') + bias
-        nds_valid_pred = tf.sigmoid(nds_valid_logits)
+        # nds_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_nds_valid_ids, tf_sp_nds_valid_weights,
+        #                                                  combiner='sum') + bias
+        # nds_valid_pred = tf.sigmoid(nds_valid_logits)
         unif_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_unif_valid_ids, tf_sp_unif_valid_weights,
                                                           combiner='sum')
         unif_valid_pred = tf.sigmoid(unif_valid_logits)
@@ -183,25 +197,37 @@ def lr_sgd():
         tf.initialize_all_variables().run()
         print 'initialized'
         step = 0
+        batch_preds = []
+        batch_labels = []
+        start_time = time.time()
         while True:
             label, _, cols, values = get_batch_xy(buffer_size)
-            for i in range(label.shape[0]):
+            for i in range(label.shape[0] / batch_size):
                 step += 1
-                feed_dict = {tf_sp_id_vals: cols[i * X_feas: (i + 1) * X_feas],
-                             tf_sp_weight_vals: values[i * X_feas: (i + 1) * X_feas], tf_train_label: label[i]}
+                feed_dict = {tf_sp_id_vals: cols[i * batch_size * X_feas: (i + 1) * batch_size * X_feas],
+                             tf_sp_weight_vals: values[i * batch_size * X_feas: (i + 1) * batch_size * X_feas],
+                             tf_train_label: label[i * batch_size: (i + 1) * batch_size]}
                 _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
+
+                batch_preds.extend(x[0] for x in pred)
+                batch_labels.extend(label[i * batch_size: (i + 1) * batch_size])
+
                 if step % epoch == 0:
-                    print 'loss as step %d: %f' % (step, l)
+                    print 'loss as step %d: %f\ttime: %d' % (step, l, time.time() - start_time)
+                    start_time = time.time()
                     try:
-                        nds_valid_auc = roc_auc_score(nds_valid_labels, nds_valid_pred.eval())
+                        # nds_valid_auc = roc_auc_score(nds_valid_labels, nds_valid_pred.eval())
+                        batch_auc = roc_auc_score(batch_labels, batch_preds)
+                        batch_preds = []
+                        batch_labels = []
                         unif_valid_auc = roc_auc_score(unif_valid_labels, unif_valid_pred.eval())
-                        print 'eval-auc(nds): %.4f\teval-auc(unif): %.4f' % (nds_valid_auc, unif_valid_auc)
+                        print 'batch-auc:%.4f\teval-auc: %.4f' % (batch_auc, unif_valid_auc)
                     except ValueError as e:
-                        print 'None'
+                        unif_valid_auc = roc_auc_score(unif_valid_labels, unif_valid_pred.eval())
+                        print 'batch-auc:None\teval-auc: %.4f' % (unif_valid_auc)
 
 
 def fm_sgd():
-    assert (batch_size == 1), 'batch size should be zero'
     print 'rank: %d' % _rank
 
     graph = tf.Graph()
@@ -215,52 +241,69 @@ def fm_sgd():
         return yhat
 
     with graph.as_default():
-        tf_sp_id_vals = tf.placeholder(tf.int64, shape=[X_feas])
-        tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[X_feas])
-        tf_sp_ids = tf.SparseTensor(sp_train_inds, tf_sp_id_vals, shape=[1, X_feas])
-        tf_sp_weights = tf.SparseTensor(sp_train_inds, tf_sp_weight_vals, shape=[1, X_feas])
+        tf_sp_id_vals = tf.placeholder(tf.int64, shape=[batch_size * X_feas])
+        tf_sp_weight_vals = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
+        tf_sp_ids = tf.SparseTensor(sp_train_inds, tf_sp_id_vals, shape=[batch_size, X_feas])
+        tf_sp_weights = tf.SparseTensor(sp_train_inds, tf_sp_weight_vals, shape=[batch_size, X_feas])
         tf_train_label = tf.placeholder(tf.float32)
-        tf_sp_weight2_vals = tf.placeholder(tf.float32, shape=[X_feas])
-        tf_sp_weights2 = tf.SparseTensor(sp_train_inds, tf_sp_weight2_vals, shape=[1, X_feas])
-        tf_sp_valid_ids = tf.SparseTensor(sp_nds_valid_inds, nds_valid_cols, shape=[nds_valid_num_row, X_feas])
-        tf_sp_valid_weights = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals, shape=[nds_valid_num_row, X_feas])
-        tf_sp_valid_weights2 = tf.SparseTensor(sp_nds_valid_inds, nds_valid_vals2, shape=[nds_valid_num_row, X_feas])
+        tf_sp_weight2_vals = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
+        tf_sp_weights2 = tf.SparseTensor(sp_train_inds, tf_sp_weight2_vals, shape=[batch_size, X_feas])
+        tf_sp_valid_ids = tf.SparseTensor(sp_unif_valid_inds, unif_valid_cols, shape=[unif_valid_num_row, X_feas])
+        tf_sp_valid_weights = tf.SparseTensor(sp_unif_valid_inds, unif_valid_vals, shape=[unif_valid_num_row, X_feas])
+        tf_sp_valid_weights2 = tf.SparseTensor(sp_unif_valid_inds, unif_valid_vals2, shape=[unif_valid_num_row, X_feas])
 
-        W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
+        if _init_method == 'normal':
+            W = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev))
+            V = tf.Variable(tf.random_normal([X_dim, _rank], stddev=_stddev))
+        elif _init_method == 't-normal':
+            W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
+            V = tf.Variable(tf.truncated_normal([X_dim, _rank], stddev=_stddev))
+        else:
+            W = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val))
+            V = tf.Variable(tf.random_uniform([X_dim, _rank], minval=_min_val, maxval=_max_val))
         b = tf.Variable(0.0)
-        V = tf.Variable(tf.truncated_normal([X_dim, _rank], stddev=_stddev))
 
         logit = factorization(tf_sp_ids, tf_sp_weights, tf_sp_weights2)
-        loss = tf.nn.sigmoid_cross_entropy_with_logits(logit, tf_train_label) + _lambda * (
+        loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logit, tf_train_label)) + _lambda * (
             tf.nn.l2_loss(W) + tf.nn.l2_loss(V) + tf.nn.l2_loss(b))
         optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
         train_pred = tf.sigmoid(logit)
         valid_logits = factorization(tf_sp_valid_ids, tf_sp_valid_weights, tf_sp_valid_weights2)
         valid_pred = tf.sigmoid(valid_logits)
+        valid_pred = valid_pred / (valid_pred + (1 - valid_pred) / _nds_rate)
 
     with tf.Session(graph=graph) as session:
         tf.initialize_all_variables().run()
         print 'initialized'
         step = 0
+        batch_preds = []
+        batch_labels = []
+        start_time = time.time()
         while True:
             label, rows, cols, values = get_batch_xy(buffer_size)
-            for i in range(label.shape[0]):
+            for i in range(label.shape[0] / batch_size):
                 step += 1
-                _label = label[i]
-                _cols = cols[i * X_feas: (i + 1) * X_feas]
-                _vals = values[i * X_feas: (i + 1) * X_feas]
-                _sqvals = _vals ** 2
+                _label = label[i * batch_size: (i + 1) * batch_size]
+                _cols = cols[i * batch_size * X_feas: (i + 1) * batch_size * X_feas]
+                _vals = values[i * batch_size * X_feas: (i + 1) * batch_size * X_feas]
+                _vals2 = _vals ** 2
 
-                feed_dict = {tf_sp_id_vals: _cols, tf_sp_weight_vals: _vals, tf_sp_weight2_vals: _sqvals,
+                feed_dict = {tf_sp_id_vals: _cols, tf_sp_weight_vals: _vals, tf_sp_weight2_vals: _vals2,
                              tf_train_label: _label}
                 _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
+                batch_preds.extend(x[0] for x in pred)
+                batch_labels.extend(label[i * batch_size: (i + 1) * batch_size])
                 if step % epoch == 0:
-                    print 'loss as step %d: %f' % (step, l)
+                    print 'loss as step %d: %f\ttime: %d' % (step, l, time.time() - start_time)
                     try:
-                        valid_auc = roc_auc_score(nds_valid_labels, valid_pred.eval())
-                        print 'eval-auc: %.4f' % valid_auc
+                        batch_auc = roc_auc_score(batch_labels, batch_preds)
+                        batch_preds = []
+                        batch_labels = []
+                        valid_auc = roc_auc_score(unif_valid_labels, valid_pred.eval())
+                        print 'batch-auc:%.4f\teval-auc: %.4f' % (batch_auc, valid_auc)
                     except ValueError as e:
-                        print 'None'
+                        valid_auc = roc_auc_score(unif_valid_labels, valid_pred.eval())
+                        print 'batch-auc:None\teval-auc: %.4f' % (valid_auc)
 
 
 if __name__ == '__main__':
