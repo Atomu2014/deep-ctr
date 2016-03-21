@@ -1,0 +1,5332 @@
+/usr/bin/python2.7 /home/kevin/Documents/deep-ctr/python/baseline.py
+26 3231821
+batch: 100, epoch: 100, lr: 0.001000, lambda: 0.010000, stddev: 0.000100, keep_prob: 0.500000
+init method: uniform, interval: [-0.000010, 0.000010]
+rank: 2
+initialized
+loss as step 100: 0.663614	time: 32
+batch-auc:0.5098	eval-auc: 0.5176
+loss as step 200: 0.653279	time: 27
+batch-auc:0.5029	eval-auc: 0.5169
+loss as step 300: 0.627103	time: 27
+batch-auc:0.5040	eval-auc: 0.5171
+loss as step 400: 0.631203	time: 27
+batch-auc:0.5034	eval-auc: 0.5165
+loss as step 500: 0.628201	time: 29
+batch-auc:0.5021	eval-auc: 0.5158
+loss as step 600: 0.623659	time: 37
+batch-auc:0.4997	eval-auc: 0.5146
+loss as step 700: 0.600792	time: 37
+batch-auc:0.4924	eval-auc: 0.5132
+loss as step 800: 0.563961	time: 37
+batch-auc:0.5003	eval-auc: 0.5122
+loss as step 900: 0.590895	time: 37
+batch-auc:0.4958	eval-auc: 0.5118
+loss as step 1000: 0.548209	time: 36
+batch-auc:0.4993	eval-auc: 0.5115
+loss as step 1100: 0.576739	time: 41
+batch-auc:0.5019	eval-auc: 0.5106
+loss as step 1200: 0.522620	time: 36
+batch-auc:0.4957	eval-auc: 0.5096
+loss as step 1300: 0.621439	time: 36
+batch-auc:0.4968	eval-auc: 0.5089
+loss as step 1400: 0.541687	time: 36
+batch-auc:0.4993	eval-auc: 0.5079
+loss as step 1500: 0.563519	time: 34
+batch-auc:0.5033	eval-auc: 0.5069
+loss as step 1600: 0.536497	time: 36
+batch-auc:0.4857	eval-auc: 0.5058
+loss as step 1700: 0.490014	time: 36
+batch-auc:0.4948	eval-auc: 0.5048
+loss as step 1800: 0.568724	time: 36
+batch-auc:0.5069	eval-auc: 0.5040
+loss as step 1900: 0.568189	time: 36
+batch-auc:0.4972	eval-auc: 0.5036
+loss as step 2000: 0.494509	time: 36
+batch-auc:0.4887	eval-auc: 0.5026
+loss as step 2100: 0.557945	time: 41
+batch-auc:0.4881	eval-auc: 0.5027
+loss as step 2200: 0.576386	time: 36
+batch-auc:0.4986	eval-auc: 0.5016
+loss as step 2300: 0.595512	time: 36
+batch-auc:0.4801	eval-auc: 0.5011
+loss as step 2400: 0.615313	time: 36
+batch-auc:0.4887	eval-auc: 0.5007
+loss as step 2500: 0.624807	time: 33
+batch-auc:0.4987	eval-auc: 0.4996
+loss as step 2600: 0.585993	time: 35
+batch-auc:0.4865	eval-auc: 0.4991
+loss as step 2700: 0.586143	time: 36
+batch-auc:0.5007	eval-auc: 0.4989
+loss as step 2800: 0.585561	time: 35
+batch-auc:0.4828	eval-auc: 0.4983
+loss as step 2900: 0.548529	time: 35
+batch-auc:0.4959	eval-auc: 0.4977
+loss as step 3000: 0.555733	time: 36
+batch-auc:0.4892	eval-auc: 0.4967
+loss as step 3100: 0.586575	time: 41
+batch-auc:0.4825	eval-auc: 0.4964
+loss as step 3200: 0.605862	time: 36
+batch-auc:0.4952	eval-auc: 0.4955
+loss as step 3300: 0.586307	time: 35
+batch-auc:0.4923	eval-auc: 0.4948
+loss as step 3400: 0.566819	time: 35
+batch-auc:0.4796	eval-auc: 0.4938
+loss as step 3500: 0.487063	time: 35
+batch-auc:0.4882	eval-auc: 0.4933
+loss as step 3600: 0.626576	time: 37
+batch-auc:0.4865	eval-auc: 0.4930
+loss as step 3700: 0.525443	time: 37
+batch-auc:0.4947	eval-auc: 0.4921
+loss as step 3800: 0.546012	time: 36
+batch-auc:0.4836	eval-auc: 0.4914
+loss as step 3900: 0.626713	time: 37
+batch-auc:0.4861	eval-auc: 0.4911
+loss as step 4000: 0.575769	time: 36
+batch-auc:0.4856	eval-auc: 0.4906
+loss as step 4100: 0.627640	time: 41
+batch-auc:0.4914	eval-auc: 0.4901
+loss as step 4200: 0.647455	time: 35
+batch-auc:0.4821	eval-auc: 0.4894
+loss as step 4300: 0.627399	time: 36
+batch-auc:0.4761	eval-auc: 0.4895
+loss as step 4400: 0.586139	time: 36
+batch-auc:0.4770	eval-auc: 0.4891
+loss as step 4500: 0.586260	time: 34
+batch-auc:0.4880	eval-auc: 0.4887
+loss as step 4600: 0.555855	time: 36
+batch-auc:0.4728	eval-auc: 0.4876
+loss as step 4700: 0.616533	time: 36
+batch-auc:0.4791	eval-auc: 0.4870
+loss as step 4800: 0.585945	time: 36
+batch-auc:0.4920	eval-auc: 0.4867
+loss as step 4900: 0.544746	time: 36
+batch-auc:0.4904	eval-auc: 0.4864
+loss as step 5000: 0.576058	time: 36
+batch-auc:0.4746	eval-auc: 0.4858
+loss as step 5100: 0.576224	time: 41
+batch-auc:0.4922	eval-auc: 0.4855
+loss as step 5200: 0.565277	time: 37
+batch-auc:0.4888	eval-auc: 0.4851
+loss as step 5300: 0.575718	time: 36
+batch-auc:0.4844	eval-auc: 0.4849
+loss as step 5400: 0.617452	time: 36
+batch-auc:0.4912	eval-auc: 0.4843
+loss as step 5500: 0.585703	time: 35
+batch-auc:0.4842	eval-auc: 0.4835
+loss as step 5600: 0.649605	time: 37
+batch-auc:0.4848	eval-auc: 0.4830
+loss as step 5700: 0.637005	time: 37
+batch-auc:0.4904	eval-auc: 0.4832
+loss as step 5800: 0.524138	time: 36
+batch-auc:0.4817	eval-auc: 0.4830
+loss as step 5900: 0.575930	time: 36
+batch-auc:0.4805	eval-auc: 0.4831
+loss as step 6000: 0.533015	time: 37
+batch-auc:0.4725	eval-auc: 0.4830
+loss as step 6100: 0.617474	time: 41
+batch-auc:0.4846	eval-auc: 0.4826
+loss as step 6200: 0.638538	time: 36
+batch-auc:0.4841	eval-auc: 0.4820
+loss as step 6300: 0.586058	time: 37
+batch-auc:0.4764	eval-auc: 0.4819
+loss as step 6400: 0.586063	time: 36
+batch-auc:0.4655	eval-auc: 0.4814
+loss as step 6500: 0.543823	time: 35
+batch-auc:0.4757	eval-auc: 0.4811
+loss as step 6600: 0.627033	time: 41
+batch-auc:0.4754	eval-auc: 0.4808
+loss as step 6700: 0.606676	time: 36
+batch-auc:0.4799	eval-auc: 0.4806
+loss as step 6800: 0.565077	time: 36
+batch-auc:0.4811	eval-auc: 0.4804
+loss as step 6900: 0.500957	time: 36
+batch-auc:0.4774	eval-auc: 0.4803
+loss as step 7000: 0.628117	time: 36
+batch-auc:0.4782	eval-auc: 0.4804
+loss as step 7100: 0.575769	time: 42
+batch-auc:0.4721	eval-auc: 0.4802
+loss as step 7200: 0.554940	time: 36
+batch-auc:0.4834	eval-auc: 0.4803
+loss as step 7300: 0.575797	time: 37
+batch-auc:0.4777	eval-auc: 0.4797
+loss as step 7400: 0.555290	time: 37
+batch-auc:0.4848	eval-auc: 0.4791
+loss as step 7500: 0.596138	time: 35
+batch-auc:0.4798	eval-auc: 0.4788
+loss as step 7600: 0.512906	time: 36
+batch-auc:0.4862	eval-auc: 0.4784
+loss as step 7700: 0.512756	time: 38
+batch-auc:0.4820	eval-auc: 0.4782
+loss as step 7800: 0.575997	time: 36
+batch-auc:0.4747	eval-auc: 0.4782
+loss as step 7900: 0.492040	time: 38
+batch-auc:0.4907	eval-auc: 0.4783
+loss as step 8000: 0.554581	time: 38
+batch-auc:0.4851	eval-auc: 0.4780
+loss as step 8100: 0.565095	time: 43
+batch-auc:0.4832	eval-auc: 0.4779
+loss as step 8200: 0.524148	time: 38
+batch-auc:0.4803	eval-auc: 0.4776
+loss as step 8300: 0.524069	time: 37
+batch-auc:0.4764	eval-auc: 0.4774
+loss as step 8400: 0.555362	time: 37
+batch-auc:0.4808	eval-auc: 0.4774
+loss as step 8500: 0.503372	time: 35
+batch-auc:0.4803	eval-auc: 0.4774
+loss as step 8600: 0.565015	time: 37
+batch-auc:0.4691	eval-auc: 0.4775
+loss as step 8700: 0.596316	time: 39
+batch-auc:0.4895	eval-auc: 0.4775
+loss as step 8800: 0.575530	time: 37
+batch-auc:0.4826	eval-auc: 0.4773
+loss as step 8900: 0.607105	time: 36
+batch-auc:0.4805	eval-auc: 0.4777
+loss as step 9000: 0.586038	time: 36
+batch-auc:0.4748	eval-auc: 0.4773
+loss as step 9100: 0.554760	time: 43
+batch-auc:0.4879	eval-auc: 0.4769
+loss as step 9200: 0.544129	time: 36
+batch-auc:0.4822	eval-auc: 0.4769
+loss as step 9300: 0.596404	time: 37
+batch-auc:0.4835	eval-auc: 0.4767
+loss as step 9400: 0.565326	time: 37
+batch-auc:0.4795	eval-auc: 0.4768
+loss as step 9500: 0.523293	time: 36
+batch-auc:0.4786	eval-auc: 0.4767
+loss as step 9600: 0.565164	time: 37
+batch-auc:0.4832	eval-auc: 0.4768
+loss as step 9700: 0.575373	time: 38
+batch-auc:0.4776	eval-auc: 0.4768
+loss as step 9800: 0.493598	time: 37
+batch-auc:0.4883	eval-auc: 0.4766
+loss as step 9900: 0.564864	time: 37
+batch-auc:0.4775	eval-auc: 0.4758
+loss as step 10000: 0.575199	time: 38
+batch-auc:0.4784	eval-auc: 0.4757
+loss as step 10100: 0.585606	time: 43
+batch-auc:0.4866	eval-auc: 0.4757
+loss as step 10200: 0.585786	time: 38
+batch-auc:0.4868	eval-auc: 0.4761
+loss as step 10300: 0.658808	time: 38
+batch-auc:0.4891	eval-auc: 0.4756
+loss as step 10400: 0.544370	time: 37
+batch-auc:0.4815	eval-auc: 0.4757
+loss as step 10500: 0.554794	time: 36
+batch-auc:0.4833	eval-auc: 0.4756
+loss as step 10600: 0.637320	time: 36
+batch-auc:0.4904	eval-auc: 0.4759
+loss as step 10700: 0.585709	time: 38
+batch-auc:0.4814	eval-auc: 0.4758
+loss as step 10800: 0.575348	time: 37
+batch-auc:0.4720	eval-auc: 0.4760
+loss as step 10900: 0.534736	time: 35
+batch-auc:0.4848	eval-auc: 0.4760
+loss as step 11000: 0.627403	time: 36
+batch-auc:0.4776	eval-auc: 0.4744
+loss as step 11100: 0.596021	time: 42
+batch-auc:0.4722	eval-auc: 0.4741
+loss as step 11200: 0.544687	time: 36
+batch-auc:0.4755	eval-auc: 0.4751
+loss as step 11300: 0.554992	time: 35
+batch-auc:0.4826	eval-auc: 0.4751
+loss as step 11400: 0.524156	time: 36
+batch-auc:0.4845	eval-auc: 0.4754
+loss as step 11500: 0.605746	time: 35
+batch-auc:0.4804	eval-auc: 0.4763
+loss as step 11600: 0.616638	time: 38
+batch-auc:0.4806	eval-auc: 0.4748
+loss as step 11700: 0.523366	time: 37
+batch-auc:0.4843	eval-auc: 0.4749
+loss as step 11800: 0.565121	time: 36
+batch-auc:0.4793	eval-auc: 0.4728
+loss as step 11900: 0.658893	time: 19
+batch-auc:0.4767	eval-auc: 0.4744
+loss as step 12000: 0.534011	time: 19
+batch-auc:0.4755	eval-auc: 0.4772
+loss as step 12100: 0.534337	time: 23
+batch-auc:0.4866	eval-auc: 0.4776
+loss as step 12200: 0.544075	time: 19
+batch-auc:0.4875	eval-auc: 0.4771
+loss as step 12300: 0.565159	time: 18
+batch-auc:0.4819	eval-auc: 0.4781
+loss as step 12400: 0.564979	time: 18
+batch-auc:0.4887	eval-auc: 0.4791
+loss as step 12500: 0.511726	time: 18
+batch-auc:0.4793	eval-auc: 0.4799
+loss as step 12600: 0.658353	time: 19
+batch-auc:0.4775	eval-auc: 0.4798
+loss as step 12700: 0.606293	time: 18
+batch-auc:0.4794	eval-auc: 0.4734
+loss as step 12800: 0.648055	time: 18
+batch-auc:0.4871	eval-auc: 0.4800
+loss as step 12900: 0.512216	time: 18
+batch-auc:0.4826	eval-auc: 0.4788
+loss as step 13000: 0.503130	time: 18
+batch-auc:0.4697	eval-auc: 0.4754
+loss as step 13100: 0.554515	time: 23
+batch-auc:0.4780	eval-auc: 0.4802
+loss as step 13200: 0.533835	time: 18
+batch-auc:0.4818	eval-auc: 0.4746
+loss as step 13300: 0.492558	time: 18
+batch-auc:0.4786	eval-auc: 0.4708
+loss as step 13400: 0.585542	time: 18
+batch-auc:0.4803	eval-auc: 0.4743
+loss as step 13500: 0.585672	time: 18
+batch-auc:0.4757	eval-auc: 0.4774
+loss as step 13600: 0.606381	time: 18
+batch-auc:0.4843	eval-auc: 0.4808
+loss as step 13700: 0.564941	time: 19
+batch-auc:0.4700	eval-auc: 0.4789
+loss as step 13800: 0.461612	time: 19
+batch-auc:0.4940	eval-auc: 0.4778
+loss as step 13900: 0.679460	time: 19
+batch-auc:0.4844	eval-auc: 0.4791
+loss as step 14000: 0.595652	time: 19
+batch-auc:0.4828	eval-auc: 0.4738
+loss as step 14100: 0.585601	time: 23
+batch-auc:0.4776	eval-auc: 0.4729
+loss as step 14200: 0.513541	time: 19
+batch-auc:0.4800	eval-auc: 0.4739
+loss as step 14300: 0.716940	time: 19
+batch-auc:0.4716	eval-auc: 0.4742
+loss as step 14400: 0.554033	time: 18
+batch-auc:0.4792	eval-auc: 0.4729
+loss as step 14500: 0.658094	time: 19
+batch-auc:0.4761	eval-auc: 0.4720
+loss as step 14600: 0.565003	time: 19
+batch-auc:0.4898	eval-auc: 0.4832
+loss as step 14700: 0.637473	time: 19
+batch-auc:0.4864	eval-auc: 0.4803
+loss as step 14800: 0.574900	time: 19
+batch-auc:0.4809	eval-auc: 0.4810
+loss as step 14900: 0.606075	time: 19
+batch-auc:0.4764	eval-auc: 0.4792
+loss as step 15000: 0.606268	time: 19
+batch-auc:0.4814	eval-auc: 0.4826
+loss as step 15100: 0.678428	time: 23
+batch-auc:0.4958	eval-auc: 0.4840
+loss as step 15200: 0.564918	time: 19
+batch-auc:0.4849	eval-auc: 0.4896
+loss as step 15300: 0.491974	time: 19
+batch-auc:0.4846	eval-auc: 0.4945
+loss as step 15400: 0.522623	time: 19
+batch-auc:0.4785	eval-auc: 0.4948
+loss as step 15500: 0.523254	time: 19
+batch-auc:0.4829	eval-auc: 0.4882
+loss as step 15600: 0.532798	time: 19
+batch-auc:0.4774	eval-auc: 0.4930
+loss as step 15700: 0.606587	time: 19
+batch-auc:0.4803	eval-auc: 0.4897
+loss as step 15800: 0.617067	time: 19
+batch-auc:0.4900	eval-auc: 0.4965
+loss as step 15900: 0.522174	time: 19
+batch-auc:0.4849	eval-auc: 0.4931
+loss as step 16000: 0.513315	time: 18
+batch-auc:0.4759	eval-auc: 0.4995
+loss as step 16100: 0.617266	time: 22
+batch-auc:0.4762	eval-auc: 0.5031
+loss as step 16200: 0.523283	time: 19
+batch-auc:0.4886	eval-auc: 0.5059
+loss as step 16300: 0.543778	time: 18
+batch-auc:0.4863	eval-auc: 0.5112
+loss as step 16400: 0.585497	time: 18
+batch-auc:0.4905	eval-auc: 0.5094
+loss as step 16500: 0.554138	time: 18
+batch-auc:0.4857	eval-auc: 0.5118
+loss as step 16600: 0.544140	time: 19
+batch-auc:0.4828	eval-auc: 0.5164
+loss as step 16700: 0.565147	time: 18
+batch-auc:0.4958	eval-auc: 0.5207
+loss as step 16800: 0.574890	time: 18
+batch-auc:0.4929	eval-auc: 0.5227
+loss as step 16900: 0.605732	time: 19
+batch-auc:0.4834	eval-auc: 0.5251
+loss as step 17000: 0.522838	time: 18
+batch-auc:0.4878	eval-auc: 0.5270
+loss as step 17100: 0.493368	time: 23
+batch-auc:0.4964	eval-auc: 0.5313
+loss as step 17200: 0.534800	time: 19
+batch-auc:0.4897	eval-auc: 0.5324
+loss as step 17300: 0.533118	time: 19
+batch-auc:0.4892	eval-auc: 0.5327
+loss as step 17400: 0.564801	time: 18
+batch-auc:0.4886	eval-auc: 0.5312
+loss as step 17500: 0.544467	time: 19
+batch-auc:0.4983	eval-auc: 0.5359
+loss as step 17600: 0.470944	time: 19
+batch-auc:0.4829	eval-auc: 0.5403
+loss as step 17700: 0.522368	time: 19
+batch-auc:0.4858	eval-auc: 0.5362
+loss as step 17800: 0.606720	time: 19
+batch-auc:0.4896	eval-auc: 0.5367
+loss as step 17900: 0.575121	time: 19
+batch-auc:0.4888	eval-auc: 0.5377
+loss as step 18000: 0.648314	time: 19
+batch-auc:0.4905	eval-auc: 0.5378
+loss as step 18100: 0.657917	time: 23
+batch-auc:0.4890	eval-auc: 0.5347
+loss as step 18200: 0.616098	time: 21
+batch-auc:0.4911	eval-auc: 0.5352
+loss as step 18300: 0.585498	time: 22
+batch-auc:0.4960	eval-auc: 0.5394
+loss as step 18400: 0.595913	time: 22
+batch-auc:0.4847	eval-auc: 0.5372
+loss as step 18500: 0.606239	time: 22
+batch-auc:0.4919	eval-auc: 0.5371
+loss as step 18600: 0.679881	time: 22
+batch-auc:0.4855	eval-auc: 0.5375
+loss as step 18700: 0.564533	time: 22
+batch-auc:0.4787	eval-auc: 0.5374
+loss as step 18800: 0.533667	time: 19
+batch-auc:0.4940	eval-auc: 0.5333
+loss as step 18900: 0.554447	time: 19
+batch-auc:0.5093	eval-auc: 0.5326
+loss as step 19000: 0.564686	time: 18
+batch-auc:0.4934	eval-auc: 0.5378
+loss as step 19100: 0.491590	time: 22
+batch-auc:0.4952	eval-auc: 0.5421
+loss as step 19200: 0.595998	time: 18
+batch-auc:0.4781	eval-auc: 0.5453
+loss as step 19300: 0.564112	time: 18
+batch-auc:0.4939	eval-auc: 0.5418
+loss as step 19400: 0.564710	time: 18
+batch-auc:0.4958	eval-auc: 0.5438
+loss as step 19500: 0.543735	time: 18
+batch-auc:0.5077	eval-auc: 0.5411
+loss as step 19600: 0.606102	time: 18
+batch-auc:0.4878	eval-auc: 0.5455
+loss as step 19700: 0.575036	time: 18
+batch-auc:0.4902	eval-auc: 0.5492
+loss as step 19800: 0.648230	time: 19
+batch-auc:0.5001	eval-auc: 0.5500
+loss as step 19900: 0.585121	time: 19
+batch-auc:0.5053	eval-auc: 0.5439
+loss as step 20000: 0.585348	time: 19
+batch-auc:0.4939	eval-auc: 0.5476
+loss as step 20100: 0.639118	time: 23
+batch-auc:0.4933	eval-auc: 0.5497
+loss as step 20200: 0.554046	time: 19
+batch-auc:0.4982	eval-auc: 0.5475
+loss as step 20300: 0.574957	time: 18
+batch-auc:0.5027	eval-auc: 0.5454
+loss as step 20400: 0.513114	time: 18
+batch-auc:0.4987	eval-auc: 0.5416
+loss as step 20500: 0.543806	time: 18
+batch-auc:0.4950	eval-auc: 0.5451
+loss as step 20600: 0.616474	time: 19
+batch-auc:0.4882	eval-auc: 0.5429
+loss as step 20700: 0.523211	time: 19
+batch-auc:0.4950	eval-auc: 0.5441
+loss as step 20800: 0.625928	time: 19
+batch-auc:0.5081	eval-auc: 0.5393
+loss as step 20900: 0.543390	time: 19
+batch-auc:0.4924	eval-auc: 0.5423
+loss as step 21000: 0.585093	time: 19
+batch-auc:0.4848	eval-auc: 0.5425
+loss as step 21100: 0.564301	time: 23
+batch-auc:0.4992	eval-auc: 0.5435
+loss as step 21200: 0.533598	time: 19
+batch-auc:0.5022	eval-auc: 0.5488
+loss as step 21300: 0.554312	time: 19
+batch-auc:0.5051	eval-auc: 0.5416
+loss as step 21400: 0.636114	time: 19
+batch-auc:0.5115	eval-auc: 0.5425
+loss as step 21500: 0.585362	time: 19
+batch-auc:0.5138	eval-auc: 0.5503
+loss as step 21600: 0.553884	time: 18
+batch-auc:0.4911	eval-auc: 0.5479
+loss as step 21700: 0.596093	time: 20
+batch-auc:0.4996	eval-auc: 0.5530
+loss as step 21800: 0.606096	time: 22
+batch-auc:0.4963	eval-auc: 0.5474
+loss as step 21900: 0.522923	time: 23
+batch-auc:0.4879	eval-auc: 0.5442
+loss as step 22000: 0.585729	time: 22
+batch-auc:0.5111	eval-auc: 0.5524
+loss as step 22100: 0.533387	time: 26
+batch-auc:0.5037	eval-auc: 0.5451
+loss as step 22200: 0.564350	time: 22
+batch-auc:0.5037	eval-auc: 0.5489
+loss as step 22300: 0.595884	time: 22
+batch-auc:0.4891	eval-auc: 0.5472
+loss as step 22400: 0.522772	time: 23
+batch-auc:0.5057	eval-auc: 0.5484
+loss as step 22500: 0.595885	time: 22
+batch-auc:0.4983	eval-auc: 0.5515
+loss as step 22600: 0.585408	time: 22
+batch-auc:0.5030	eval-auc: 0.5497
+loss as step 22700: 0.512546	time: 22
+batch-auc:0.4909	eval-auc: 0.5462
+loss as step 22800: 0.554068	time: 23
+batch-auc:0.5086	eval-auc: 0.5424
+loss as step 22900: 0.543991	time: 22
+batch-auc:0.5160	eval-auc: 0.5394
+loss as step 23000: 0.585284	time: 22
+batch-auc:0.5071	eval-auc: 0.5426
+loss as step 23100: 0.595308	time: 26
+batch-auc:0.5010	eval-auc: 0.5384
+loss as step 23200: 0.707242	time: 22
+batch-auc:0.5078	eval-auc: 0.5372
+loss as step 23300: 0.542984	time: 22
+batch-auc:0.5107	eval-auc: 0.5481
+loss as step 23400: 0.595395	time: 22
+batch-auc:0.5068	eval-auc: 0.5441
+loss as step 23500: 0.585325	time: 22
+batch-auc:0.5110	eval-auc: 0.5470
+loss as step 23600: 0.574743	time: 22
+batch-auc:0.5063	eval-auc: 0.5438
+loss as step 23700: 0.553773	time: 22
+batch-auc:0.4996	eval-auc: 0.5475
+loss as step 23800: 0.532783	time: 22
+batch-auc:0.5023	eval-auc: 0.5490
+loss as step 23900: 0.522972	time: 22
+batch-auc:0.5094	eval-auc: 0.5458
+loss as step 24000: 0.574851	time: 22
+batch-auc:0.4911	eval-auc: 0.5501
+loss as step 24100: 0.585161	time: 26
+batch-auc:0.5074	eval-auc: 0.5453
+loss as step 24200: 0.543452	time: 22
+batch-auc:0.4990	eval-auc: 0.5440
+loss as step 24300: 0.648105	time: 23
+batch-auc:0.5138	eval-auc: 0.5454
+loss as step 24400: 0.636857	time: 23
+batch-auc:0.5098	eval-auc: 0.5427
+loss as step 24500: 0.511036	time: 23
+batch-auc:0.4990	eval-auc: 0.5466
+loss as step 24600: 0.553820	time: 22
+batch-auc:0.5048	eval-auc: 0.5435
+loss as step 24700: 0.564443	time: 23
+batch-auc:0.5063	eval-auc: 0.5417
+loss as step 24800: 0.553926	time: 21
+batch-auc:0.5143	eval-auc: 0.5436
+loss as step 24900: 0.553854	time: 22
+batch-auc:0.5054	eval-auc: 0.5396
+loss as step 25000: 0.543267	time: 23
+batch-auc:0.5220	eval-auc: 0.5411
+loss as step 25100: 0.521348	time: 27
+batch-auc:0.5102	eval-auc: 0.5499
+loss as step 25200: 0.564136	time: 23
+batch-auc:0.5056	eval-auc: 0.5449
+loss as step 25300: 0.585342	time: 23
+batch-auc:0.5085	eval-auc: 0.5428
+loss as step 25400: 0.501441	time: 23
+batch-auc:0.5043	eval-auc: 0.5443
+loss as step 25500: 0.533426	time: 23
+batch-auc:0.5139	eval-auc: 0.5419
+loss as step 25600: 0.585007	time: 23
+batch-auc:0.5095	eval-auc: 0.5416
+loss as step 25700: 0.585330	time: 23
+batch-auc:0.5058	eval-auc: 0.5422
+loss as step 25800: 0.574922	time: 23
+batch-auc:0.5045	eval-auc: 0.5448
+loss as step 25900: 0.564226	time: 24
+batch-auc:0.4917	eval-auc: 0.5432
+loss as step 26000: 0.532442	time: 23
+batch-auc:0.5073	eval-auc: 0.5425
+loss as step 26100: 0.574713	time: 27
+batch-auc:0.5074	eval-auc: 0.5407
+loss as step 26200: 0.553550	time: 24
+batch-auc:0.5062	eval-auc: 0.5431
+loss as step 26300: 0.574763	time: 25
+batch-auc:0.5150	eval-auc: 0.5421
+loss as step 26400: 0.491706	time: 24
+batch-auc:0.4926	eval-auc: 0.5415
+loss as step 26500: 0.647419	time: 24
+batch-auc:0.5185	eval-auc: 0.5415
+loss as step 26600: 0.502601	time: 23
+batch-auc:0.5103	eval-auc: 0.5412
+loss as step 26700: 0.554773	time: 23
+batch-auc:0.5139	eval-auc: 0.5399
+loss as step 26800: 0.523445	time: 24
+batch-auc:0.5197	eval-auc: 0.5424
+loss as step 26900: 0.544929	time: 23
+batch-auc:0.5154	eval-auc: 0.5399
+loss as step 27000: 0.469979	time: 23
+batch-auc:0.5007	eval-auc: 0.5431
+loss as step 27100: 0.585346	time: 28
+batch-auc:0.5144	eval-auc: 0.5459
+loss as step 27200: 0.543678	time: 24
+batch-auc:0.5098	eval-auc: 0.5427
+loss as step 27300: 0.543291	time: 24
+batch-auc:0.4993	eval-auc: 0.5432
+loss as step 27400: 0.564127	time: 23
+batch-auc:0.5180	eval-auc: 0.5437
+loss as step 27500: 0.553524	time: 24
+batch-auc:0.5035	eval-auc: 0.5445
+loss as step 27600: 0.585378	time: 24
+batch-auc:0.5247	eval-auc: 0.5422
+loss as step 27700: 0.585238	time: 23
+batch-auc:0.5005	eval-auc: 0.5434
+loss as step 27800: 0.585029	time: 24
+batch-auc:0.5171	eval-auc: 0.5434
+loss as step 27900: 0.595207	time: 24
+batch-auc:0.5122	eval-auc: 0.5443
+loss as step 28000: 0.564440	time: 24
+batch-auc:0.5170	eval-auc: 0.5445
+loss as step 28100: 0.564242	time: 28
+batch-auc:0.5292	eval-auc: 0.5472
+loss as step 28200: 0.511274	time: 24
+batch-auc:0.5062	eval-auc: 0.5510
+loss as step 28300: 0.595960	time: 23
+batch-auc:0.5101	eval-auc: 0.5484
+loss as step 28400: 0.574658	time: 23
+batch-auc:0.5022	eval-auc: 0.5469
+loss as step 28500: 0.481934	time: 23
+batch-auc:0.5219	eval-auc: 0.5454
+loss as step 28600: 0.574665	time: 24
+batch-auc:0.5208	eval-auc: 0.5465
+loss as step 28700: 0.595495	time: 23
+batch-auc:0.5071	eval-auc: 0.5464
+loss as step 28800: 0.533009	time: 23
+batch-auc:0.5245	eval-auc: 0.5486
+loss as step 28900: 0.532780	time: 23
+batch-auc:0.5231	eval-auc: 0.5476
+loss as step 29000: 0.606281	time: 23
+batch-auc:0.5111	eval-auc: 0.5462
+loss as step 29100: 0.532641	time: 28
+batch-auc:0.5174	eval-auc: 0.5474
+loss as step 29200: 0.448157	time: 23
+batch-auc:0.5020	eval-auc: 0.5486
+loss as step 29300: 0.585123	time: 24
+batch-auc:0.5159	eval-auc: 0.5474
+loss as step 29400: 0.626757	time: 23
+batch-auc:0.5234	eval-auc: 0.5506
+loss as step 29500: 0.627107	time: 23
+batch-auc:0.5010	eval-auc: 0.5537
+loss as step 29600: 0.595445	time: 23
+batch-auc:0.5207	eval-auc: 0.5524
+loss as step 29700: 0.523107	time: 23
+batch-auc:0.5260	eval-auc: 0.5528
+loss as step 29800: 0.606563	time: 23
+batch-auc:0.5257	eval-auc: 0.5537
+loss as step 29900: 0.647926	time: 24
+batch-auc:0.5179	eval-auc: 0.5524
+loss as step 30000: 0.543098	time: 23
+batch-auc:0.5106	eval-auc: 0.5532
+loss as step 30100: 0.522598	time: 27
+batch-auc:0.5042	eval-auc: 0.5509
+loss as step 30200: 0.574684	time: 23
+batch-auc:0.5220	eval-auc: 0.5464
+loss as step 30300: 0.532535	time: 24
+batch-auc:0.5269	eval-auc: 0.5517
+loss as step 30400: 0.574725	time: 23
+batch-auc:0.4962	eval-auc: 0.5511
+loss as step 30500: 0.544143	time: 23
+batch-auc:0.5175	eval-auc: 0.5488
+loss as step 30600: 0.553720	time: 23
+batch-auc:0.5206	eval-auc: 0.5507
+loss as step 30700: 0.627988	time: 23
+batch-auc:0.5085	eval-auc: 0.5522
+loss as step 30800: 0.564207	time: 24
+batch-auc:0.5141	eval-auc: 0.5524
+loss as step 30900: 0.564460	time: 23
+batch-auc:0.5017	eval-auc: 0.5485
+loss as step 31000: 0.574642	time: 23
+batch-auc:0.5230	eval-auc: 0.5520
+loss as step 31100: 0.574689	time: 27
+batch-auc:0.5225	eval-auc: 0.5494
+loss as step 31200: 0.542661	time: 23
+batch-auc:0.5247	eval-auc: 0.5522
+loss as step 31300: 0.585641	time: 23
+batch-auc:0.5057	eval-auc: 0.5539
+loss as step 31400: 0.607552	time: 23
+batch-auc:0.4944	eval-auc: 0.5539
+loss as step 31500: 0.564216	time: 23
+batch-auc:0.5038	eval-auc: 0.5481
+loss as step 31600: 0.615565	time: 24
+batch-auc:0.5328	eval-auc: 0.5487
+loss as step 31700: 0.564061	time: 23
+batch-auc:0.5300	eval-auc: 0.5541
+loss as step 31800: 0.478951	time: 24
+batch-auc:0.5098	eval-auc: 0.5529
+loss as step 31900: 0.543460	time: 24
+batch-auc:0.5246	eval-auc: 0.5495
+loss as step 32000: 0.646956	time: 23
+batch-auc:0.5292	eval-auc: 0.5504
+loss as step 32100: 0.522114	time: 27
+batch-auc:0.5244	eval-auc: 0.5525
+loss as step 32200: 0.574654	time: 23
+batch-auc:0.5213	eval-auc: 0.5473
+loss as step 32300: 0.543216	time: 23
+batch-auc:0.5129	eval-auc: 0.5492
+loss as step 32400: 0.499935	time: 24
+batch-auc:0.5023	eval-auc: 0.5527
+loss as step 32500: 0.521154	time: 23
+batch-auc:0.4974	eval-auc: 0.5549
+loss as step 32600: 0.489072	time: 23
+batch-auc:0.5194	eval-auc: 0.5536
+loss as step 32700: 0.605858	time: 23
+batch-auc:0.5155	eval-auc: 0.5491
+loss as step 32800: 0.585279	time: 23
+batch-auc:0.5296	eval-auc: 0.5505
+loss as step 32900: 0.595788	time: 23
+batch-auc:0.5156	eval-auc: 0.5517
+loss as step 33000: 0.564355	time: 24
+batch-auc:0.5304	eval-auc: 0.5485
+loss as step 33100: 0.595709	time: 27
+batch-auc:0.5332	eval-auc: 0.5484
+loss as step 33200: 0.574690	time: 23
+batch-auc:0.5215	eval-auc: 0.5475
+loss as step 33300: 0.671515	time: 23
+batch-auc:0.5171	eval-auc: 0.5507
+loss as step 33400: 0.649158	time: 24
+batch-auc:0.5092	eval-auc: 0.5470
+loss as step 33500: 0.606985	time: 23
+batch-auc:0.5143	eval-auc: 0.5498
+loss as step 33600: 0.553566	time: 23
+batch-auc:0.5188	eval-auc: 0.5471
+loss as step 33700: 0.564083	time: 23
+batch-auc:0.5068	eval-auc: 0.5494
+loss as step 33800: 0.532155	time: 23
+batch-auc:0.5050	eval-auc: 0.5492
+loss as step 33900: 0.574687	time: 23
+batch-auc:0.5267	eval-auc: 0.5491
+loss as step 34000: 0.521854	time: 23
+batch-auc:0.5228	eval-auc: 0.5501
+loss as step 34100: 0.585360	time: 27
+batch-auc:0.5209	eval-auc: 0.5483
+loss as step 34200: 0.493146	time: 23
+batch-auc:0.5234	eval-auc: 0.5446
+loss as step 34300: 0.605301	time: 23
+batch-auc:0.5262	eval-auc: 0.5454
+loss as step 34400: 0.637211	time: 23
+batch-auc:0.5315	eval-auc: 0.5446
+loss as step 34500: 0.585271	time: 23
+batch-auc:0.5073	eval-auc: 0.5454
+loss as step 34600: 0.585287	time: 23
+batch-auc:0.5162	eval-auc: 0.5467
+loss as step 34700: 0.595654	time: 23
+batch-auc:0.5198	eval-auc: 0.5465
+loss as step 34800: 0.617067	time: 24
+batch-auc:0.5256	eval-auc: 0.5461
+loss as step 34900: 0.606886	time: 24
+batch-auc:0.5043	eval-auc: 0.5481
+loss as step 35000: 0.616720	time: 24
+batch-auc:0.5012	eval-auc: 0.5459
+loss as step 35100: 0.595756	time: 27
+batch-auc:0.5264	eval-auc: 0.5479
+loss as step 35200: 0.553677	time: 23
+batch-auc:0.5212	eval-auc: 0.5474
+loss as step 35300: 0.625995	time: 24
+batch-auc:0.5259	eval-auc: 0.5455
+loss as step 35400: 0.542622	time: 24
+batch-auc:0.5181	eval-auc: 0.5503
+loss as step 35500: 0.574648	time: 23
+batch-auc:0.5070	eval-auc: 0.5485
+loss as step 35600: 0.648790	time: 24
+batch-auc:0.5020	eval-auc: 0.5498
+loss as step 35700: 0.451961	time: 23
+batch-auc:0.5296	eval-auc: 0.5470
+loss as step 35800: 0.543034	time: 23
+batch-auc:0.5243	eval-auc: 0.5485
+loss as step 35900: 0.637315	time: 23
+batch-auc:0.5217	eval-auc: 0.5468
+loss as step 36000: 0.617482	time: 24
+batch-auc:0.5326	eval-auc: 0.5486
+loss as step 36100: 0.553539	time: 27
+batch-auc:0.5119	eval-auc: 0.5493
+loss as step 36200: 0.543028	time: 24
+batch-auc:0.5199	eval-auc: 0.5474
+loss as step 36300: 0.553619	time: 24
+batch-auc:0.5085	eval-auc: 0.5500
+loss as step 36400: 0.606101	time: 24
+batch-auc:0.5122	eval-auc: 0.5501
+loss as step 36500: 0.616126	time: 23
+batch-auc:0.5214	eval-auc: 0.5468
+loss as step 36600: 0.425178	time: 23
+batch-auc:0.5247	eval-auc: 0.5544
+loss as step 36700: 0.574616	time: 24
+batch-auc:0.5201	eval-auc: 0.5491
+loss as step 36800: 0.511382	time: 23
+batch-auc:0.5099	eval-auc: 0.5514
+loss as step 36900: 0.543140	time: 24
+batch-auc:0.5103	eval-auc: 0.5525
+loss as step 37000: 0.585490	time: 24
+batch-auc:0.5178	eval-auc: 0.5524
+loss as step 37100: 0.532071	time: 28
+batch-auc:0.5055	eval-auc: 0.5541
+loss as step 37200: 0.585100	time: 24
+batch-auc:0.5119	eval-auc: 0.5526
+loss as step 37300: 0.605512	time: 23
+batch-auc:0.5331	eval-auc: 0.5502
+loss as step 37400: 0.659568	time: 24
+batch-auc:0.5383	eval-auc: 0.5527
+loss as step 37500: 0.554228	time: 23
+batch-auc:0.5235	eval-auc: 0.5524
+loss as step 37600: 0.574655	time: 24
+batch-auc:0.5461	eval-auc: 0.5528
+loss as step 37700: 0.688031	time: 24
+batch-auc:0.5346	eval-auc: 0.5535
+loss as step 37800: 0.543787	time: 23
+batch-auc:0.5434	eval-auc: 0.5552
+loss as step 37900: 0.615668	time: 23
+batch-auc:0.5401	eval-auc: 0.5554
+loss as step 38000: 0.585255	time: 23
+batch-auc:0.5266	eval-auc: 0.5568
+loss as step 38100: 0.564095	time: 28
+batch-auc:0.5180	eval-auc: 0.5576
+loss as step 38200: 0.543324	time: 24
+batch-auc:0.5264	eval-auc: 0.5545
+loss as step 38300: 0.606490	time: 23
+batch-auc:0.5268	eval-auc: 0.5573
+loss as step 38400: 0.564066	time: 23
+batch-auc:0.5303	eval-auc: 0.5571
+loss as step 38500: 0.574704	time: 24
+batch-auc:0.5280	eval-auc: 0.5557
+loss as step 38600: 0.543013	time: 23
+batch-auc:0.5206	eval-auc: 0.5536
+loss as step 38700: 0.532601	time: 23
+batch-auc:0.5297	eval-auc: 0.5559
+loss as step 38800: 0.670388	time: 23
+batch-auc:0.5243	eval-auc: 0.5560
+loss as step 38900: 0.522143	time: 23
+batch-auc:0.5252	eval-auc: 0.5567
+loss as step 39000: 0.564274	time: 23
+batch-auc:0.5331	eval-auc: 0.5574
+loss as step 39100: 0.553964	time: 28
+batch-auc:0.5396	eval-auc: 0.5571
+loss as step 39200: 0.564068	time: 23
+batch-auc:0.5274	eval-auc: 0.5583
+loss as step 39300: 0.574614	time: 23
+batch-auc:0.5212	eval-auc: 0.5585
+loss as step 39400: 0.564140	time: 23
+batch-auc:0.5173	eval-auc: 0.5567
+loss as step 39500: 0.512064	time: 23
+batch-auc:0.5248	eval-auc: 0.5535
+loss as step 39600: 0.553622	time: 23
+batch-auc:0.5257	eval-auc: 0.5560
+loss as step 39700: 0.574595	time: 23
+batch-auc:0.5263	eval-auc: 0.5558
+loss as step 39800: 0.585556	time: 23
+batch-auc:0.5184	eval-auc: 0.5576
+loss as step 39900: 0.564153	time: 23
+batch-auc:0.5218	eval-auc: 0.5549
+loss as step 40000: 0.574676	time: 24
+batch-auc:0.5136	eval-auc: 0.5562
+loss as step 40100: 0.658501	time: 26
+batch-auc:0.5310	eval-auc: 0.5563
+loss as step 40200: 0.585289	time: 19
+batch-auc:0.5184	eval-auc: 0.5597
+loss as step 40300: 0.532607	time: 19
+batch-auc:0.5315	eval-auc: 0.5576
+loss as step 40400: 0.585217	time: 19
+batch-auc:0.5291	eval-auc: 0.5563
+loss as step 40500: 0.544009	time: 19
+batch-auc:0.5334	eval-auc: 0.5548
+loss as step 40600: 0.542603	time: 19
+batch-auc:0.5205	eval-auc: 0.5607
+loss as step 40700: 0.553147	time: 19
+batch-auc:0.5097	eval-auc: 0.5597
+loss as step 40800: 0.564148	time: 19
+batch-auc:0.5025	eval-auc: 0.5576
+loss as step 40900: 0.543401	time: 19
+batch-auc:0.5238	eval-auc: 0.5552
+loss as step 41000: 0.543277	time: 19
+batch-auc:0.5311	eval-auc: 0.5553
+loss as step 41100: 0.521948	time: 22
+batch-auc:0.5264	eval-auc: 0.5562
+loss as step 41200: 0.616208	time: 19
+batch-auc:0.5371	eval-auc: 0.5535
+loss as step 41300: 0.627095	time: 18
+batch-auc:0.5278	eval-auc: 0.5549
+loss as step 41400: 0.498958	time: 18
+batch-auc:0.5153	eval-auc: 0.5582
+loss as step 41500: 0.617055	time: 18
+batch-auc:0.5218	eval-auc: 0.5552
+loss as step 41600: 0.490153	time: 19
+batch-auc:0.5180	eval-auc: 0.5565
+loss as step 41700: 0.617380	time: 18
+batch-auc:0.5132	eval-auc: 0.5558
+loss as step 41800: 0.532406	time: 19
+batch-auc:0.5222	eval-auc: 0.5533
+loss as step 41900: 0.574633	time: 19
+batch-auc:0.5248	eval-auc: 0.5500
+loss as step 42000: 0.564302	time: 19
+batch-auc:0.5611	eval-auc: 0.5531
+loss as step 42100: 0.542614	time: 23
+batch-auc:0.5353	eval-auc: 0.5563
+loss as step 42200: 0.596006	time: 19
+batch-auc:0.5354	eval-auc: 0.5558
+loss as step 42300: 0.596094	time: 19
+batch-auc:0.5182	eval-auc: 0.5571
+loss as step 42400: 0.574621	time: 19
+batch-auc:0.5301	eval-auc: 0.5537
+loss as step 42500: 0.616484	time: 20
+batch-auc:0.5252	eval-auc: 0.5536
+loss as step 42600: 0.585134	time: 20
+batch-auc:0.5275	eval-auc: 0.5529
+loss as step 42700: 0.543099	time: 20
+batch-auc:0.5329	eval-auc: 0.5529
+loss as step 42800: 0.521737	time: 21
+batch-auc:0.5241	eval-auc: 0.5536
+loss as step 42900: 0.574639	time: 19
+batch-auc:0.5378	eval-auc: 0.5536
+loss as step 43000: 0.564082	time: 20
+batch-auc:0.5226	eval-auc: 0.5528
+loss as step 43100: 0.542918	time: 23
+batch-auc:0.5178	eval-auc: 0.5505
+loss as step 43200: 0.596404	time: 20
+batch-auc:0.5089	eval-auc: 0.5571
+loss as step 43300: 0.606395	time: 20
+batch-auc:0.5098	eval-auc: 0.5515
+loss as step 43400: 0.489913	time: 19
+batch-auc:0.5306	eval-auc: 0.5548
+loss as step 43500: 0.521237	time: 20
+batch-auc:0.5230	eval-auc: 0.5558
+loss as step 43600: 0.489847	time: 21
+batch-auc:0.5144	eval-auc: 0.5537
+loss as step 43700: 0.574660	time: 20
+batch-auc:0.5289	eval-auc: 0.5495
+loss as step 43800: 0.564154	time: 20
+batch-auc:0.5340	eval-auc: 0.5526
+loss as step 43900: 0.553609	time: 19
+batch-auc:0.5317	eval-auc: 0.5553
+loss as step 44000: 0.624993	time: 19
+batch-auc:0.5415	eval-auc: 0.5521
+loss as step 44100: 0.574624	time: 23
+batch-auc:0.5360	eval-auc: 0.5542
+loss as step 44200: 0.564057	time: 19
+batch-auc:0.5292	eval-auc: 0.5562
+loss as step 44300: 0.606217	time: 19
+batch-auc:0.5233	eval-auc: 0.5548
+loss as step 44400: 0.502091	time: 20
+batch-auc:0.5314	eval-auc: 0.5528
+loss as step 44500: 0.532151	time: 19
+batch-auc:0.5257	eval-auc: 0.5558
+loss as step 44600: 0.503059	time: 19
+batch-auc:0.5290	eval-auc: 0.5524
+loss as step 44700: 0.532713	time: 19
+batch-auc:0.5330	eval-auc: 0.5548
+loss as step 44800: 0.606568	time: 19
+batch-auc:0.5183	eval-auc: 0.5537
+loss as step 44900: 0.543145	time: 19
+batch-auc:0.5295	eval-auc: 0.5518
+loss as step 45000: 0.553923	time: 19
+batch-auc:0.5305	eval-auc: 0.5510
+loss as step 45100: 0.564231	time: 23
+batch-auc:0.5039	eval-auc: 0.5552
+loss as step 45200: 0.512408	time: 19
+batch-auc:0.5094	eval-auc: 0.5503
+loss as step 45300: 0.533153	time: 19
+batch-auc:0.5291	eval-auc: 0.5504
+loss as step 45400: 0.646767	time: 19
+batch-auc:0.5408	eval-auc: 0.5502
+loss as step 45500: 0.543520	time: 19
+batch-auc:0.5314	eval-auc: 0.5519
+loss as step 45600: 0.533592	time: 19
+batch-auc:0.5351	eval-auc: 0.5517
+loss as step 45700: 0.636763	time: 18
+batch-auc:0.5406	eval-auc: 0.5528
+loss as step 45800: 0.553430	time: 19
+batch-auc:0.5322	eval-auc: 0.5579
+loss as step 45900: 0.564115	time: 19
+batch-auc:0.5166	eval-auc: 0.5568
+loss as step 46000: 0.596156	time: 20
+batch-auc:0.5236	eval-auc: 0.5568
+loss as step 46100: 0.617805	time: 23
+batch-auc:0.5142	eval-auc: 0.5576
+loss as step 46200: 0.564272	time: 19
+batch-auc:0.5058	eval-auc: 0.5563
+loss as step 46300: 0.521137	time: 19
+batch-auc:0.5085	eval-auc: 0.5572
+loss as step 46400: 0.543172	time: 20
+batch-auc:0.5086	eval-auc: 0.5545
+loss as step 46500: 0.617264	time: 20
+batch-auc:0.5325	eval-auc: 0.5546
+loss as step 46600: 0.553372	time: 20
+batch-auc:0.5268	eval-auc: 0.5532
+loss as step 46700: 0.627939	time: 19
+batch-auc:0.5317	eval-auc: 0.5548
+loss as step 46800: 0.626530	time: 19
+batch-auc:0.5269	eval-auc: 0.5527
+loss as step 46900: 0.532597	time: 19
+batch-auc:0.5234	eval-auc: 0.5560
+loss as step 47000: 0.553544	time: 20
+batch-auc:0.5099	eval-auc: 0.5546
+loss as step 47100: 0.534479	time: 23
+batch-auc:0.5359	eval-auc: 0.5490
+loss as step 47200: 0.543047	time: 20
+batch-auc:0.5279	eval-auc: 0.5553
+loss as step 47300: 0.606327	time: 20
+batch-auc:0.5138	eval-auc: 0.5539
+loss as step 47400: 0.647976	time: 20
+batch-auc:0.5200	eval-auc: 0.5530
+loss as step 47500: 0.521233	time: 19
+batch-auc:0.5250	eval-auc: 0.5579
+loss as step 47600: 0.543811	time: 19
+batch-auc:0.5106	eval-auc: 0.5546
+loss as step 47700: 0.543626	time: 19
+batch-auc:0.5458	eval-auc: 0.5546
+loss as step 47800: 0.542742	time: 19
+batch-auc:0.5442	eval-auc: 0.5591
+loss as step 47900: 0.574788	time: 19
+batch-auc:0.5145	eval-auc: 0.5589
+loss as step 48000: 0.532143	time: 19
+batch-auc:0.5223	eval-auc: 0.5576
+loss as step 48100: 0.574647	time: 22
+batch-auc:0.5250	eval-auc: 0.5551
+loss as step 48200: 0.543197	time: 19
+batch-auc:0.5117	eval-auc: 0.5558
+loss as step 48300: 0.521749	time: 19
+batch-auc:0.5247	eval-auc: 0.5563
+loss as step 48400: 0.648890	time: 19
+batch-auc:0.5379	eval-auc: 0.5564
+loss as step 48500: 0.544132	time: 19
+batch-auc:0.5465	eval-auc: 0.5543
+loss as step 48600: 0.553922	time: 19
+batch-auc:0.5562	eval-auc: 0.5558
+loss as step 48700: 0.616275	time: 19
+batch-auc:0.5496	eval-auc: 0.5551
+loss as step 48800: 0.564200	time: 19
+batch-auc:0.5499	eval-auc: 0.5567
+loss as step 48900: 0.543253	time: 19
+batch-auc:0.5267	eval-auc: 0.5558
+loss as step 49000: 0.616815	time: 19
+batch-auc:0.5208	eval-auc: 0.5567
+loss as step 49100: 0.564154	time: 22
+batch-auc:0.5283	eval-auc: 0.5572
+loss as step 49200: 0.553476	time: 19
+batch-auc:0.5323	eval-auc: 0.5566
+loss as step 49300: 0.616136	time: 19
+batch-auc:0.5404	eval-auc: 0.5556
+loss as step 49400: 0.525809	time: 19
+batch-auc:0.5429	eval-auc: 0.5542
+loss as step 49500: 0.594954	time: 19
+batch-auc:0.5432	eval-auc: 0.5553
+loss as step 49600: 0.532263	time: 19
+batch-auc:0.5355	eval-auc: 0.5608
+loss as step 49700: 0.616731	time: 19
+batch-auc:0.5246	eval-auc: 0.5590
+loss as step 49800: 0.585049	time: 19
+batch-auc:0.5396	eval-auc: 0.5581
+loss as step 49900: 0.574590	time: 20
+batch-auc:0.5273	eval-auc: 0.5582
+loss as step 50000: 0.502369	time: 19
+batch-auc:0.5211	eval-auc: 0.5599
+loss as step 50100: 0.564182	time: 23
+batch-auc:0.5218	eval-auc: 0.5609
+loss as step 50200: 0.553464	time: 19
+batch-auc:0.5166	eval-auc: 0.5604
+loss as step 50300: 0.553424	time: 19
+batch-auc:0.5232	eval-auc: 0.5621
+loss as step 50400: 0.606532	time: 19
+batch-auc:0.5312	eval-auc: 0.5594
+loss as step 50500: 0.605295	time: 19
+batch-auc:0.5322	eval-auc: 0.5556
+loss as step 50600: 0.605497	time: 19
+batch-auc:0.5286	eval-auc: 0.5581
+loss as step 50700: 0.595738	time: 19
+batch-auc:0.5334	eval-auc: 0.5598
+loss as step 50800: 0.553387	time: 19
+batch-auc:0.5343	eval-auc: 0.5607
+loss as step 50900: 0.564219	time: 18
+batch-auc:0.5258	eval-auc: 0.5578
+loss as step 51000: 0.553425	time: 18
+batch-auc:0.5195	eval-auc: 0.5617
+loss as step 51100: 0.532859	time: 22
+batch-auc:0.5249	eval-auc: 0.5595
+loss as step 51200: 0.533273	time: 19
+batch-auc:0.5272	eval-auc: 0.5590
+loss as step 51300: 0.616876	time: 19
+batch-auc:0.5196	eval-auc: 0.5625
+loss as step 51400: 0.543234	time: 19
+batch-auc:0.5360	eval-auc: 0.5612
+loss as step 51500: 0.636805	time: 19
+batch-auc:0.5367	eval-auc: 0.5607
+loss as step 51600: 0.564193	time: 19
+batch-auc:0.5345	eval-auc: 0.5613
+loss as step 51700: 0.522163	time: 18
+batch-auc:0.5279	eval-auc: 0.5637
+loss as step 51800: 0.511147	time: 19
+batch-auc:0.5272	eval-auc: 0.5636
+loss as step 51900: 0.596420	time: 19
+batch-auc:0.4899	eval-auc: 0.5666
+loss as step 52000: 0.553474	time: 19
+batch-auc:0.5016	eval-auc: 0.5637
+loss as step 52100: 0.595455	time: 22
+batch-auc:0.5233	eval-auc: 0.5590
+loss as step 52200: 0.510944	time: 19
+batch-auc:0.5332	eval-auc: 0.5611
+loss as step 52300: 0.564148	time: 20
+batch-auc:0.5185	eval-auc: 0.5610
+loss as step 52400: 0.543461	time: 19
+batch-auc:0.5163	eval-auc: 0.5591
+loss as step 52500: 0.564169	time: 19
+batch-auc:0.5329	eval-auc: 0.5598
+loss as step 52600: 0.522097	time: 19
+batch-auc:0.5260	eval-auc: 0.5602
+loss as step 52700: 0.542668	time: 20
+batch-auc:0.5206	eval-auc: 0.5613
+loss as step 52800: 0.490595	time: 19
+batch-auc:0.5268	eval-auc: 0.5583
+loss as step 52900: 0.627869	time: 20
+batch-auc:0.5286	eval-auc: 0.5614
+loss as step 53000: 0.480565	time: 19
+batch-auc:0.5416	eval-auc: 0.5589
+loss as step 53100: 0.564357	time: 23
+batch-auc:0.5532	eval-auc: 0.5586
+loss as step 53200: 0.542812	time: 20
+batch-auc:0.5270	eval-auc: 0.5607
+loss as step 53300: 0.553335	time: 19
+batch-auc:0.5094	eval-auc: 0.5630
+loss as step 53400: 0.617862	time: 19
+batch-auc:0.5128	eval-auc: 0.5626
+loss as step 53500: 0.521616	time: 20
+batch-auc:0.5220	eval-auc: 0.5610
+loss as step 53600: 0.543224	time: 20
+batch-auc:0.5151	eval-auc: 0.5611
+loss as step 53700: 0.574614	time: 19
+batch-auc:0.5366	eval-auc: 0.5593
+loss as step 53800: 0.542542	time: 19
+batch-auc:0.5193	eval-auc: 0.5634
+loss as step 53900: 0.595486	time: 19
+batch-auc:0.5314	eval-auc: 0.5607
+loss as step 54000: 0.595499	time: 19
+batch-auc:0.5341	eval-auc: 0.5602
+loss as step 54100: 0.564234	time: 23
+batch-auc:0.5575	eval-auc: 0.5600
+loss as step 54200: 0.574617	time: 19
+batch-auc:0.5554	eval-auc: 0.5607
+loss as step 54300: 0.638087	time: 19
+batch-auc:0.5279	eval-auc: 0.5602
+loss as step 54400: 0.606007	time: 19
+batch-auc:0.5351	eval-auc: 0.5601
+loss as step 54500: 0.521487	time: 19
+batch-auc:0.5323	eval-auc: 0.5623
+loss as step 54600: 0.574688	time: 19
+batch-auc:0.5243	eval-auc: 0.5614
+loss as step 54700: 0.574626	time: 19
+batch-auc:0.5382	eval-auc: 0.5609
+loss as step 54800: 0.512103	time: 19
+batch-auc:0.5404	eval-auc: 0.5623
+loss as step 54900: 0.544224	time: 19
+batch-auc:0.5494	eval-auc: 0.5593
+loss as step 55000: 0.532808	time: 19
+batch-auc:0.5341	eval-auc: 0.5602
+loss as step 55100: 0.543402	time: 23
+batch-auc:0.5303	eval-auc: 0.5606
+loss as step 55200: 0.616001	time: 19
+batch-auc:0.5259	eval-auc: 0.5579
+loss as step 55300: 0.553639	time: 19
+batch-auc:0.5321	eval-auc: 0.5592
+loss as step 55400: 0.595046	time: 21
+batch-auc:0.5302	eval-auc: 0.5578
+loss as step 55500: 0.502313	time: 19
+batch-auc:0.5436	eval-auc: 0.5593
+loss as step 55600: 0.596086	time: 19
+batch-auc:0.5282	eval-auc: 0.5605
+loss as step 55700: 0.617126	time: 21
+batch-auc:0.5202	eval-auc: 0.5604
+loss as step 55800: 0.564078	time: 19
+batch-auc:0.5120	eval-auc: 0.5589
+loss as step 55900: 0.595903	time: 19
+batch-auc:0.5204	eval-auc: 0.5588
+loss as step 56000: 0.510906	time: 20
+batch-auc:0.5388	eval-auc: 0.5598
+loss as step 56100: 0.615875	time: 24
+batch-auc:0.5219	eval-auc: 0.5569
+loss as step 56200: 0.574639	time: 19
+batch-auc:0.5528	eval-auc: 0.5568
+loss as step 56300: 0.521808	time: 20
+batch-auc:0.5291	eval-auc: 0.5600
+loss as step 56400: 0.574639	time: 20
+batch-auc:0.5189	eval-auc: 0.5595
+loss as step 56500: 0.542913	time: 19
+batch-auc:0.5062	eval-auc: 0.5576
+loss as step 56600: 0.511952	time: 19
+batch-auc:0.5148	eval-auc: 0.5567
+loss as step 56700: 0.521724	time: 19
+batch-auc:0.5311	eval-auc: 0.5613
+loss as step 56800: 0.596159	time: 19
+batch-auc:0.5027	eval-auc: 0.5608
+loss as step 56900: 0.542669	time: 19
+batch-auc:0.5105	eval-auc: 0.5606
+loss as step 57000: 0.510796	time: 19
+batch-auc:0.5244	eval-auc: 0.5602
+loss as step 57100: 0.595339	time: 22
+batch-auc:0.5445	eval-auc: 0.5568
+loss as step 57200: 0.510470	time: 19
+batch-auc:0.5216	eval-auc: 0.5605
+loss as step 57300: 0.596011	time: 18
+batch-auc:0.5243	eval-auc: 0.5598
+loss as step 57400: 0.553626	time: 19
+batch-auc:0.5328	eval-auc: 0.5595
+loss as step 57500: 0.648953	time: 18
+batch-auc:0.5107	eval-auc: 0.5594
+loss as step 57600: 0.574591	time: 19
+batch-auc:0.5363	eval-auc: 0.5579
+loss as step 57700: 0.564084	time: 20
+batch-auc:0.5244	eval-auc: 0.5595
+loss as step 57800: 0.585138	time: 19
+batch-auc:0.5171	eval-auc: 0.5534
+loss as step 57900: 0.627350	time: 19
+batch-auc:0.5515	eval-auc: 0.5551
+loss as step 58000: 0.500193	time: 19
+batch-auc:0.5283	eval-auc: 0.5564
+loss as step 58100: 0.522218	time: 23
+batch-auc:0.5256	eval-auc: 0.5572
+loss as step 58200: 0.521915	time: 19
+batch-auc:0.5405	eval-auc: 0.5571
+loss as step 58300: 0.574646	time: 19
+batch-auc:0.5162	eval-auc: 0.5571
+loss as step 58400: 0.553488	time: 23
+batch-auc:0.5400	eval-auc: 0.5561
+loss as step 58500: 0.574642	time: 21
+batch-auc:0.5312	eval-auc: 0.5573
+loss as step 58600: 0.543009	time: 21
+batch-auc:0.5213	eval-auc: 0.5575
+loss as step 58700: 0.595376	time: 24
+batch-auc:0.5323	eval-auc: 0.5588
+loss as step 58800: 0.595664	time: 21
+batch-auc:0.5247	eval-auc: 0.5596
+loss as step 58900: 0.585148	time: 23
+batch-auc:0.5257	eval-auc: 0.5613
+loss as step 59000: 0.585354	time: 21
+batch-auc:0.5141	eval-auc: 0.5618
+loss as step 59100: 0.500627	time: 24
+batch-auc:0.5259	eval-auc: 0.5619
+loss as step 59200: 0.574732	time: 20
+batch-auc:0.5224	eval-auc: 0.5640
+loss as step 59300: 0.574585	time: 19
+batch-auc:0.5377	eval-auc: 0.5614
+loss as step 59400: 0.616434	time: 19
+batch-auc:0.5398	eval-auc: 0.5586
+loss as step 59500: 0.500468	time: 19
+batch-auc:0.5471	eval-auc: 0.5607
+loss as step 59600: 0.574599	time: 19
+batch-auc:0.5410	eval-auc: 0.5597
+loss as step 59700: 0.543055	time: 19
+batch-auc:0.5429	eval-auc: 0.5612
+loss as step 59800: 0.585129	time: 19
+batch-auc:0.5320	eval-auc: 0.5608
+loss as step 59900: 0.627822	time: 19
+batch-auc:0.5350	eval-auc: 0.5618
+loss as step 60000: 0.574632	time: 19
+batch-auc:0.5335	eval-auc: 0.5619
+loss as step 60100: 0.521702	time: 23
+batch-auc:0.5390	eval-auc: 0.5652
+loss as step 60200: 0.616653	time: 19
+batch-auc:0.5294	eval-auc: 0.5640
+loss as step 60300: 0.616870	time: 19
+batch-auc:0.5341	eval-auc: 0.5616
+loss as step 60400: 0.523636	time: 19
+batch-auc:0.5549	eval-auc: 0.5585
+loss as step 60500: 0.553795	time: 19
+batch-auc:0.5359	eval-auc: 0.5592
+loss as step 60600: 0.574682	time: 19
+batch-auc:0.5266	eval-auc: 0.5638
+loss as step 60700: 0.606153	time: 19
+batch-auc:0.5349	eval-auc: 0.5608
+loss as step 60800: 0.510753	time: 19
+batch-auc:0.5279	eval-auc: 0.5632
+loss as step 60900: 0.650340	time: 19
+batch-auc:0.5182	eval-auc: 0.5648
+loss as step 61000: 0.521269	time: 19
+batch-auc:0.5419	eval-auc: 0.5620
+loss as step 61100: 0.553619	time: 26
+batch-auc:0.5451	eval-auc: 0.5620
+loss as step 61200: 0.532322	time: 23
+batch-auc:0.5252	eval-auc: 0.5627
+loss as step 61300: 0.500765	time: 22
+batch-auc:0.5385	eval-auc: 0.5622
+loss as step 61400: 0.606865	time: 19
+batch-auc:0.5178	eval-auc: 0.5630
+loss as step 61500: 0.584974	time: 19
+batch-auc:0.5349	eval-auc: 0.5590
+loss as step 61600: 0.564034	time: 19
+batch-auc:0.5159	eval-auc: 0.5621
+loss as step 61700: 0.574603	time: 19
+batch-auc:0.5484	eval-auc: 0.5622
+loss as step 61800: 0.564182	time: 19
+batch-auc:0.5478	eval-auc: 0.5605
+loss as step 61900: 0.595107	time: 20
+batch-auc:0.5274	eval-auc: 0.5592
+loss as step 62000: 0.574580	time: 19
+batch-auc:0.5261	eval-auc: 0.5617
+loss as step 62100: 0.564154	time: 23
+batch-auc:0.5325	eval-auc: 0.5655
+loss as step 62200: 0.574735	time: 19
+batch-auc:0.5033	eval-auc: 0.5638
+loss as step 62300: 0.553546	time: 19
+batch-auc:0.5335	eval-auc: 0.5616
+loss as step 62400: 0.636941	time: 20
+batch-auc:0.5345	eval-auc: 0.5603
+loss as step 62500: 0.595265	time: 19
+batch-auc:0.5441	eval-auc: 0.5590
+loss as step 62600: 0.574703	time: 19
+batch-auc:0.5540	eval-auc: 0.5601
+loss as step 62700: 0.596233	time: 19
+batch-auc:0.5347	eval-auc: 0.5654
+loss as step 62800: 0.627945	time: 20
+batch-auc:0.5246	eval-auc: 0.5627
+loss as step 62900: 0.522294	time: 22
+batch-auc:0.5371	eval-auc: 0.5602
+loss as step 63000: 0.585306	time: 19
+batch-auc:0.5370	eval-auc: 0.5626
+loss as step 63100: 0.659698	time: 23
+batch-auc:0.5245	eval-auc: 0.5612
+loss as step 63200: 0.596001	time: 19
+batch-auc:0.5253	eval-auc: 0.5626
+loss as step 63300: 0.501245	time: 20
+batch-auc:0.5292	eval-auc: 0.5585
+loss as step 63400: 0.605655	time: 19
+batch-auc:0.5387	eval-auc: 0.5591
+loss as step 63500: 0.553479	time: 19
+batch-auc:0.5249	eval-auc: 0.5620
+loss as step 63600: 0.628468	time: 23
+batch-auc:0.5285	eval-auc: 0.5620
+loss as step 63700: 0.595361	time: 23
+batch-auc:0.5284	eval-auc: 0.5587
+loss as step 63800: 0.574837	time: 24
+batch-auc:0.5168	eval-auc: 0.5607
+loss as step 63900: 0.490847	time: 23
+batch-auc:0.5520	eval-auc: 0.5581
+loss as step 64000: 0.585382	time: 24
+batch-auc:0.5452	eval-auc: 0.5634
+loss as step 64100: 0.479063	time: 28
+batch-auc:0.5295	eval-auc: 0.5613
+loss as step 64200: 0.596047	time: 25
+batch-auc:0.5342	eval-auc: 0.5622
+loss as step 64300: 0.468698	time: 24
+batch-auc:0.5177	eval-auc: 0.5626
+loss as step 64400: 0.553244	time: 23
+batch-auc:0.5194	eval-auc: 0.5627
+loss as step 64500: 0.658020	time: 21
+batch-auc:0.5352	eval-auc: 0.5578
+loss as step 64600: 0.522735	time: 19
+batch-auc:0.5383	eval-auc: 0.5589
+loss as step 64700: 0.564116	time: 19
+batch-auc:0.5345	eval-auc: 0.5620
+loss as step 64800: 0.616509	time: 19
+batch-auc:0.5544	eval-auc: 0.5604
+loss as step 64900: 0.617024	time: 20
+batch-auc:0.5344	eval-auc: 0.5622
+loss as step 65000: 0.605936	time: 19
+batch-auc:0.5293	eval-auc: 0.5610
+loss as step 65100: 0.542735	time: 23
+batch-auc:0.5378	eval-auc: 0.5639
+loss as step 65200: 0.553563	time: 19
+batch-auc:0.5394	eval-auc: 0.5619
+loss as step 65300: 0.522711	time: 19
+batch-auc:0.5386	eval-auc: 0.5612
+loss as step 65400: 0.533429	time: 19
+batch-auc:0.5465	eval-auc: 0.5631
+loss as step 65500: 0.625598	time: 19
+batch-auc:0.5401	eval-auc: 0.5601
+loss as step 65600: 0.634918	time: 19
+batch-auc:0.5627	eval-auc: 0.5599
+loss as step 65700: 0.513681	time: 22
+batch-auc:0.5490	eval-auc: 0.5614
+loss as step 65800: 0.626070	time: 23
+batch-auc:0.5446	eval-auc: 0.5627
+loss as step 65900: 0.617119	time: 24
+batch-auc:0.5239	eval-auc: 0.5661
+loss as step 66000: 0.574609	time: 25
+batch-auc:0.5202	eval-auc: 0.5642
+loss as step 66100: 0.596099	time: 28
+batch-auc:0.5229	eval-auc: 0.5652
+loss as step 66200: 0.523324	time: 23
+batch-auc:0.5312	eval-auc: 0.5620
+loss as step 66300: 0.532824	time: 24
+batch-auc:0.5294	eval-auc: 0.5616
+loss as step 66400: 0.669052	time: 24
+batch-auc:0.5488	eval-auc: 0.5631
+loss as step 66500: 0.542806	time: 24
+batch-auc:0.5404	eval-auc: 0.5631
+loss as step 66600: 0.564409	time: 24
+batch-auc:0.5372	eval-auc: 0.5597
+loss as step 66700: 0.521202	time: 19
+batch-auc:0.5433	eval-auc: 0.5637
+loss as step 66800: 0.553182	time: 19
+batch-auc:0.5284	eval-auc: 0.5650
+loss as step 66900: 0.543473	time: 21
+batch-auc:0.5252	eval-auc: 0.5600
+loss as step 67000: 0.532270	time: 24
+batch-auc:0.5390	eval-auc: 0.5622
+loss as step 67100: 0.533422	time: 24
+batch-auc:0.5242	eval-auc: 0.5602
+loss as step 67200: 0.510991	time: 22
+batch-auc:0.5227	eval-auc: 0.5648
+loss as step 67300: 0.553500	time: 24
+batch-auc:0.5295	eval-auc: 0.5617
+loss as step 67400: 0.605846	time: 24
+batch-auc:0.5430	eval-auc: 0.5633
+loss as step 67500: 0.478642	time: 24
+batch-auc:0.5275	eval-auc: 0.5672
+loss as step 67600: 0.564034	time: 22
+batch-auc:0.5316	eval-auc: 0.5658
+loss as step 67700: 0.542718	time: 24
+batch-auc:0.5287	eval-auc: 0.5677
+loss as step 67800: 0.607125	time: 23
+batch-auc:0.5174	eval-auc: 0.5687
+loss as step 67900: 0.510085	time: 24
+batch-auc:0.5282	eval-auc: 0.5693
+loss as step 68000: 0.615634	time: 23
+batch-auc:0.5252	eval-auc: 0.5617
+loss as step 68100: 0.606486	time: 28
+batch-auc:0.5366	eval-auc: 0.5659
+loss as step 68200: 0.616299	time: 24
+batch-auc:0.5382	eval-auc: 0.5637
+loss as step 68300: 0.585170	time: 24
+batch-auc:0.5316	eval-auc: 0.5639
+loss as step 68400: 0.542960	time: 23
+batch-auc:0.5470	eval-auc: 0.5647
+loss as step 68500: 0.584975	time: 24
+batch-auc:0.5315	eval-auc: 0.5620
+loss as step 68600: 0.584997	time: 24
+batch-auc:0.5571	eval-auc: 0.5627
+loss as step 68700: 0.585915	time: 24
+batch-auc:0.5273	eval-auc: 0.5691
+loss as step 68800: 0.606374	time: 24
+batch-auc:0.5166	eval-auc: 0.5640
+loss as step 68900: 0.617130	time: 24
+batch-auc:0.5402	eval-auc: 0.5645
+loss as step 69000: 0.553306	time: 24
+batch-auc:0.5372	eval-auc: 0.5661
+loss as step 69100: 0.564128	time: 31
+batch-auc:0.5395	eval-auc: 0.5640
+loss as step 69200: 0.605730	time: 33
+batch-auc:0.5498	eval-auc: 0.5646
+loss as step 69300: 0.511197	time: 33
+batch-auc:0.5486	eval-auc: 0.5666
+loss as step 69400: 0.616425	time: 24
+batch-auc:0.5319	eval-auc: 0.5646
+loss as step 69500: 0.647485	time: 24
+batch-auc:0.5391	eval-auc: 0.5647
+loss as step 69600: 0.606348	time: 24
+batch-auc:0.5349	eval-auc: 0.5648
+loss as step 69700: 0.584941	time: 24
+batch-auc:0.5541	eval-auc: 0.5626
+loss as step 69800: 0.542782	time: 23
+batch-auc:0.5605	eval-auc: 0.5685
+loss as step 69900: 0.595314	time: 23
+batch-auc:0.5342	eval-auc: 0.5666
+loss as step 70000: 0.625981	time: 23
+batch-auc:0.5663	eval-auc: 0.5634
+loss as step 70100: 0.574625	time: 28
+batch-auc:0.5427	eval-auc: 0.5656
+loss as step 70200: 0.658571	time: 22
+batch-auc:0.5710	eval-auc: 0.5645
+loss as step 70300: 0.606249	time: 24
+batch-auc:0.5297	eval-auc: 0.5690
+loss as step 70400: 0.532806	time: 24
+batch-auc:0.5271	eval-auc: 0.5677
+loss as step 70500: 0.595730	time: 23
+batch-auc:0.5381	eval-auc: 0.5672
+loss as step 70600: 0.542691	time: 23
+batch-auc:0.5373	eval-auc: 0.5694
+loss as step 70700: 0.532232	time: 23
+batch-auc:0.5218	eval-auc: 0.5678
+loss as step 70800: 0.564055	time: 24
+batch-auc:0.5224	eval-auc: 0.5700
+loss as step 70900: 0.543170	time: 24
+batch-auc:0.5189	eval-auc: 0.5660
+loss as step 71000: 0.553614	time: 24
+batch-auc:0.5419	eval-auc: 0.5655
+loss as step 71100: 0.647927	time: 33
+batch-auc:0.5335	eval-auc: 0.5652
+loss as step 71200: 0.553589	time: 36
+batch-auc:0.5560	eval-auc: 0.5656
+loss as step 71300: 0.511429	time: 36
+batch-auc:0.5456	eval-auc: 0.5653
+loss as step 71400: 0.513718	time: 35
+batch-auc:0.5351	eval-auc: 0.5632
+loss as step 71500: 0.585322	time: 34
+batch-auc:0.5301	eval-auc: 0.5656
+loss as step 71600: 0.617279	time: 36
+batch-auc:0.5393	eval-auc: 0.5672
+loss as step 71700: 0.564070	time: 35
+batch-auc:0.5309	eval-auc: 0.5671
+loss as step 71800: 0.553593	time: 37
+batch-auc:0.5285	eval-auc: 0.5678
+loss as step 71900: 0.584862	time: 37
+batch-auc:0.5416	eval-auc: 0.5665
+loss as step 72000: 0.553666	time: 35
+batch-auc:0.5159	eval-auc: 0.5680
+loss as step 72100: 0.500690	time: 40
+batch-auc:0.5397	eval-auc: 0.5676
+loss as step 72200: 0.595756	time: 34
+batch-auc:0.5223	eval-auc: 0.5676
+loss as step 72300: 0.595517	time: 34
+batch-auc:0.5362	eval-auc: 0.5654
+loss as step 72400: 0.532557	time: 34
+batch-auc:0.5410	eval-auc: 0.5673
+loss as step 72500: 0.480011	time: 33
+batch-auc:0.5303	eval-auc: 0.5686
+loss as step 72600: 0.574744	time: 33
+batch-auc:0.5301	eval-auc: 0.5668
+loss as step 72700: 0.489914	time: 33
+batch-auc:0.5337	eval-auc: 0.5683
+loss as step 72800: 0.596509	time: 33
+batch-auc:0.5319	eval-auc: 0.5702
+loss as step 72900: 0.668915	time: 34
+batch-auc:0.5338	eval-auc: 0.5643
+loss as step 73000: 0.606565	time: 33
+batch-auc:0.5215	eval-auc: 0.5668
+loss as step 73100: 0.532448	time: 38
+batch-auc:0.5319	eval-auc: 0.5658
+loss as step 73200: 0.636714	time: 33
+batch-auc:0.5410	eval-auc: 0.5621
+loss as step 73300: 0.542668	time: 33
+batch-auc:0.5343	eval-auc: 0.5664
+loss as step 73400: 0.585655	time: 34
+batch-auc:0.5286	eval-auc: 0.5672
+loss as step 73500: 0.606014	time: 34
+batch-auc:0.5400	eval-auc: 0.5632
+loss as step 73600: 0.521688	time: 34
+batch-auc:0.5338	eval-auc: 0.5645
+loss as step 73700: 0.543010	time: 34
+batch-auc:0.5445	eval-auc: 0.5639
+loss as step 73800: 0.574670	time: 34
+batch-auc:0.5577	eval-auc: 0.5653
+loss as step 73900: 0.532699	time: 33
+batch-auc:0.5444	eval-auc: 0.5635
+loss as step 74000: 0.627055	time: 34
+batch-auc:0.5293	eval-auc: 0.5630
+loss as step 74100: 0.637292	time: 39
+batch-auc:0.5443	eval-auc: 0.5630
+loss as step 74200: 0.574589	time: 33
+batch-auc:0.5411	eval-auc: 0.5639
+loss as step 74300: 0.553542	time: 34
+batch-auc:0.5520	eval-auc: 0.5669
+loss as step 74400: 0.617400	time: 35
+batch-auc:0.5359	eval-auc: 0.5677
+loss as step 74500: 0.595948	time: 34
+batch-auc:0.5146	eval-auc: 0.5678
+loss as step 74600: 0.635632	time: 33
+batch-auc:0.5343	eval-auc: 0.5625
+loss as step 74700: 0.605063	time: 33
+batch-auc:0.5448	eval-auc: 0.5618
+loss as step 74800: 0.606364	time: 33
+batch-auc:0.5394	eval-auc: 0.5651
+loss as step 74900: 0.564160	time: 33
+batch-auc:0.5442	eval-auc: 0.5637
+loss as step 75000: 0.636948	time: 33
+batch-auc:0.5380	eval-auc: 0.5645
+loss as step 75100: 0.543210	time: 38
+batch-auc:0.5410	eval-auc: 0.5645
+loss as step 75200: 0.543274	time: 33
+batch-auc:0.5564	eval-auc: 0.5650
+loss as step 75300: 0.522105	time: 33
+batch-auc:0.5318	eval-auc: 0.5643
+loss as step 75400: 0.637704	time: 33
+batch-auc:0.5510	eval-auc: 0.5640
+loss as step 75500: 0.523179	time: 33
+batch-auc:0.5500	eval-auc: 0.5633
+loss as step 75600: 0.595151	time: 33
+batch-auc:0.5393	eval-auc: 0.5655
+loss as step 75700: 0.510899	time: 33
+batch-auc:0.5062	eval-auc: 0.5686
+loss as step 75800: 0.564225	time: 33
+batch-auc:0.5100	eval-auc: 0.5655
+loss as step 75900: 0.521169	time: 32
+batch-auc:0.5253	eval-auc: 0.5683
+loss as step 76000: 0.639215	time: 34
+batch-auc:0.5050	eval-auc: 0.5679
+loss as step 76100: 0.564054	time: 38
+batch-auc:0.5276	eval-auc: 0.5636
+loss as step 76200: 0.553630	time: 33
+batch-auc:0.5385	eval-auc: 0.5650
+loss as step 76300: 0.564168	time: 33
+batch-auc:0.5483	eval-auc: 0.5652
+loss as step 76400: 0.616644	time: 32
+batch-auc:0.5309	eval-auc: 0.5661
+loss as step 76500: 0.521012	time: 33
+batch-auc:0.5314	eval-auc: 0.5691
+loss as step 76600: 0.532047	time: 33
+batch-auc:0.5321	eval-auc: 0.5688
+loss as step 76700: 0.595242	time: 33
+batch-auc:0.5433	eval-auc: 0.5656
+loss as step 76800: 0.596534	time: 33
+batch-auc:0.5469	eval-auc: 0.5716
+loss as step 76900: 0.532622	time: 33
+batch-auc:0.5266	eval-auc: 0.5659
+loss as step 77000: 0.585044	time: 34
+batch-auc:0.5195	eval-auc: 0.5656
+loss as step 77100: 0.649002	time: 38
+batch-auc:0.5263	eval-auc: 0.5664
+loss as step 77200: 0.511442	time: 34
+batch-auc:0.5325	eval-auc: 0.5647
+loss as step 77300: 0.584930	time: 33
+batch-auc:0.5397	eval-auc: 0.5628
+loss as step 77400: 0.584937	time: 33
+batch-auc:0.5442	eval-auc: 0.5653
+loss as step 77500: 0.574712	time: 35
+batch-auc:0.5543	eval-auc: 0.5669
+loss as step 77600: 0.543454	time: 41
+batch-auc:0.5504	eval-auc: 0.5656
+loss as step 77700: 0.564169	time: 42
+batch-auc:0.5593	eval-auc: 0.5667
+loss as step 77800: 0.595626	time: 36
+batch-auc:0.5370	eval-auc: 0.5681
+loss as step 77900: 0.564287	time: 33
+batch-auc:0.5616	eval-auc: 0.5649
+loss as step 78000: 0.522524	time: 33
+batch-auc:0.5538	eval-auc: 0.5642
+loss as step 78100: 0.595576	time: 40
+batch-auc:0.5504	eval-auc: 0.5661
+loss as step 78200: 0.532232	time: 34
+batch-auc:0.5374	eval-auc: 0.5708
+loss as step 78300: 0.490209	time: 33
+batch-auc:0.5250	eval-auc: 0.5656
+loss as step 78400: 0.448276	time: 33
+batch-auc:0.5368	eval-auc: 0.5676
+loss as step 78500: 0.553388	time: 34
+batch-auc:0.5412	eval-auc: 0.5671
+loss as step 78600: 0.542894	time: 33
+batch-auc:0.5451	eval-auc: 0.5676
+loss as step 78700: 0.574607	time: 33
+batch-auc:0.5385	eval-auc: 0.5664
+loss as step 78800: 0.553563	time: 33
+batch-auc:0.5328	eval-auc: 0.5661
+loss as step 78900: 0.615763	time: 33
+batch-auc:0.5390	eval-auc: 0.5651
+loss as step 79000: 0.615944	time: 34
+batch-auc:0.5469	eval-auc: 0.5616
+loss as step 79100: 0.521984	time: 38
+batch-auc:0.5535	eval-auc: 0.5642
+loss as step 79200: 0.574588	time: 32
+batch-auc:0.5385	eval-auc: 0.5622
+loss as step 79300: 0.564235	time: 34
+batch-auc:0.5608	eval-auc: 0.5642
+loss as step 79400: 0.532399	time: 34
+batch-auc:0.5505	eval-auc: 0.5657
+loss as step 79500: 0.574607	time: 33
+batch-auc:0.5414	eval-auc: 0.5632
+loss as step 79600: 0.679012	time: 32
+batch-auc:0.5432	eval-auc: 0.5645
+loss as step 79700: 0.616694	time: 32
+batch-auc:0.5330	eval-auc: 0.5663
+loss as step 79800: 0.553563	time: 33
+batch-auc:0.5222	eval-auc: 0.5664
+loss as step 79900: 0.490132	time: 32
+batch-auc:0.5582	eval-auc: 0.5662
+loss as step 80000: 0.564035	time: 32
+batch-auc:0.5209	eval-auc: 0.5680
+loss as step 80100: 0.500440	time: 37
+batch-auc:0.5297	eval-auc: 0.5689
+loss as step 80200: 0.564223	time: 31
+batch-auc:0.5202	eval-auc: 0.5651
+loss as step 80300: 0.542718	time: 32
+batch-auc:0.5548	eval-auc: 0.5681
+loss as step 80400: 0.605658	time: 32
+batch-auc:0.5436	eval-auc: 0.5631
+loss as step 80500: 0.543317	time: 32
+batch-auc:0.5540	eval-auc: 0.5640
+loss as step 80600: 0.574711	time: 32
+batch-auc:0.5529	eval-auc: 0.5650
+loss as step 80700: 0.585102	time: 31
+batch-auc:0.5456	eval-auc: 0.5662
+loss as step 80800: 0.511427	time: 31
+batch-auc:0.5294	eval-auc: 0.5630
+loss as step 80900: 0.510667	time: 32
+batch-auc:0.5173	eval-auc: 0.5660
+loss as step 81000: 0.564062	time: 33
+batch-auc:0.5048	eval-auc: 0.5652
+loss as step 81100: 0.660112	time: 38
+batch-auc:0.5135	eval-auc: 0.5646
+loss as step 81200: 0.626068	time: 32
+batch-auc:0.5383	eval-auc: 0.5599
+loss as step 81300: 0.511519	time: 32
+batch-auc:0.5339	eval-auc: 0.5642
+loss as step 81400: 0.521646	time: 32
+batch-auc:0.5468	eval-auc: 0.5649
+loss as step 81500: 0.596154	time: 31
+batch-auc:0.5353	eval-auc: 0.5675
+loss as step 81600: 0.532236	time: 31
+batch-auc:0.5338	eval-auc: 0.5648
+loss as step 81700: 0.564204	time: 31
+batch-auc:0.5472	eval-auc: 0.5624
+loss as step 81800: 0.627439	time: 31
+batch-auc:0.5601	eval-auc: 0.5640
+loss as step 81900: 0.553780	time: 31
+batch-auc:0.5576	eval-auc: 0.5645
+loss as step 82000: 0.574753	time: 31
+batch-auc:0.5102	eval-auc: 0.5668
+loss as step 82100: 0.638282	time: 37
+batch-auc:0.5235	eval-auc: 0.5652
+loss as step 82200: 0.553263	time: 31
+batch-auc:0.5333	eval-auc: 0.5678
+loss as step 82300: 0.637573	time: 31
+batch-auc:0.5282	eval-auc: 0.5649
+loss as step 82400: 0.564008	time: 34
+batch-auc:0.5266	eval-auc: 0.5650
+loss as step 82500: 0.574579	time: 32
+batch-auc:0.5471	eval-auc: 0.5622
+loss as step 82600: 0.564423	time: 32
+batch-auc:0.5478	eval-auc: 0.5630
+loss as step 82700: 0.553681	time: 33
+batch-auc:0.5555	eval-auc: 0.5654
+loss as step 82800: 0.521531	time: 32
+batch-auc:0.5243	eval-auc: 0.5688
+loss as step 82900: 0.564130	time: 33
+batch-auc:0.5295	eval-auc: 0.5658
+loss as step 83000: 0.521139	time: 32
+batch-auc:0.5328	eval-auc: 0.5700
+loss as step 83100: 0.501006	time: 37
+batch-auc:0.5398	eval-auc: 0.5680
+loss as step 83200: 0.670748	time: 32
+batch-auc:0.5371	eval-auc: 0.5679
+loss as step 83300: 0.606433	time: 32
+batch-auc:0.5254	eval-auc: 0.5701
+loss as step 83400: 0.639039	time: 32
+batch-auc:0.5160	eval-auc: 0.5690
+loss as step 83500: 0.553860	time: 32
+batch-auc:0.5474	eval-auc: 0.5656
+loss as step 83600: 0.553474	time: 32
+batch-auc:0.5378	eval-auc: 0.5670
+loss as step 83700: 0.522458	time: 32
+batch-auc:0.5389	eval-auc: 0.5656
+loss as step 83800: 0.637605	time: 32
+batch-auc:0.5390	eval-auc: 0.5643
+loss as step 83900: 0.521718	time: 32
+batch-auc:0.5490	eval-auc: 0.5673
+loss as step 84000: 0.491990	time: 32
+batch-auc:0.5337	eval-auc: 0.5633
+loss as step 84100: 0.542650	time: 37
+batch-auc:0.5503	eval-auc: 0.5671
+loss as step 84200: 0.585120	time: 32
+batch-auc:0.5297	eval-auc: 0.5659
+loss as step 84300: 0.638508	time: 33
+batch-auc:0.5180	eval-auc: 0.5677
+loss as step 84400: 0.585037	time: 32
+batch-auc:0.5325	eval-auc: 0.5657
+loss as step 84500: 0.563986	time: 32
+batch-auc:0.5188	eval-auc: 0.5680
+loss as step 84600: 0.617078	time: 32
+batch-auc:0.5226	eval-auc: 0.5640
+loss as step 84700: 0.553689	time: 32
+batch-auc:0.5281	eval-auc: 0.5630
+loss as step 84800: 0.595757	time: 32
+batch-auc:0.5259	eval-auc: 0.5636
+loss as step 84900: 0.606618	time: 32
+batch-auc:0.5294	eval-auc: 0.5658
+loss as step 85000: 0.492893	time: 32
+batch-auc:0.5408	eval-auc: 0.5639
+loss as step 85100: 0.478688	time: 37
+batch-auc:0.5300	eval-auc: 0.5662
+loss as step 85200: 0.499559	time: 32
+batch-auc:0.5436	eval-auc: 0.5663
+loss as step 85300: 0.521810	time: 32
+batch-auc:0.5474	eval-auc: 0.5637
+loss as step 85400: 0.647334	time: 32
+batch-auc:0.5345	eval-auc: 0.5637
+loss as step 85500: 0.627653	time: 32
+batch-auc:0.5548	eval-auc: 0.5642
+loss as step 85600: 0.606405	time: 32
+batch-auc:0.5347	eval-auc: 0.5646
+loss as step 85700: 0.533132	time: 32
+batch-auc:0.5431	eval-auc: 0.5630
+loss as step 85800: 0.658823	time: 32
+batch-auc:0.5383	eval-auc: 0.5633
+loss as step 85900: 0.667011	time: 32
+batch-auc:0.5445	eval-auc: 0.5630
+loss as step 86000: 0.574589	time: 32
+batch-auc:0.5467	eval-auc: 0.5656
+loss as step 86100: 0.658233	time: 37
+batch-auc:0.5578	eval-auc: 0.5639
+loss as step 86200: 0.605987	time: 32
+batch-auc:0.5529	eval-auc: 0.5656
+loss as step 86300: 0.626567	time: 32
+batch-auc:0.5597	eval-auc: 0.5610
+loss as step 86400: 0.521325	time: 32
+batch-auc:0.5503	eval-auc: 0.5658
+loss as step 86500: 0.511575	time: 33
+batch-auc:0.5181	eval-auc: 0.5635
+loss as step 86600: 0.553408	time: 32
+batch-auc:0.5413	eval-auc: 0.5674
+loss as step 86700: 0.500543	time: 32
+batch-auc:0.5331	eval-auc: 0.5676
+loss as step 86800: 0.638072	time: 32
+batch-auc:0.5360	eval-auc: 0.5640
+loss as step 86900: 0.522238	time: 32
+batch-auc:0.5395	eval-auc: 0.5635
+loss as step 87000: 0.564379	time: 32
+batch-auc:0.5363	eval-auc: 0.5633
+loss as step 87100: 0.533132	time: 37
+batch-auc:0.5412	eval-auc: 0.5629
+loss as step 87200: 0.532357	time: 32
+batch-auc:0.5309	eval-auc: 0.5657
+loss as step 87300: 0.616630	time: 32
+batch-auc:0.5440	eval-auc: 0.5634
+loss as step 87400: 0.627266	time: 31
+batch-auc:0.5197	eval-auc: 0.5658
+loss as step 87500: 0.521851	time: 32
+batch-auc:0.5195	eval-auc: 0.5663
+loss as step 87600: 0.574865	time: 33
+batch-auc:0.5185	eval-auc: 0.5661
+loss as step 87700: 0.616878	time: 33
+batch-auc:0.5265	eval-auc: 0.5633
+loss as step 87800: 0.596199	time: 32
+batch-auc:0.5325	eval-auc: 0.5668
+loss as step 87900: 0.542679	time: 32
+batch-auc:0.5224	eval-auc: 0.5646
+loss as step 88000: 0.574766	time: 32
+batch-auc:0.5237	eval-auc: 0.5632
+loss as step 88100: 0.606189	time: 38
+batch-auc:0.5183	eval-auc: 0.5626
+loss as step 88200: 0.574599	time: 33
+batch-auc:0.5433	eval-auc: 0.5634
+loss as step 88300: 0.574737	time: 33
+batch-auc:0.5413	eval-auc: 0.5626
+loss as step 88400: 0.501203	time: 32
+batch-auc:0.5275	eval-auc: 0.5644
+loss as step 88500: 0.564213	time: 32
+batch-auc:0.5461	eval-auc: 0.5636
+loss as step 88600: 0.532429	time: 33
+batch-auc:0.5374	eval-auc: 0.5655
+loss as step 88700: 0.564082	time: 32
+batch-auc:0.5287	eval-auc: 0.5642
+loss as step 88800: 0.606016	time: 33
+batch-auc:0.5401	eval-auc: 0.5640
+loss as step 88900: 0.595484	time: 33
+batch-auc:0.5643	eval-auc: 0.5645
+loss as step 89000: 0.616920	time: 33
+batch-auc:0.5389	eval-auc: 0.5642
+loss as step 89100: 0.564017	time: 37
+batch-auc:0.5337	eval-auc: 0.5638
+loss as step 89200: 0.543979	time: 32
+batch-auc:0.5577	eval-auc: 0.5606
+loss as step 89300: 0.668193	time: 32
+batch-auc:0.5509	eval-auc: 0.5630
+loss as step 89400: 0.511485	time: 33
+batch-auc:0.5345	eval-auc: 0.5649
+loss as step 89500: 0.595017	time: 32
+batch-auc:0.5469	eval-auc: 0.5624
+loss as step 89600: 0.606488	time: 32
+batch-auc:0.5367	eval-auc: 0.5654
+loss as step 89700: 0.615918	time: 32
+batch-auc:0.5530	eval-auc: 0.5631
+loss as step 89800: 0.554145	time: 32
+batch-auc:0.5633	eval-auc: 0.5633
+loss as step 89900: 0.468582	time: 32
+batch-auc:0.5441	eval-auc: 0.5673
+loss as step 90000: 0.564251	time: 32
+batch-auc:0.5278	eval-auc: 0.5681
+loss as step 90100: 0.501873	time: 38
+batch-auc:0.5369	eval-auc: 0.5653
+loss as step 90200: 0.595440	time: 33
+batch-auc:0.5635	eval-auc: 0.5650
+loss as step 90300: 0.595527	time: 33
+batch-auc:0.5435	eval-auc: 0.5642
+loss as step 90400: 0.564262	time: 33
+batch-auc:0.5462	eval-auc: 0.5659
+loss as step 90500: 0.585099	time: 34
+batch-auc:0.5477	eval-auc: 0.5651
+loss as step 90600: 0.523107	time: 33
+batch-auc:0.5200	eval-auc: 0.5646
+loss as step 90700: 0.564033	time: 33
+batch-auc:0.5335	eval-auc: 0.5671
+loss as step 90800: 0.521895	time: 33
+batch-auc:0.5334	eval-auc: 0.5655
+loss as step 90900: 0.564148	time: 34
+batch-auc:0.5258	eval-auc: 0.5651
+loss as step 91000: 0.585204	time: 33
+batch-auc:0.5234	eval-auc: 0.5650
+loss as step 91100: 0.585247	time: 37
+batch-auc:0.5327	eval-auc: 0.5652
+loss as step 91200: 0.553577	time: 33
+batch-auc:0.5479	eval-auc: 0.5634
+loss as step 91300: 0.542863	time: 32
+batch-auc:0.5375	eval-auc: 0.5657
+loss as step 91400: 0.564318	time: 32
+batch-auc:0.5535	eval-auc: 0.5640
+loss as step 91500: 0.574582	time: 32
+batch-auc:0.5247	eval-auc: 0.5649
+loss as step 91600: 0.574694	time: 32
+batch-auc:0.5433	eval-auc: 0.5665
+loss as step 91700: 0.606666	time: 33
+batch-auc:0.5182	eval-auc: 0.5659
+loss as step 91800: 0.564250	time: 33
+batch-auc:0.5230	eval-auc: 0.5658
+loss as step 91900: 0.543175	time: 33
+batch-auc:0.5511	eval-auc: 0.5620
+loss as step 92000: 0.553526	time: 33
+batch-auc:0.5268	eval-auc: 0.5641
+loss as step 92100: 0.574697	time: 37
+batch-auc:0.5516	eval-auc: 0.5592
+loss as step 92200: 0.553542	time: 33
+batch-auc:0.5641	eval-auc: 0.5642
+loss as step 92300: 0.553741	time: 32
+batch-auc:0.5361	eval-auc: 0.5631
+loss as step 92400: 0.615474	time: 33
+batch-auc:0.5465	eval-auc: 0.5627
+loss as step 92500: 0.574571	time: 33
+batch-auc:0.5475	eval-auc: 0.5641
+loss as step 92600: 0.513107	time: 33
+batch-auc:0.5385	eval-auc: 0.5626
+loss as step 92700: 0.595419	time: 33
+batch-auc:0.5493	eval-auc: 0.5648
+loss as step 92800: 0.542824	time: 33
+batch-auc:0.5437	eval-auc: 0.5707
+loss as step 92900: 0.564139	time: 33
+batch-auc:0.5199	eval-auc: 0.5691
+loss as step 93000: 0.532193	time: 33
+batch-auc:0.5339	eval-auc: 0.5696
+loss as step 93100: 0.553520	time: 37
+batch-auc:0.5305	eval-auc: 0.5673
+loss as step 93200: 0.605973	time: 32
+batch-auc:0.5510	eval-auc: 0.5655
+loss as step 93300: 0.574583	time: 33
+batch-auc:0.5396	eval-auc: 0.5639
+loss as step 93400: 0.564103	time: 33
+batch-auc:0.5607	eval-auc: 0.5650
+loss as step 93500: 0.564058	time: 33
+batch-auc:0.5281	eval-auc: 0.5678
+loss as step 93600: 0.564175	time: 32
+batch-auc:0.5283	eval-auc: 0.5644
+loss as step 93700: 0.511152	time: 33
+batch-auc:0.5435	eval-auc: 0.5660
+loss as step 93800: 0.649105	time: 33
+batch-auc:0.5252	eval-auc: 0.5671
+loss as step 93900: 0.574615	time: 33
+batch-auc:0.5381	eval-auc: 0.5654
+loss as step 94000: 0.595842	time: 33
+batch-auc:0.5437	eval-auc: 0.5698
+loss as step 94100: 0.574582	time: 38
+batch-auc:0.5579	eval-auc: 0.5656
+loss as step 94200: 0.500928	time: 33
+batch-auc:0.5445	eval-auc: 0.5682
+loss as step 94300: 0.585103	time: 33
+batch-auc:0.5317	eval-auc: 0.5664
+loss as step 94400: 0.574784	time: 33
+batch-auc:0.5599	eval-auc: 0.5649
+loss as step 94500: 0.564132	time: 33
+batch-auc:0.5457	eval-auc: 0.5668
+loss as step 94600: 0.511274	time: 33
+batch-auc:0.5277	eval-auc: 0.5681
+loss as step 94700: 0.617597	time: 33
+batch-auc:0.5284	eval-auc: 0.5705
+loss as step 94800: 0.616138	time: 33
+batch-auc:0.5233	eval-auc: 0.5681
+loss as step 94900: 0.595250	time: 33
+batch-auc:0.5354	eval-auc: 0.5673
+loss as step 95000: 0.669551	time: 33
+batch-auc:0.5339	eval-auc: 0.5705
+loss as step 95100: 0.553788	time: 37
+batch-auc:0.5230	eval-auc: 0.5675
+loss as step 95200: 0.492248	time: 33
+batch-auc:0.5583	eval-auc: 0.5679
+loss as step 95300: 0.522701	time: 33
+batch-auc:0.5387	eval-auc: 0.5668
+loss as step 95400: 0.521939	time: 33
+batch-auc:0.5626	eval-auc: 0.5690
+loss as step 95500: 0.512551	time: 32
+batch-auc:0.5330	eval-auc: 0.5675
+loss as step 95600: 0.595578	time: 33
+batch-auc:0.5432	eval-auc: 0.5701
+loss as step 95700: 0.553545	time: 33
+batch-auc:0.5252	eval-auc: 0.5695
+loss as step 95800: 0.585042	time: 33
+batch-auc:0.5352	eval-auc: 0.5697
+loss as step 95900: 0.564165	time: 33
+batch-auc:0.5480	eval-auc: 0.5680
+loss as step 96000: 0.533659	time: 33
+batch-auc:0.5447	eval-auc: 0.5658
+loss as step 96100: 0.606000	time: 38
+batch-auc:0.5470	eval-auc: 0.5683
+loss as step 96200: 0.605524	time: 33
+batch-auc:0.5486	eval-auc: 0.5673
+loss as step 96300: 0.606181	time: 33
+batch-auc:0.5502	eval-auc: 0.5693
+loss as step 96400: 0.521575	time: 33
+batch-auc:0.5309	eval-auc: 0.5699
+loss as step 96500: 0.490454	time: 33
+batch-auc:0.5374	eval-auc: 0.5675
+loss as step 96600: 0.553521	time: 33
+batch-auc:0.5466	eval-auc: 0.5678
+loss as step 96700: 0.584781	time: 33
+batch-auc:0.5348	eval-auc: 0.5647
+loss as step 96800: 0.595950	time: 34
+batch-auc:0.5248	eval-auc: 0.5684
+loss as step 96900: 0.574706	time: 33
+batch-auc:0.5202	eval-auc: 0.5692
+loss as step 97000: 0.522038	time: 34
+batch-auc:0.5402	eval-auc: 0.5671
+loss as step 97100: 0.584971	time: 38
+batch-auc:0.5386	eval-auc: 0.5659
+loss as step 97200: 0.595541	time: 34
+batch-auc:0.5689	eval-auc: 0.5690
+loss as step 97300: 0.564125	time: 33
+batch-auc:0.5409	eval-auc: 0.5668
+loss as step 97400: 0.574744	time: 33
+batch-auc:0.5368	eval-auc: 0.5697
+loss as step 97500: 0.511914	time: 33
+batch-auc:0.5458	eval-auc: 0.5671
+loss as step 97600: 0.564175	time: 32
+batch-auc:0.5568	eval-auc: 0.5682
+loss as step 97700: 0.564385	time: 33
+batch-auc:0.5367	eval-auc: 0.5692
+loss as step 97800: 0.574612	time: 33
+batch-auc:0.5463	eval-auc: 0.5675
+loss as step 97900: 0.574786	time: 33
+batch-auc:0.5477	eval-auc: 0.5698
+loss as step 98000: 0.585480	time: 33
+batch-auc:0.5267	eval-auc: 0.5708
+loss as step 98100: 0.606813	time: 37
+batch-auc:0.5275	eval-auc: 0.5707
+loss as step 98200: 0.585008	time: 33
+batch-auc:0.5321	eval-auc: 0.5684
+loss as step 98300: 0.574561	time: 32
+batch-auc:0.5347	eval-auc: 0.5677
+loss as step 98400: 0.532683	time: 33
+batch-auc:0.5391	eval-auc: 0.5685
+loss as step 98500: 0.553526	time: 33
+batch-auc:0.5174	eval-auc: 0.5699
+loss as step 98600: 0.543355	time: 34
+batch-auc:0.5440	eval-auc: 0.5682
+loss as step 98700: 0.522699	time: 33
+batch-auc:0.5496	eval-auc: 0.5677
+loss as step 98800: 0.574597	time: 33
+batch-auc:0.5464	eval-auc: 0.5700
+loss as step 98900: 0.564792	time: 33
+batch-auc:0.5328	eval-auc: 0.5651
+loss as step 99000: 0.637903	time: 33
+batch-auc:0.5237	eval-auc: 0.5689
+loss as step 99100: 0.523731	time: 38
+batch-auc:0.5493	eval-auc: 0.5670
+loss as step 99200: 0.564200	time: 33
+batch-auc:0.5496	eval-auc: 0.5673
+loss as step 99300: 0.542846	time: 32
+batch-auc:0.5397	eval-auc: 0.5718
+loss as step 99400: 0.637741	time: 34
+batch-auc:0.5255	eval-auc: 0.5697
+loss as step 99500: 0.532546	time: 33
+batch-auc:0.5397	eval-auc: 0.5696
+loss as step 99600: 0.595966	time: 33
+batch-auc:0.5287	eval-auc: 0.5711
+loss as step 99700: 0.470283	time: 33
+batch-auc:0.5414	eval-auc: 0.5681
+loss as step 99800: 0.668311	time: 33
+batch-auc:0.5202	eval-auc: 0.5670
+loss as step 99900: 0.564185	time: 33
+batch-auc:0.5458	eval-auc: 0.5662
+loss as step 100000: 0.553439	time: 32
+batch-auc:0.5402	eval-auc: 0.5692
+loss as step 100100: 0.532320	time: 38
+batch-auc:0.5366	eval-auc: 0.5692
+loss as step 100200: 0.647243	time: 33
+batch-auc:0.5218	eval-auc: 0.5669
+loss as step 100300: 0.649451	time: 33
+batch-auc:0.5270	eval-auc: 0.5715
+loss as step 100400: 0.574599	time: 33
+batch-auc:0.5199	eval-auc: 0.5695
+loss as step 100500: 0.511514	time: 33
+batch-auc:0.5309	eval-auc: 0.5681
+loss as step 100600: 0.553550	time: 34
+batch-auc:0.5349	eval-auc: 0.5689
+loss as step 100700: 0.553578	time: 33
+batch-auc:0.5271	eval-auc: 0.5670
+loss as step 100800: 0.542951	time: 32
+batch-auc:0.5149	eval-auc: 0.5685
+loss as step 100900: 0.636586	time: 33
+batch-auc:0.5479	eval-auc: 0.5661
+loss as step 101000: 0.532841	time: 33
+batch-auc:0.5444	eval-auc: 0.5667
+loss as step 101100: 0.595569	time: 37
+batch-auc:0.5468	eval-auc: 0.5677
+loss as step 101200: 0.595487	time: 33
+batch-auc:0.5396	eval-auc: 0.5665
+loss as step 101300: 0.574663	time: 33
+batch-auc:0.5554	eval-auc: 0.5691
+loss as step 101400: 0.585285	time: 33
+batch-auc:0.5358	eval-auc: 0.5694
+loss as step 101500: 0.479505	time: 33
+batch-auc:0.5199	eval-auc: 0.5697
+loss as step 101600: 0.618319	time: 33
+batch-auc:0.5130	eval-auc: 0.5709
+loss as step 101700: 0.542801	time: 33
+batch-auc:0.5289	eval-auc: 0.5704
+loss as step 101800: 0.595652	time: 33
+batch-auc:0.5306	eval-auc: 0.5696
+loss as step 101900: 0.616154	time: 33
+batch-auc:0.5393	eval-auc: 0.5673
+loss as step 102000: 0.488757	time: 32
+batch-auc:0.5390	eval-auc: 0.5699
+loss as step 102100: 0.564119	time: 38
+batch-auc:0.5177	eval-auc: 0.5685
+loss as step 102200: 0.679056	time: 32
+batch-auc:0.5364	eval-auc: 0.5659
+loss as step 102300: 0.648674	time: 33
+batch-auc:0.5373	eval-auc: 0.5658
+loss as step 102400: 0.500702	time: 32
+batch-auc:0.5307	eval-auc: 0.5695
+loss as step 102500: 0.564314	time: 33
+batch-auc:0.5505	eval-auc: 0.5655
+loss as step 102600: 0.574657	time: 33
+batch-auc:0.5419	eval-auc: 0.5697
+loss as step 102700: 0.491296	time: 33
+batch-auc:0.5463	eval-auc: 0.5669
+loss as step 102800: 0.553701	time: 33
+batch-auc:0.5547	eval-auc: 0.5663
+loss as step 102900: 0.553438	time: 33
+batch-auc:0.5591	eval-auc: 0.5702
+loss as step 103000: 0.543566	time: 33
+batch-auc:0.5393	eval-auc: 0.5661
+loss as step 103100: 0.554371	time: 38
+batch-auc:0.5647	eval-auc: 0.5658
+loss as step 103200: 0.574665	time: 32
+batch-auc:0.5593	eval-auc: 0.5662
+loss as step 103300: 0.574572	time: 32
+batch-auc:0.5324	eval-auc: 0.5697
+loss as step 103400: 0.617194	time: 33
+batch-auc:0.5374	eval-auc: 0.5710
+loss as step 103500: 0.596164	time: 33
+batch-auc:0.5307	eval-auc: 0.5705
+loss as step 103600: 0.574592	time: 33
+batch-auc:0.5263	eval-auc: 0.5705
+loss as step 103700: 0.500501	time: 33
+batch-auc:0.5613	eval-auc: 0.5712
+loss as step 103800: 0.511914	time: 33
+batch-auc:0.5250	eval-auc: 0.5693
+loss as step 103900: 0.627413	time: 33
+batch-auc:0.5624	eval-auc: 0.5704
+loss as step 104000: 0.595991	time: 33
+batch-auc:0.5417	eval-auc: 0.5718
+loss as step 104100: 0.553614	time: 38
+batch-auc:0.5356	eval-auc: 0.5711
+loss as step 104200: 0.542771	time: 33
+batch-auc:0.5425	eval-auc: 0.5726
+loss as step 104300: 0.585060	time: 33
+batch-auc:0.5459	eval-auc: 0.5711
+loss as step 104400: 0.501002	time: 33
+batch-auc:0.5435	eval-auc: 0.5714
+loss as step 104500: 0.595451	time: 33
+batch-auc:0.5503	eval-auc: 0.5661
+loss as step 104600: 0.533596	time: 33
+batch-auc:0.5798	eval-auc: 0.5677
+loss as step 104700: 0.564053	time: 33
+batch-auc:0.5544	eval-auc: 0.5703
+loss as step 104800: 0.564225	time: 33
+batch-auc:0.5589	eval-auc: 0.5686
+loss as step 104900: 0.522259	time: 33
+batch-auc:0.5465	eval-auc: 0.5707
+loss as step 105000: 0.585484	time: 34
+batch-auc:0.5430	eval-auc: 0.5714
+loss as step 105100: 0.585229	time: 37
+batch-auc:0.5495	eval-auc: 0.5729
+loss as step 105200: 0.584853	time: 33
+batch-auc:0.5414	eval-auc: 0.5686
+loss as step 105300: 0.522822	time: 33
+batch-auc:0.5690	eval-auc: 0.5699
+loss as step 105400: 0.542681	time: 33
+batch-auc:0.5347	eval-auc: 0.5735
+loss as step 105500: 0.679329	time: 33
+batch-auc:0.5201	eval-auc: 0.5676
+loss as step 105600: 0.564356	time: 32
+batch-auc:0.5453	eval-auc: 0.5714
+loss as step 105700: 0.585202	time: 33
+batch-auc:0.5309	eval-auc: 0.5685
+loss as step 105800: 0.542794	time: 33
+batch-auc:0.5265	eval-auc: 0.5706
+loss as step 105900: 0.605515	time: 33
+batch-auc:0.5460	eval-auc: 0.5688
+loss as step 106000: 0.595955	time: 33
+batch-auc:0.5145	eval-auc: 0.5727
+loss as step 106100: 0.553418	time: 38
+batch-auc:0.5244	eval-auc: 0.5710
+loss as step 106200: 0.542761	time: 33
+batch-auc:0.5468	eval-auc: 0.5718
+loss as step 106300: 0.585428	time: 33
+batch-auc:0.5234	eval-auc: 0.5726
+loss as step 106400: 0.489932	time: 34
+batch-auc:0.5287	eval-auc: 0.5727
+loss as step 106500: 0.646941	time: 34
+batch-auc:0.5382	eval-auc: 0.5678
+loss as step 106600: 0.595647	time: 34
+batch-auc:0.5727	eval-auc: 0.5692
+loss as step 106700: 0.532300	time: 32
+batch-auc:0.5512	eval-auc: 0.5712
+loss as step 106800: 0.669455	time: 34
+batch-auc:0.5268	eval-auc: 0.5699
+loss as step 106900: 0.479241	time: 33
+batch-auc:0.5363	eval-auc: 0.5702
+loss as step 107000: 0.596352	time: 33
+batch-auc:0.5383	eval-auc: 0.5710
+loss as step 107100: 0.522066	time: 38
+batch-auc:0.5446	eval-auc: 0.5694
+loss as step 107200: 0.574787	time: 33
+batch-auc:0.5411	eval-auc: 0.5665
+loss as step 107300: 0.627650	time: 33
+batch-auc:0.5415	eval-auc: 0.5721
+loss as step 107400: 0.564124	time: 33
+batch-auc:0.5407	eval-auc: 0.5723
+loss as step 107500: 0.596523	time: 33
+batch-auc:0.5067	eval-auc: 0.5738
+loss as step 107600: 0.542835	time: 33
+batch-auc:0.5273	eval-auc: 0.5715
+loss as step 107700: 0.606685	time: 33
+batch-auc:0.5398	eval-auc: 0.5713
+loss as step 107800: 0.649182	time: 33
+batch-auc:0.5417	eval-auc: 0.5709
+loss as step 107900: 0.616248	time: 33
+batch-auc:0.5539	eval-auc: 0.5680
+loss as step 108000: 0.648546	time: 33
+batch-auc:0.5588	eval-auc: 0.5705
+loss as step 108100: 0.521864	time: 38
+batch-auc:0.5418	eval-auc: 0.5691
+loss as step 108200: 0.574676	time: 34
+batch-auc:0.5384	eval-auc: 0.5686
+loss as step 108300: 0.564102	time: 33
+batch-auc:0.5493	eval-auc: 0.5703
+loss as step 108400: 0.553397	time: 33
+batch-auc:0.5277	eval-auc: 0.5707
+loss as step 108500: 0.511264	time: 32
+batch-auc:0.5370	eval-auc: 0.5709
+loss as step 108600: 0.543112	time: 33
+batch-auc:0.5404	eval-auc: 0.5697
+loss as step 108700: 0.564038	time: 32
+batch-auc:0.5516	eval-auc: 0.5686
+loss as step 108800: 0.491608	time: 33
+batch-auc:0.5539	eval-auc: 0.5682
+loss as step 108900: 0.531962	time: 33
+batch-auc:0.5449	eval-auc: 0.5716
+loss as step 109000: 0.605719	time: 33
+batch-auc:0.5291	eval-auc: 0.5681
+loss as step 109100: 0.543324	time: 38
+batch-auc:0.5599	eval-auc: 0.5696
+loss as step 109200: 0.574788	time: 34
+batch-auc:0.5293	eval-auc: 0.5720
+loss as step 109300: 0.564001	time: 33
+batch-auc:0.5273	eval-auc: 0.5708
+loss as step 109400: 0.521826	time: 33
+batch-auc:0.5461	eval-auc: 0.5701
+loss as step 109500: 0.637959	time: 33
+batch-auc:0.5503	eval-auc: 0.5682
+loss as step 109600: 0.553776	time: 33
+batch-auc:0.5626	eval-auc: 0.5693
+loss as step 109700: 0.605861	time: 33
+batch-auc:0.5686	eval-auc: 0.5696
+loss as step 109800: 0.521703	time: 33
+batch-auc:0.5538	eval-auc: 0.5692
+loss as step 109900: 0.596204	time: 33
+batch-auc:0.5431	eval-auc: 0.5707
+loss as step 110000: 0.585016	time: 33
+batch-auc:0.5375	eval-auc: 0.5681
+loss as step 110100: 0.553500	time: 37
+batch-auc:0.5422	eval-auc: 0.5686
+loss as step 110200: 0.648026	time: 33
+batch-auc:0.5495	eval-auc: 0.5680
+loss as step 110300: 0.532713	time: 33
+batch-auc:0.5557	eval-auc: 0.5697
+loss as step 110400: 0.532287	time: 33
+batch-auc:0.5537	eval-auc: 0.5705
+loss as step 110500: 0.533225	time: 33
+batch-auc:0.5477	eval-auc: 0.5680
+loss as step 110600: 0.523312	time: 33
+batch-auc:0.5548	eval-auc: 0.5672
+loss as step 110700: 0.532763	time: 33
+batch-auc:0.5672	eval-auc: 0.5692
+loss as step 110800: 0.553513	time: 33
+batch-auc:0.5572	eval-auc: 0.5696
+loss as step 110900: 0.499658	time: 33
+batch-auc:0.5320	eval-auc: 0.5713
+loss as step 111000: 0.521940	time: 33
+batch-auc:0.5125	eval-auc: 0.5685
+loss as step 111100: 0.564024	time: 38
+batch-auc:0.5196	eval-auc: 0.5673
+loss as step 111200: 0.574828	time: 33
+batch-auc:0.5673	eval-auc: 0.5614
+loss as step 111300: 0.521840	time: 33
+batch-auc:0.5428	eval-auc: 0.5647
+loss as step 111400: 0.574558	time: 33
+batch-auc:0.5446	eval-auc: 0.5657
+loss as step 111500: 0.606596	time: 33
+batch-auc:0.5313	eval-auc: 0.5663
+loss as step 111600: 0.553667	time: 32
+batch-auc:0.5408	eval-auc: 0.5637
+loss as step 111700: 0.564040	time: 33
+batch-auc:0.5445	eval-auc: 0.5659
+loss as step 111800: 0.595267	time: 33
+batch-auc:0.5491	eval-auc: 0.5627
+loss as step 111900: 0.606085	time: 33
+batch-auc:0.5424	eval-auc: 0.5649
+loss as step 112000: 0.522634	time: 33
+batch-auc:0.5418	eval-auc: 0.5630
+loss as step 112100: 0.595792	time: 38
+batch-auc:0.5346	eval-auc: 0.5636
+loss as step 112200: 0.585003	time: 33
+batch-auc:0.5225	eval-auc: 0.5645
+loss as step 112300: 0.595674	time: 33
+batch-auc:0.5349	eval-auc: 0.5631
+loss as step 112400: 0.574579	time: 33
+batch-auc:0.5303	eval-auc: 0.5609
+loss as step 112500: 0.511449	time: 33
+batch-auc:0.5387	eval-auc: 0.5649
+loss as step 112600: 0.522040	time: 32
+batch-auc:0.5325	eval-auc: 0.5643
+loss as step 112700: 0.574630	time: 33
+batch-auc:0.5460	eval-auc: 0.5634
+loss as step 112800: 0.574571	time: 33
+batch-auc:0.5440	eval-auc: 0.5652
+loss as step 112900: 0.532271	time: 33
+batch-auc:0.5589	eval-auc: 0.5657
+loss as step 113000: 0.533434	time: 33
+batch-auc:0.5349	eval-auc: 0.5626
+loss as step 113100: 0.595749	time: 37
+batch-auc:0.5543	eval-auc: 0.5633
+loss as step 113200: 0.574595	time: 32
+batch-auc:0.5333	eval-auc: 0.5646
+loss as step 113300: 0.553684	time: 33
+batch-auc:0.5220	eval-auc: 0.5649
+loss as step 113400: 0.522807	time: 34
+batch-auc:0.5459	eval-auc: 0.5634
+loss as step 113500: 0.595935	time: 33
+batch-auc:0.5383	eval-auc: 0.5639
+loss as step 113600: 0.616471	time: 33
+batch-auc:0.5436	eval-auc: 0.5621
+loss as step 113700: 0.501642	time: 33
+batch-auc:0.5410	eval-auc: 0.5624
+loss as step 113800: 0.648994	time: 33
+batch-auc:0.5435	eval-auc: 0.5638
+loss as step 113900: 0.585244	time: 33
+batch-auc:0.5328	eval-auc: 0.5637
+loss as step 114000: 0.574618	time: 33
+batch-auc:0.5344	eval-auc: 0.5601
+loss as step 114100: 0.553836	time: 37
+batch-auc:0.5526	eval-auc: 0.5607
+loss as step 114200: 0.522393	time: 33
+batch-auc:0.5482	eval-auc: 0.5637
+loss as step 114300: 0.584895	time: 33
+batch-auc:0.5660	eval-auc: 0.5639
+loss as step 114400: 0.501207	time: 33
+batch-auc:0.5411	eval-auc: 0.5666
+loss as step 114500: 0.512247	time: 33
+batch-auc:0.5425	eval-auc: 0.5655
+loss as step 114600: 0.479207	time: 32
+batch-auc:0.5403	eval-auc: 0.5674
+loss as step 114700: 0.574727	time: 33
+batch-auc:0.5259	eval-auc: 0.5676
+loss as step 114800: 0.615944	time: 33
+batch-auc:0.5463	eval-auc: 0.5655
+loss as step 114900: 0.648100	time: 33
+batch-auc:0.5518	eval-auc: 0.5651
+loss as step 115000: 0.553577	time: 33
+batch-auc:0.5636	eval-auc: 0.5665
+loss as step 115100: 0.679003	time: 38
+batch-auc:0.5407	eval-auc: 0.5650
+loss as step 115200: 0.574641	time: 33
+batch-auc:0.5500	eval-auc: 0.5692
+loss as step 115300: 0.616418	time: 33
+batch-auc:0.5291	eval-auc: 0.5663
+loss as step 115400: 0.615702	time: 33
+batch-auc:0.5742	eval-auc: 0.5639
+loss as step 115500: 0.564190	time: 32
+batch-auc:0.5590	eval-auc: 0.5663
+loss as step 115600: 0.564071	time: 33
+batch-auc:0.5469	eval-auc: 0.5662
+loss as step 115700: 0.511695	time: 33
+batch-auc:0.5580	eval-auc: 0.5646
+loss as step 115800: 0.533553	time: 33
+batch-auc:0.5655	eval-auc: 0.5636
+loss as step 115900: 0.510694	time: 33
+batch-auc:0.5461	eval-auc: 0.5677
+loss as step 116000: 0.564204	time: 33
+batch-auc:0.5383	eval-auc: 0.5651
+loss as step 116100: 0.606436	time: 37
+batch-auc:0.5294	eval-auc: 0.5682
+loss as step 116200: 0.500311	time: 33
+batch-auc:0.5337	eval-auc: 0.5683
+loss as step 116300: 0.606370	time: 33
+batch-auc:0.5241	eval-auc: 0.5680
+loss as step 116400: 0.584977	time: 33
+batch-auc:0.5395	eval-auc: 0.5655
+loss as step 116500: 0.648199	time: 33
+batch-auc:0.5680	eval-auc: 0.5651
+loss as step 116600: 0.533365	time: 33
+batch-auc:0.5423	eval-auc: 0.5657
+loss as step 116700: 0.490013	time: 33
+batch-auc:0.5520	eval-auc: 0.5691
+loss as step 116800: 0.627472	time: 33
+batch-auc:0.5578	eval-auc: 0.5690
+loss as step 116900: 0.616807	time: 34
+batch-auc:0.5574	eval-auc: 0.5682
+loss as step 117000: 0.595688	time: 33
+batch-auc:0.5348	eval-auc: 0.5689
+loss as step 117100: 0.553510	time: 37
+batch-auc:0.5293	eval-auc: 0.5693
+loss as step 117200: 0.574569	time: 33
+batch-auc:0.5371	eval-auc: 0.5681
+loss as step 117300: 0.553441	time: 32
+batch-auc:0.5412	eval-auc: 0.5703
+loss as step 117400: 0.521511	time: 33
+batch-auc:0.5219	eval-auc: 0.5713
+loss as step 117500: 0.606630	time: 33
+batch-auc:0.5331	eval-auc: 0.5681
+loss as step 117600: 0.521087	time: 33
+batch-auc:0.5228	eval-auc: 0.5712
+loss as step 117700: 0.574571	time: 33
+batch-auc:0.5409	eval-auc: 0.5654
+loss as step 117800: 0.489330	time: 33
+batch-auc:0.5683	eval-auc: 0.5694
+loss as step 117900: 0.469099	time: 33
+batch-auc:0.5418	eval-auc: 0.5673
+loss as step 118000: 0.617101	time: 33
+batch-auc:0.5226	eval-auc: 0.5683
+loss as step 118100: 0.606599	time: 37
+batch-auc:0.5286	eval-auc: 0.5681
+loss as step 118200: 0.521571	time: 34
+batch-auc:0.5303	eval-auc: 0.5671
+loss as step 118300: 0.564110	time: 33
+batch-auc:0.5508	eval-auc: 0.5651
+loss as step 118400: 0.574683	time: 34
+batch-auc:0.5443	eval-auc: 0.5675
+loss as step 118500: 0.669212	time: 32
+batch-auc:0.5425	eval-auc: 0.5640
+loss as step 118600: 0.564649	time: 33
+batch-auc:0.5782	eval-auc: 0.5607
+loss as step 118700: 0.522425	time: 33
+batch-auc:0.5481	eval-auc: 0.5651
+loss as step 118800: 0.595193	time: 33
+batch-auc:0.5324	eval-auc: 0.5644
+loss as step 118900: 0.522370	time: 33
+batch-auc:0.5781	eval-auc: 0.5652
+loss as step 119000: 0.542777	time: 33
+batch-auc:0.5508	eval-auc: 0.5692
+loss as step 119100: 0.595292	time: 38
+batch-auc:0.5312	eval-auc: 0.5652
+loss as step 119200: 0.564073	time: 33
+batch-auc:0.5544	eval-auc: 0.5675
+loss as step 119300: 0.458096	time: 32
+batch-auc:0.5457	eval-auc: 0.5682
+loss as step 119400: 0.605968	time: 32
+batch-auc:0.5450	eval-auc: 0.5656
+loss as step 119500: 0.574625	time: 33
+batch-auc:0.5509	eval-auc: 0.5684
+loss as step 119600: 0.554651	time: 33
+batch-auc:0.5368	eval-auc: 0.5664
+loss as step 119700: 0.532329	time: 33
+batch-auc:0.5396	eval-auc: 0.5688
+loss as step 119800: 0.627332	time: 33
+batch-auc:0.5230	eval-auc: 0.5681
+loss as step 119900: 0.564027	time: 33
+batch-auc:0.5402	eval-auc: 0.5681
+loss as step 120000: 0.533085	time: 33
+batch-auc:0.5359	eval-auc: 0.5678
+loss as step 120100: 0.616612	time: 38
+batch-auc:0.5512	eval-auc: 0.5672
+loss as step 120200: 0.553515	time: 33
+batch-auc:0.5639	eval-auc: 0.5695
+loss as step 120300: 0.617218	time: 33
+batch-auc:0.5557	eval-auc: 0.5713
+loss as step 120400: 0.574662	time: 33
+batch-auc:0.5429	eval-auc: 0.5669
+loss as step 120500: 0.605376	time: 33
+batch-auc:0.5777	eval-auc: 0.5675
+loss as step 120600: 0.543784	time: 33
+batch-auc:0.5589	eval-auc: 0.5683
+loss as step 120700: 0.574589	time: 33
+batch-auc:0.5514	eval-auc: 0.5678
+loss as step 120800: 0.553758	time: 34
+batch-auc:0.5424	eval-auc: 0.5705
+loss as step 120900: 0.584838	time: 33
+batch-auc:0.5575	eval-auc: 0.5687
+loss as step 121000: 0.585216	time: 33
+batch-auc:0.5414	eval-auc: 0.5720
+loss as step 121100: 0.584773	time: 38
+batch-auc:0.5471	eval-auc: 0.5673
+loss as step 121200: 0.564156	time: 33
+batch-auc:0.5446	eval-auc: 0.5704
+loss as step 121300: 0.532191	time: 34
+batch-auc:0.5258	eval-auc: 0.5733
+loss as step 121400: 0.469126	time: 33
+batch-auc:0.5477	eval-auc: 0.5725
+loss as step 121500: 0.532071	time: 32
+batch-auc:0.5215	eval-auc: 0.5718
+loss as step 121600: 0.500925	time: 33
+batch-auc:0.5147	eval-auc: 0.5710
+loss as step 121700: 0.596012	time: 33
+batch-auc:0.5219	eval-auc: 0.5704
+loss as step 121800: 0.564268	time: 33
+batch-auc:0.5260	eval-auc: 0.5653
+loss as step 121900: 0.564062	time: 33
+batch-auc:0.5516	eval-auc: 0.5698
+loss as step 122000: 0.564152	time: 33
+batch-auc:0.5295	eval-auc: 0.5679
+loss as step 122100: 0.512084	time: 38
+batch-auc:0.5549	eval-auc: 0.5702
+loss as step 122200: 0.648112	time: 33
+batch-auc:0.5306	eval-auc: 0.5715
+loss as step 122300: 0.585575	time: 33
+batch-auc:0.5240	eval-auc: 0.5731
+loss as step 122400: 0.616037	time: 33
+batch-auc:0.5304	eval-auc: 0.5691
+loss as step 122500: 0.585023	time: 33
+batch-auc:0.5554	eval-auc: 0.5712
+loss as step 122600: 0.574973	time: 33
+batch-auc:0.5340	eval-auc: 0.5739
+loss as step 122700: 0.606758	time: 33
+batch-auc:0.5327	eval-auc: 0.5708
+loss as step 122800: 0.564555	time: 33
+batch-auc:0.5492	eval-auc: 0.5661
+loss as step 122900: 0.574561	time: 33
+batch-auc:0.5604	eval-auc: 0.5702
+loss as step 123000: 0.574566	time: 33
+batch-auc:0.5600	eval-auc: 0.5726
+loss as step 123100: 0.637926	time: 38
+batch-auc:0.5484	eval-auc: 0.5721
+loss as step 123200: 0.606518	time: 33
+batch-auc:0.5374	eval-auc: 0.5720
+loss as step 123300: 0.574620	time: 33
+batch-auc:0.5477	eval-auc: 0.5722
+loss as step 123400: 0.553594	time: 33
+batch-auc:0.5769	eval-auc: 0.5712
+loss as step 123500: 0.595201	time: 33
+batch-auc:0.5713	eval-auc: 0.5712
+loss as step 123600: 0.553985	time: 33
+batch-auc:0.5603	eval-auc: 0.5731
+loss as step 123700: 0.574554	time: 33
+batch-auc:0.5628	eval-auc: 0.5718
+loss as step 123800: 0.648630	time: 32
+batch-auc:0.5354	eval-auc: 0.5735
+loss as step 123900: 0.553518	time: 33
+batch-auc:0.5262	eval-auc: 0.5741
+loss as step 124000: 0.554238	time: 33
+batch-auc:0.5374	eval-auc: 0.5705
+loss as step 124100: 0.495791	time: 38
+batch-auc:0.5627	eval-auc: 0.5711
+loss as step 124200: 0.679788	time: 32
+batch-auc:0.5471	eval-auc: 0.5747
+loss as step 124300: 0.469834	time: 33
+batch-auc:0.5654	eval-auc: 0.5740
+loss as step 124400: 0.553524	time: 33
+batch-auc:0.5241	eval-auc: 0.5753
+loss as step 124500: 0.585328	time: 32
+batch-auc:0.5434	eval-auc: 0.5747
+loss as step 124600: 0.638622	time: 33
+batch-auc:0.5324	eval-auc: 0.5734
+loss as step 124700: 0.574571	time: 33
+batch-auc:0.5423	eval-auc: 0.5701
+loss as step 124800: 0.564266	time: 33
+batch-auc:0.5345	eval-auc: 0.5722
+loss as step 124900: 0.532535	time: 33
+batch-auc:0.5431	eval-auc: 0.5697
+loss as step 125000: 0.585069	time: 33
+batch-auc:0.5240	eval-auc: 0.5720
+loss as step 125100: 0.502282	time: 39
+batch-auc:0.5477	eval-auc: 0.5676
+loss as step 125200: 0.585020	time: 34
+batch-auc:0.5639	eval-auc: 0.5701
+loss as step 125300: 0.532575	time: 33
+batch-auc:0.5530	eval-auc: 0.5710
+loss as step 125400: 0.574619	time: 33
+batch-auc:0.5482	eval-auc: 0.5686
+loss as step 125500: 0.553906	time: 33
+batch-auc:0.5609	eval-auc: 0.5689
+loss as step 125600: 0.657597	time: 33
+batch-auc:0.5638	eval-auc: 0.5721
+loss as step 125700: 0.669681	time: 33
+batch-auc:0.5334	eval-auc: 0.5721
+loss as step 125800: 0.659165	time: 33
+batch-auc:0.5291	eval-auc: 0.5691
+loss as step 125900: 0.532357	time: 34
+batch-auc:0.5418	eval-auc: 0.5698
+loss as step 126000: 0.532776	time: 32
+batch-auc:0.5481	eval-auc: 0.5683
+loss as step 126100: 0.679311	time: 38
+batch-auc:0.5437	eval-auc: 0.5703
+loss as step 126200: 0.574659	time: 33
+batch-auc:0.5433	eval-auc: 0.5732
+loss as step 126300: 0.532995	time: 33
+batch-auc:0.5303	eval-auc: 0.5697
+loss as step 126400: 0.553843	time: 33
+batch-auc:0.5625	eval-auc: 0.5693
+loss as step 126500: 0.679580	time: 32
+batch-auc:0.5478	eval-auc: 0.5702
+loss as step 126600: 0.533410	time: 34
+batch-auc:0.5624	eval-auc: 0.5714
+loss as step 126700: 0.574679	time: 33
+batch-auc:0.5368	eval-auc: 0.5757
+loss as step 126800: 0.532713	time: 33
+batch-auc:0.5321	eval-auc: 0.5733
+loss as step 126900: 0.574600	time: 33
+batch-auc:0.5263	eval-auc: 0.5721
+loss as step 127000: 0.522877	time: 33
+batch-auc:0.5608	eval-auc: 0.5716
+loss as step 127100: 0.554079	time: 38
+batch-auc:0.5659	eval-auc: 0.5684
+loss as step 127200: 0.606462	time: 33
+batch-auc:0.5403	eval-auc: 0.5743
+loss as step 127300: 0.512204	time: 33
+batch-auc:0.5417	eval-auc: 0.5707
+loss as step 127400: 0.606428	time: 33
+batch-auc:0.5417	eval-auc: 0.5734
+loss as step 127500: 0.606845	time: 33
+batch-auc:0.5133	eval-auc: 0.5749
+loss as step 127600: 0.564017	time: 33
+batch-auc:0.5346	eval-auc: 0.5730
+loss as step 127700: 0.542929	time: 33
+batch-auc:0.5390	eval-auc: 0.5726
+loss as step 127800: 0.617688	time: 34
+batch-auc:0.5258	eval-auc: 0.5756
+loss as step 127900: 0.490432	time: 33
+batch-auc:0.5310	eval-auc: 0.5739
+loss as step 128000: 0.564364	time: 33
+batch-auc:0.5460	eval-auc: 0.5723
+loss as step 128100: 0.542903	time: 37
+batch-auc:0.5348	eval-auc: 0.5740
+loss as step 128200: 0.553489	time: 33
+batch-auc:0.5247	eval-auc: 0.5734
+loss as step 128300: 0.690644	time: 33
+batch-auc:0.5334	eval-auc: 0.5709
+loss as step 128400: 0.595268	time: 33
+batch-auc:0.5477	eval-auc: 0.5723
+loss as step 128500: 0.637883	time: 32
+batch-auc:0.5450	eval-auc: 0.5730
+loss as step 128600: 0.564266	time: 33
+batch-auc:0.5437	eval-auc: 0.5726
+loss as step 128700: 0.658002	time: 33
+batch-auc:0.5543	eval-auc: 0.5708
+loss as step 128800: 0.564181	time: 34
+batch-auc:0.5642	eval-auc: 0.5699
+loss as step 128900: 0.542665	time: 33
+batch-auc:0.5529	eval-auc: 0.5752
+loss as step 129000: 0.543490	time: 33
+batch-auc:0.5444	eval-auc: 0.5702
+loss as step 129100: 0.489868	time: 37
+batch-auc:0.5571	eval-auc: 0.5719
+loss as step 129200: 0.500797	time: 33
+batch-auc:0.5537	eval-auc: 0.5716
+loss as step 129300: 0.499898	time: 32
+batch-auc:0.5278	eval-auc: 0.5760
+loss as step 129400: 0.650001	time: 33
+batch-auc:0.5300	eval-auc: 0.5738
+loss as step 129500: 0.628843	time: 33
+batch-auc:0.5346	eval-auc: 0.5741
+loss as step 129600: 0.627868	time: 32
+batch-auc:0.5509	eval-auc: 0.5725
+loss as step 129700: 0.480770	time: 33
+batch-auc:0.5576	eval-auc: 0.5722
+loss as step 129800: 0.636240	time: 32
+batch-auc:0.5669	eval-auc: 0.5715
+loss as step 129900: 0.605719	time: 33
+batch-auc:0.5485	eval-auc: 0.5704
+loss as step 130000: 0.533275	time: 32
+batch-auc:0.5442	eval-auc: 0.5726
+loss as step 130100: 0.595769	time: 38
+batch-auc:0.5494	eval-auc: 0.5729
+loss as step 130200: 0.616394	time: 33
+batch-auc:0.5495	eval-auc: 0.5730
+loss as step 130300: 0.595204	time: 33
+batch-auc:0.5836	eval-auc: 0.5702
+loss as step 130400: 0.574587	time: 33
+batch-auc:0.5666	eval-auc: 0.5732
+loss as step 130500: 0.606412	time: 33
+batch-auc:0.5438	eval-auc: 0.5737
+loss as step 130600: 0.553637	time: 33
+batch-auc:0.5565	eval-auc: 0.5732
+loss as step 130700: 0.521637	time: 33
+batch-auc:0.5465	eval-auc: 0.5734
+loss as step 130800: 0.649787	time: 34
+batch-auc:0.5246	eval-auc: 0.5727
+loss as step 130900: 0.680367	time: 33
+batch-auc:0.5394	eval-auc: 0.5716
+loss as step 131000: 0.584864	time: 33
+batch-auc:0.5588	eval-auc: 0.5681
+loss as step 131100: 0.605170	time: 38
+batch-auc:0.5474	eval-auc: 0.5713
+loss as step 131200: 0.553998	time: 33
+batch-auc:0.5538	eval-auc: 0.5706
+loss as step 131300: 0.617131	time: 33
+batch-auc:0.5256	eval-auc: 0.5733
+loss as step 131400: 0.649282	time: 33
+batch-auc:0.5297	eval-auc: 0.5713
+loss as step 131500: 0.585184	time: 33
+batch-auc:0.5493	eval-auc: 0.5717
+loss as step 131600: 0.616974	time: 33
+batch-auc:0.5485	eval-auc: 0.5717
+loss as step 131700: 0.533140	time: 33
+batch-auc:0.5404	eval-auc: 0.5700
+loss as step 131800: 0.533389	time: 33
+batch-auc:0.5600	eval-auc: 0.5680
+loss as step 131900: 0.543078	time: 33
+batch-auc:0.5662	eval-auc: 0.5720
+loss as step 132000: 0.574607	time: 32
+batch-auc:0.5436	eval-auc: 0.5726
+loss as step 132100: 0.543285	time: 38
+batch-auc:0.5529	eval-auc: 0.5715
+loss as step 132200: 0.637093	time: 33
+batch-auc:0.5454	eval-auc: 0.5713
+loss as step 132300: 0.542960	time: 34
+batch-auc:0.5350	eval-auc: 0.5719
+loss as step 132400: 0.574600	time: 33
+batch-auc:0.5324	eval-auc: 0.5723
+loss as step 132500: 0.532318	time: 33
+batch-auc:0.5172	eval-auc: 0.5721
+loss as step 132600: 0.460505	time: 33
+batch-auc:0.5472	eval-auc: 0.5700
+loss as step 132700: 0.554018	time: 33
+batch-auc:0.5604	eval-auc: 0.5676
+loss as step 132800: 0.532224	time: 33
+batch-auc:0.5550	eval-auc: 0.5736
+loss as step 132900: 0.605691	time: 33
+batch-auc:0.5401	eval-auc: 0.5677
+loss as step 133000: 0.532611	time: 33
+batch-auc:0.5314	eval-auc: 0.5731
+loss as step 133100: 0.594900	time: 38
+batch-auc:0.5568	eval-auc: 0.5705
+loss as step 133200: 0.656229	time: 33
+batch-auc:0.5590	eval-auc: 0.5692
+loss as step 133300: 0.523284	time: 33
+batch-auc:0.5631	eval-auc: 0.5721
+loss as step 133400: 0.574750	time: 34
+batch-auc:0.5453	eval-auc: 0.5762
+loss as step 133500: 0.542800	time: 34
+batch-auc:0.5388	eval-auc: 0.5767
+loss as step 133600: 0.616680	time: 33
+batch-auc:0.5395	eval-auc: 0.5722
+loss as step 133700: 0.553799	time: 32
+batch-auc:0.5716	eval-auc: 0.5734
+loss as step 133800: 0.584920	time: 33
+batch-auc:0.5549	eval-auc: 0.5733
+loss as step 133900: 0.606318	time: 33
+batch-auc:0.5521	eval-auc: 0.5750
+loss as step 134000: 0.533693	time: 34
+batch-auc:0.5492	eval-auc: 0.5735
+loss as step 134100: 0.543408	time: 37
+batch-auc:0.5696	eval-auc: 0.5713
+loss as step 134200: 0.615771	time: 33
+batch-auc:0.5720	eval-auc: 0.5719
+loss as step 134300: 0.564306	time: 33
+batch-auc:0.5526	eval-auc: 0.5734
+loss as step 134400: 0.564166	time: 33
+batch-auc:0.5525	eval-auc: 0.5736
+loss as step 134500: 0.532352	time: 34
+batch-auc:0.5647	eval-auc: 0.5755
+loss as step 134600: 0.522983	time: 33
+batch-auc:0.5419	eval-auc: 0.5746
+loss as step 134700: 0.616476	time: 33
+batch-auc:0.5501	eval-auc: 0.5754
+loss as step 134800: 0.511047	time: 33
+batch-auc:0.5474	eval-auc: 0.5769
+loss as step 134900: 0.564236	time: 33
+batch-auc:0.5343	eval-auc: 0.5743
+loss as step 135000: 0.511130	time: 33
+batch-auc:0.5328	eval-auc: 0.5772
+loss as step 135100: 0.564010	time: 39
+batch-auc:0.5141	eval-auc: 0.5779
+loss as step 135200: 0.618201	time: 33
+batch-auc:0.5347	eval-auc: 0.5806
+loss as step 135300: 0.606565	time: 33
+batch-auc:0.5215	eval-auc: 0.5761
+loss as step 135400: 0.637348	time: 33
+batch-auc:0.5275	eval-auc: 0.5727
+loss as step 135500: 0.542791	time: 33
+batch-auc:0.5166	eval-auc: 0.5762
+loss as step 135600: 0.595987	time: 33
+batch-auc:0.5068	eval-auc: 0.5756
+loss as step 135700: 0.596206	time: 33
+batch-auc:0.5400	eval-auc: 0.5761
+loss as step 135800: 0.626275	time: 32
+batch-auc:0.5378	eval-auc: 0.5748
+loss as step 135900: 0.627724	time: 33
+batch-auc:0.5452	eval-auc: 0.5746
+loss as step 136000: 0.584888	time: 33
+batch-auc:0.5613	eval-auc: 0.5697
+loss as step 136100: 0.502180	time: 37
+batch-auc:0.5663	eval-auc: 0.5728
+loss as step 136200: 0.531876	time: 32
+batch-auc:0.5250	eval-auc: 0.5775
+loss as step 136300: 0.668619	time: 33
+batch-auc:0.5484	eval-auc: 0.5715
+loss as step 136400: 0.510283	time: 33
+batch-auc:0.5373	eval-auc: 0.5784
+loss as step 136500: 0.553360	time: 33
+batch-auc:0.5261	eval-auc: 0.5760
+loss as step 136600: 0.458093	time: 33
+batch-auc:0.5416	eval-auc: 0.5746
+loss as step 136700: 0.595537	time: 33
+batch-auc:0.5436	eval-auc: 0.5760
+loss as step 136800: 0.605957	time: 33
+batch-auc:0.5424	eval-auc: 0.5729
+loss as step 136900: 0.574601	time: 32
+batch-auc:0.5419	eval-auc: 0.5681
+loss as step 137000: 0.501895	time: 32
+batch-auc:0.5630	eval-auc: 0.5716
+loss as step 137100: 0.543193	time: 38
+batch-auc:0.5616	eval-auc: 0.5736
+loss as step 137200: 0.605490	time: 33
+batch-auc:0.5562	eval-auc: 0.5702
+loss as step 137300: 0.595285	time: 32
+batch-auc:0.5635	eval-auc: 0.5713
+loss as step 137400: 0.521884	time: 33
+batch-auc:0.5578	eval-auc: 0.5726
+loss as step 137500: 0.533624	time: 32
+batch-auc:0.5523	eval-auc: 0.5703
+loss as step 137600: 0.627420	time: 33
+batch-auc:0.5585	eval-auc: 0.5741
+loss as step 137700: 0.514066	time: 32
+batch-auc:0.5630	eval-auc: 0.5714
+loss as step 137800: 0.553426	time: 32
+batch-auc:0.5574	eval-auc: 0.5750
+loss as step 137900: 0.511340	time: 32
+batch-auc:0.5103	eval-auc: 0.5748
+loss as step 138000: 0.553419	time: 32
+batch-auc:0.5225	eval-auc: 0.5748
+loss as step 138100: 0.606633	time: 38
+batch-auc:0.5344	eval-auc: 0.5735
+loss as step 138200: 0.522241	time: 32
+batch-auc:0.5435	eval-auc: 0.5736
+loss as step 138300: 0.616911	time: 33
+batch-auc:0.5530	eval-auc: 0.5739
+loss as step 138400: 0.521850	time: 33
+batch-auc:0.5321	eval-auc: 0.5727
+loss as step 138500: 0.542726	time: 33
+batch-auc:0.5375	eval-auc: 0.5726
+loss as step 138600: 0.553559	time: 32
+batch-auc:0.5199	eval-auc: 0.5732
+loss as step 138700: 0.616322	time: 32
+batch-auc:0.5431	eval-auc: 0.5691
+loss as step 138800: 0.531984	time: 32
+batch-auc:0.5324	eval-auc: 0.5743
+loss as step 138900: 0.553500	time: 32
+batch-auc:0.5397	eval-auc: 0.5723
+loss as step 139000: 0.490837	time: 32
+batch-auc:0.5657	eval-auc: 0.5727
+loss as step 139100: 0.615874	time: 38
+batch-auc:0.5527	eval-auc: 0.5697
+loss as step 139200: 0.574560	time: 32
+batch-auc:0.5630	eval-auc: 0.5723
+loss as step 139300: 0.585339	time: 32
+batch-auc:0.5457	eval-auc: 0.5743
+loss as step 139400: 0.574637	time: 32
+batch-auc:0.5239	eval-auc: 0.5732
+loss as step 139500: 0.636861	time: 32
+batch-auc:0.5524	eval-auc: 0.5722
+loss as step 139600: 0.585057	time: 32
+batch-auc:0.5541	eval-auc: 0.5718
+loss as step 139700: 0.523927	time: 32
+batch-auc:0.5596	eval-auc: 0.5699
+loss as step 139800: 0.605431	time: 32
+batch-auc:0.5570	eval-auc: 0.5727
+loss as step 139900: 0.499915	time: 32
+batch-auc:0.5469	eval-auc: 0.5758
+loss as step 140000: 0.669827	time: 32
+batch-auc:0.5375	eval-auc: 0.5715
+loss as step 140100: 0.595147	time: 38
+batch-auc:0.5486	eval-auc: 0.5694
+loss as step 140200: 0.617177	time: 32
+batch-auc:0.5537	eval-auc: 0.5724
+loss as step 140300: 0.489987	time: 32
+batch-auc:0.5628	eval-auc: 0.5740
+loss as step 140400: 0.606653	time: 32
+batch-auc:0.5372	eval-auc: 0.5743
+loss as step 140500: 0.542936	time: 32
+batch-auc:0.5365	eval-auc: 0.5736
+loss as step 140600: 0.564065	time: 32
+batch-auc:0.5125	eval-auc: 0.5712
+loss as step 140700: 0.553511	time: 32
+batch-auc:0.5238	eval-auc: 0.5694
+loss as step 140800: 0.661235	time: 32
+batch-auc:0.5425	eval-auc: 0.5727
+loss as step 140900: 0.553429	time: 31
+batch-auc:0.5126	eval-auc: 0.5731
+loss as step 141000: 0.543225	time: 32
+batch-auc:0.5395	eval-auc: 0.5701
+loss as step 141100: 0.627884	time: 37
+batch-auc:0.5452	eval-auc: 0.5707
+loss as step 141200: 0.596141	time: 32
+batch-auc:0.5494	eval-auc: 0.5713
+loss as step 141300: 0.606897	time: 32
+batch-auc:0.5370	eval-auc: 0.5743
+loss as step 141400: 0.657393	time: 32
+batch-auc:0.5542	eval-auc: 0.5699
+loss as step 141500: 0.553661	time: 32
+batch-auc:0.5697	eval-auc: 0.5724
+loss as step 141600: 0.499548	time: 32
+batch-auc:0.5432	eval-auc: 0.5739
+loss as step 141700: 0.596830	time: 32
+batch-auc:0.5172	eval-auc: 0.5760
+loss as step 141800: 0.605866	time: 32
+batch-auc:0.5320	eval-auc: 0.5701
+loss as step 141900: 0.532461	time: 32
+batch-auc:0.5686	eval-auc: 0.5738
+loss as step 142000: 0.553546	time: 32
+batch-auc:0.5501	eval-auc: 0.5750
+loss as step 142100: 0.585286	time: 37
+batch-auc:0.5373	eval-auc: 0.5718
+loss as step 142200: 0.467277	time: 32
+batch-auc:0.5504	eval-auc: 0.5748
+loss as step 142300: 0.595356	time: 32
+batch-auc:0.5353	eval-auc: 0.5696
+loss as step 142400: 0.606292	time: 32
+batch-auc:0.5741	eval-auc: 0.5713
+loss as step 142500: 0.595488	time: 32
+batch-auc:0.5238	eval-auc: 0.5712
+loss as step 142600: 0.543635	time: 32
+batch-auc:0.5382	eval-auc: 0.5708
+loss as step 142700: 0.522301	time: 32
+batch-auc:0.5592	eval-auc: 0.5689
+loss as step 142800: 0.596107	time: 33
+batch-auc:0.5514	eval-auc: 0.5714
+loss as step 142900: 0.553576	time: 32
+batch-auc:0.5569	eval-auc: 0.5716
+loss as step 143000: 0.481893	time: 31
+batch-auc:0.5577	eval-auc: 0.5697
+loss as step 143100: 0.606481	time: 37
+batch-auc:0.5202	eval-auc: 0.5720
+loss as step 143200: 0.584931	time: 32
+batch-auc:0.5473	eval-auc: 0.5709
+loss as step 143300: 0.574634	time: 33
+batch-auc:0.5707	eval-auc: 0.5734
+loss as step 143400: 0.574560	time: 32
+batch-auc:0.5468	eval-auc: 0.5720
+loss as step 143500: 0.606599	time: 32
+batch-auc:0.5461	eval-auc: 0.5730
+loss as step 143600: 0.564095	time: 32
+batch-auc:0.5616	eval-auc: 0.5733
+loss as step 143700: 0.585544	time: 32
+batch-auc:0.5178	eval-auc: 0.5729
+loss as step 143800: 0.585152	time: 32
+batch-auc:0.5374	eval-auc: 0.5701
+loss as step 143900: 0.584992	time: 32
+batch-auc:0.5531	eval-auc: 0.5700
+loss as step 144000: 0.638249	time: 33
+batch-auc:0.5420	eval-auc: 0.5698
+loss as step 144100: 0.553591	time: 37
+batch-auc:0.5520	eval-auc: 0.5684
+loss as step 144200: 0.564138	time: 33
+batch-auc:0.5328	eval-auc: 0.5706
+loss as step 144300: 0.669214	time: 33
+batch-auc:0.5404	eval-auc: 0.5658
+loss as step 144400: 0.574566	time: 32
+batch-auc:0.5645	eval-auc: 0.5682
+loss as step 144500: 0.585207	time: 33
+batch-auc:0.5489	eval-auc: 0.5694
+loss as step 144600: 0.628343	time: 33
+batch-auc:0.5415	eval-auc: 0.5715
+loss as step 144700: 0.595851	time: 32
+batch-auc:0.5476	eval-auc: 0.5676
+loss as step 144800: 0.532349	time: 32
+batch-auc:0.5474	eval-auc: 0.5703
+loss as step 144900: 0.658661	time: 33
+batch-auc:0.5399	eval-auc: 0.5667
+loss as step 145000: 0.595806	time: 33
+batch-auc:0.5620	eval-auc: 0.5706
+loss as step 145100: 0.616713	time: 38
+batch-auc:0.5506	eval-auc: 0.5703
+loss as step 145200: 0.542852	time: 32
+batch-auc:0.5429	eval-auc: 0.5686
+loss as step 145300: 0.532747	time: 32
+batch-auc:0.5293	eval-auc: 0.5686
+loss as step 145400: 0.606146	time: 33
+batch-auc:0.5620	eval-auc: 0.5692
+loss as step 145500: 0.532962	time: 32
+batch-auc:0.5554	eval-auc: 0.5685
+loss as step 145600: 0.574596	time: 32
+batch-auc:0.5732	eval-auc: 0.5719
+loss as step 145700: 0.542836	time: 32
+batch-auc:0.5429	eval-auc: 0.5713
+loss as step 145800: 0.522392	time: 33
+batch-auc:0.5568	eval-auc: 0.5692
+loss as step 145900: 0.638142	time: 32
+batch-auc:0.5397	eval-auc: 0.5698
+loss as step 146000: 0.564029	time: 33
+batch-auc:0.5326	eval-auc: 0.5706
+loss as step 146100: 0.543350	time: 39
+batch-auc:0.5419	eval-auc: 0.5671
+loss as step 146200: 0.501190	time: 33
+batch-auc:0.5478	eval-auc: 0.5671
+loss as step 146300: 0.492321	time: 32
+batch-auc:0.5397	eval-auc: 0.5660
+loss as step 146400: 0.542949	time: 33
+batch-auc:0.5529	eval-auc: 0.5661
+loss as step 146500: 0.543773	time: 33
+batch-auc:0.5430	eval-auc: 0.5661
+loss as step 146600: 0.605573	time: 32
+batch-auc:0.5731	eval-auc: 0.5660
+loss as step 146700: 0.521998	time: 33
+batch-auc:0.5422	eval-auc: 0.5692
+loss as step 146800: 0.574552	time: 33
+batch-auc:0.5497	eval-auc: 0.5689
+loss as step 146900: 0.626980	time: 33
+batch-auc:0.5534	eval-auc: 0.5682
+loss as step 147000: 0.521038	time: 33
+batch-auc:0.5272	eval-auc: 0.5715
+loss as step 147100: 0.532144	time: 37
+batch-auc:0.5428	eval-auc: 0.5716
+loss as step 147200: 0.617013	time: 32
+batch-auc:0.5321	eval-auc: 0.5686
+loss as step 147300: 0.595158	time: 33
+batch-auc:0.5722	eval-auc: 0.5681
+loss as step 147400: 0.553831	time: 32
+batch-auc:0.5363	eval-auc: 0.5694
+loss as step 147500: 0.522596	time: 32
+batch-auc:0.5662	eval-auc: 0.5711
+loss as step 147600: 0.585211	time: 32
+batch-auc:0.5410	eval-auc: 0.5706
+loss as step 147700: 0.574729	time: 33
+batch-auc:0.5292	eval-auc: 0.5702
+loss as step 147800: 0.624729	time: 33
+batch-auc:0.5478	eval-auc: 0.5661
+loss as step 147900: 0.542994	time: 33
+batch-auc:0.5733	eval-auc: 0.5714
+loss as step 148000: 0.564123	time: 33
+batch-auc:0.5294	eval-auc: 0.5720
+loss as step 148100: 0.616947	time: 37
+batch-auc:0.5219	eval-auc: 0.5719
+loss as step 148200: 0.564452	time: 33
+batch-auc:0.5361	eval-auc: 0.5702
+loss as step 148300: 0.628346	time: 33
+batch-auc:0.5299	eval-auc: 0.5745
+loss as step 148400: 0.553566	time: 33
+batch-auc:0.5466	eval-auc: 0.5725
+loss as step 148500: 0.585588	time: 32
+batch-auc:0.5199	eval-auc: 0.5757
+loss as step 148600: 0.606978	time: 33
+batch-auc:0.5251	eval-auc: 0.5724
+loss as step 148700: 0.574689	time: 32
+batch-auc:0.5219	eval-auc: 0.5710
+loss as step 148800: 0.627140	time: 32
+batch-auc:0.5548	eval-auc: 0.5698
+loss as step 148900: 0.542959	time: 33
+batch-auc:0.5469	eval-auc: 0.5701
+loss as step 149000: 0.469148	time: 32
+batch-auc:0.5316	eval-auc: 0.5721
+loss as step 149100: 0.553268	time: 37
+batch-auc:0.5370	eval-auc: 0.5738
+loss as step 149200: 0.543202	time: 32
+batch-auc:0.5194	eval-auc: 0.5707
+loss as step 149300: 0.522438	time: 33
+batch-auc:0.5562	eval-auc: 0.5702
+loss as step 149400: 0.596045	time: 32
+batch-auc:0.5480	eval-auc: 0.5729
+loss as step 149500: 0.606673	time: 33
+batch-auc:0.5554	eval-auc: 0.5726
+loss as step 149600: 0.500898	time: 33
+batch-auc:0.5373	eval-auc: 0.5717
+loss as step 149700: 0.585006	time: 33
+batch-auc:0.5490	eval-auc: 0.5704
+loss as step 149800: 0.676418	time: 33
+batch-auc:0.5576	eval-auc: 0.5685
+loss as step 149900: 0.564086	time: 33
+batch-auc:0.5683	eval-auc: 0.5723
+loss as step 150000: 0.543236	time: 33
+batch-auc:0.5518	eval-auc: 0.5738
+loss as step 150100: 0.616817	time: 38
+batch-auc:0.5429	eval-auc: 0.5734
+loss as step 150200: 0.513495	time: 32
+batch-auc:0.5606	eval-auc: 0.5724
+loss as step 150300: 0.543372	time: 33
+batch-auc:0.5612	eval-auc: 0.5735
+loss as step 150400: 0.635430	time: 32
+batch-auc:0.5505	eval-auc: 0.5702
+loss as step 150500: 0.511056	time: 32
+batch-auc:0.5461	eval-auc: 0.5746
+loss as step 150600: 0.490724	time: 32
+batch-auc:0.5445	eval-auc: 0.5710
+loss as step 150700: 0.574585	time: 33
+batch-auc:0.5410	eval-auc: 0.5736
+loss as step 150800: 0.511507	time: 32
+batch-auc:0.5411	eval-auc: 0.5738
+loss as step 150900: 0.678897	time: 32
+batch-auc:0.5486	eval-auc: 0.5716
+loss as step 151000: 0.584922	time: 33
+batch-auc:0.5561	eval-auc: 0.5724
+loss as step 151100: 0.542879	time: 38
+batch-auc:0.5295	eval-auc: 0.5758
+loss as step 151200: 0.659694	time: 33
+batch-auc:0.5234	eval-auc: 0.5749
+loss as step 151300: 0.617413	time: 32
+batch-auc:0.5500	eval-auc: 0.5745
+loss as step 151400: 0.532323	time: 32
+batch-auc:0.5311	eval-auc: 0.5733
+loss as step 151500: 0.574701	time: 32
+batch-auc:0.5508	eval-auc: 0.5702
+loss as step 151600: 0.574772	time: 33
+batch-auc:0.5614	eval-auc: 0.5728
+loss as step 151700: 0.584937	time: 32
+batch-auc:0.5603	eval-auc: 0.5728
+loss as step 151800: 0.522320	time: 32
+batch-auc:0.5712	eval-auc: 0.5742
+loss as step 151900: 0.533435	time: 33
+batch-auc:0.5484	eval-auc: 0.5730
+loss as step 152000: 0.521808	time: 32
+batch-auc:0.5595	eval-auc: 0.5736
+loss as step 152100: 0.564059	time: 39
+batch-auc:0.5313	eval-auc: 0.5768
+loss as step 152200: 0.511602	time: 33
+batch-auc:0.5506	eval-auc: 0.5753
+loss as step 152300: 0.553476	time: 33
+batch-auc:0.5553	eval-auc: 0.5755
+loss as step 152400: 0.564057	time: 32
+batch-auc:0.5518	eval-auc: 0.5750
+loss as step 152500: 0.574551	time: 33
+batch-auc:0.5457	eval-auc: 0.5732
+loss as step 152600: 0.647746	time: 33
+batch-auc:0.5491	eval-auc: 0.5722
+loss as step 152700: 0.564126	time: 32
+batch-auc:0.5562	eval-auc: 0.5736
+loss as step 152800: 0.512034	time: 33
+batch-auc:0.5542	eval-auc: 0.5709
+loss as step 152900: 0.626432	time: 33
+batch-auc:0.5585	eval-auc: 0.5695
+loss as step 153000: 0.668070	time: 33
+batch-auc:0.5641	eval-auc: 0.5738
+loss as step 153100: 0.511398	time: 37
+batch-auc:0.5327	eval-auc: 0.5749
+loss as step 153200: 0.490502	time: 32
+batch-auc:0.5478	eval-auc: 0.5748
+loss as step 153300: 0.617269	time: 32
+batch-auc:0.5291	eval-auc: 0.5763
+loss as step 153400: 0.543696	time: 32
+batch-auc:0.5547	eval-auc: 0.5723
+loss as step 153500: 0.595183	time: 32
+batch-auc:0.5454	eval-auc: 0.5721
+loss as step 153600: 0.626196	time: 32
+batch-auc:0.5736	eval-auc: 0.5740
+loss as step 153700: 0.595637	time: 33
+batch-auc:0.5640	eval-auc: 0.5744
+loss as step 153800: 0.511675	time: 33
+batch-auc:0.5505	eval-auc: 0.5757
+loss as step 153900: 0.636588	time: 32
+batch-auc:0.5463	eval-auc: 0.5732
+loss as step 154000: 0.564056	time: 32
+batch-auc:0.5424	eval-auc: 0.5785
+loss as step 154100: 0.605773	time: 38
+batch-auc:0.5442	eval-auc: 0.5729
+loss as step 154200: 0.564185	time: 33
+batch-auc:0.5363	eval-auc: 0.5739
+loss as step 154300: 0.542866	time: 32
+batch-auc:0.5232	eval-auc: 0.5750
+loss as step 154400: 0.542991	time: 33
+batch-auc:0.5474	eval-auc: 0.5738
+loss as step 154500: 0.574592	time: 33
+batch-auc:0.5367	eval-auc: 0.5753
+loss as step 154600: 0.489495	time: 33
+batch-auc:0.5307	eval-auc: 0.5740
+loss as step 154700: 0.553756	time: 33
+batch-auc:0.5666	eval-auc: 0.5719
+loss as step 154800: 0.532706	time: 33
+batch-auc:0.5610	eval-auc: 0.5721
+loss as step 154900: 0.553599	time: 33
+batch-auc:0.5275	eval-auc: 0.5729
+loss as step 155000: 0.543683	time: 33
+batch-auc:0.5365	eval-auc: 0.5704
+loss as step 155100: 0.543684	time: 37
+batch-auc:0.5627	eval-auc: 0.5671
+loss as step 155200: 0.511126	time: 32
+batch-auc:0.5347	eval-auc: 0.5754
+loss as step 155300: 0.616867	time: 33
+batch-auc:0.5368	eval-auc: 0.5745
+loss as step 155400: 0.628254	time: 33
+batch-auc:0.5355	eval-auc: 0.5761
+loss as step 155500: 0.542829	time: 33
+batch-auc:0.5332	eval-auc: 0.5748
+loss as step 155600: 0.553566	time: 33
+batch-auc:0.5550	eval-auc: 0.5757
+loss as step 155700: 0.564247	time: 33
+batch-auc:0.5573	eval-auc: 0.5734
+loss as step 155800: 0.543660	time: 33
+batch-auc:0.5551	eval-auc: 0.5725
+loss as step 155900: 0.564028	time: 33
+batch-auc:0.5158	eval-auc: 0.5755
+loss as step 156000: 0.617686	time: 33
+batch-auc:0.5612	eval-auc: 0.5784
+loss as step 156100: 0.564061	time: 38
+batch-auc:0.5334	eval-auc: 0.5761
+loss as step 156200: 0.500819	time: 33
+batch-auc:0.5442	eval-auc: 0.5753
+loss as step 156300: 0.553466	time: 33
+batch-auc:0.5437	eval-auc: 0.5744
+loss as step 156400: 0.543256	time: 33
+batch-auc:0.5567	eval-auc: 0.5737
+loss as step 156500: 0.542841	time: 33
+batch-auc:0.5353	eval-auc: 0.5750
+loss as step 156600: 0.585771	time: 33
+batch-auc:0.5371	eval-auc: 0.5754
+loss as step 156700: 0.499767	time: 32
+batch-auc:0.5181	eval-auc: 0.5766
+loss as step 156800: 0.647704	time: 33
+batch-auc:0.5303	eval-auc: 0.5709
+loss as step 156900: 0.649909	time: 33
+batch-auc:0.5529	eval-auc: 0.5769
+loss as step 157000: 0.564048	time: 33
+batch-auc:0.5440	eval-auc: 0.5748
+loss as step 157100: 0.574589	time: 38
+batch-auc:0.5393	eval-auc: 0.5753
+loss as step 157200: 0.574600	time: 33
+batch-auc:0.5604	eval-auc: 0.5730
+loss as step 157300: 0.563985	time: 33
+batch-auc:0.5548	eval-auc: 0.5756
+loss as step 157400: 0.595805	time: 33
+batch-auc:0.5661	eval-auc: 0.5734
+loss as step 157500: 0.511233	time: 33
+batch-auc:0.5769	eval-auc: 0.5744
+loss as step 157600: 0.585232	time: 33
+batch-auc:0.5576	eval-auc: 0.5746
+loss as step 157700: 0.532619	time: 33
+batch-auc:0.5345	eval-auc: 0.5746
+loss as step 157800: 0.574577	time: 33
+batch-auc:0.5518	eval-auc: 0.5739
+loss as step 157900: 0.574580	time: 33
+batch-auc:0.5654	eval-auc: 0.5733
+loss as step 158000: 0.532342	time: 33
+batch-auc:0.5449	eval-auc: 0.5745
+loss as step 158100: 0.521610	time: 37
+batch-auc:0.5732	eval-auc: 0.5742
+loss as step 158200: 0.606485	time: 33
+batch-auc:0.5673	eval-auc: 0.5737
+loss as step 158300: 0.510914	time: 33
+batch-auc:0.5474	eval-auc: 0.5741
+loss as step 158400: 0.615817	time: 33
+batch-auc:0.5563	eval-auc: 0.5705
+loss as step 158500: 0.616629	time: 33
+batch-auc:0.5726	eval-auc: 0.5738
+loss as step 158600: 0.564803	time: 33
+batch-auc:0.5640	eval-auc: 0.5704
+loss as step 158700: 0.574559	time: 33
+batch-auc:0.5550	eval-auc: 0.5726
+loss as step 158800: 0.553784	time: 33
+batch-auc:0.5413	eval-auc: 0.5726
+loss as step 158900: 0.521430	time: 32
+batch-auc:0.5509	eval-auc: 0.5732
+loss as step 159000: 0.533233	time: 32
+batch-auc:0.5483	eval-auc: 0.5702
+loss as step 159100: 0.585132	time: 38
+batch-auc:0.5481	eval-auc: 0.5714
+loss as step 159200: 0.542844	time: 33
+batch-auc:0.5350	eval-auc: 0.5721
+loss as step 159300: 0.606116	time: 33
+batch-auc:0.5221	eval-auc: 0.5710
+loss as step 159400: 0.521306	time: 33
+batch-auc:0.5414	eval-auc: 0.5726
+loss as step 159500: 0.617133	time: 33
+batch-auc:0.5264	eval-auc: 0.5692
+loss as step 159600: 0.533259	time: 33
+batch-auc:0.5477	eval-auc: 0.5676
+loss as step 159700: 0.554228	time: 33
+batch-auc:0.5554	eval-auc: 0.5677
+loss as step 159800: 0.585150	time: 33
+batch-auc:0.5706	eval-auc: 0.5707
+loss as step 159900: 0.553661	time: 33
+batch-auc:0.5376	eval-auc: 0.5711
+loss as step 160000: 0.574675	time: 33
+batch-auc:0.5298	eval-auc: 0.5723
+loss as step 160100: 0.617491	time: 37
+batch-auc:0.5397	eval-auc: 0.5718
+loss as step 160200: 0.616809	time: 33
+batch-auc:0.5206	eval-auc: 0.5715
+loss as step 160300: 0.456617	time: 32
+batch-auc:0.5314	eval-auc: 0.5766
+loss as step 160400: 0.564028	time: 33
+batch-auc:0.5322	eval-auc: 0.5761
+loss as step 160500: 0.574869	time: 32
+batch-auc:0.5148	eval-auc: 0.5785
+loss as step 160600: 0.468932	time: 32
+batch-auc:0.5263	eval-auc: 0.5752
+loss as step 160700: 0.532103	time: 32
+batch-auc:0.5306	eval-auc: 0.5736
+loss as step 160800: 0.522575	time: 33
+batch-auc:0.5574	eval-auc: 0.5719
+loss as step 160900: 0.628057	time: 33
+batch-auc:0.5407	eval-auc: 0.5730
+loss as step 161000: 0.543788	time: 32
+batch-auc:0.5571	eval-auc: 0.5690
+loss as step 161100: 0.678352	time: 38
+batch-auc:0.5684	eval-auc: 0.5700
+loss as step 161200: 0.624793	time: 33
+batch-auc:0.5677	eval-auc: 0.5689
+loss as step 161300: 0.543181	time: 33
+batch-auc:0.5651	eval-auc: 0.5716
+loss as step 161400: 0.574564	time: 33
+batch-auc:0.5551	eval-auc: 0.5698
+loss as step 161500: 0.585180	time: 34
+batch-auc:0.5238	eval-auc: 0.5725
+loss as step 161600: 0.532186	time: 33
+batch-auc:0.5225	eval-auc: 0.5734
+loss as step 161700: 0.680803	time: 33
+batch-auc:0.5434	eval-auc: 0.5720
+loss as step 161800: 0.584918	time: 33
+batch-auc:0.5537	eval-auc: 0.5707
+loss as step 161900: 0.574586	time: 33
+batch-auc:0.5758	eval-auc: 0.5709
+loss as step 162000: 0.543223	time: 33
+batch-auc:0.5632	eval-auc: 0.5712
+loss as step 162100: 0.532934	time: 38
+batch-auc:0.5626	eval-auc: 0.5707
+loss as step 162200: 0.534299	time: 33
+batch-auc:0.5562	eval-auc: 0.5695
+loss as step 162300: 0.584917	time: 34
+batch-auc:0.5526	eval-auc: 0.5693
+loss as step 162400: 0.448131	time: 34
+batch-auc:0.5442	eval-auc: 0.5723
+loss as step 162500: 0.649635	time: 34
+batch-auc:0.5142	eval-auc: 0.5733
+loss as step 162600: 0.595025	time: 33
+batch-auc:0.5390	eval-auc: 0.5685
+loss as step 162700: 0.439868	time: 33
+batch-auc:0.5456	eval-auc: 0.5700
+loss as step 162800: 0.648430	time: 33
+batch-auc:0.5546	eval-auc: 0.5725
+loss as step 162900: 0.564500	time: 33
+batch-auc:0.5503	eval-auc: 0.5695
+loss as step 163000: 0.553810	time: 33
+batch-auc:0.5299	eval-auc: 0.5717
+loss as step 163100: 0.574626	time: 38
+batch-auc:0.5726	eval-auc: 0.5742
+loss as step 163200: 0.511256	time: 32
+batch-auc:0.5320	eval-auc: 0.5725
+loss as step 163300: 0.543432	time: 32
+batch-auc:0.5479	eval-auc: 0.5717
+loss as step 163400: 0.636132	time: 33
+batch-auc:0.5581	eval-auc: 0.5726
+loss as step 163500: 0.490191	time: 33
+batch-auc:0.5555	eval-auc: 0.5752
+loss as step 163600: 0.533506	time: 33
+batch-auc:0.5285	eval-auc: 0.5740
+loss as step 163700: 0.521572	time: 33
+batch-auc:0.5272	eval-auc: 0.5768
+loss as step 163800: 0.574757	time: 33
+batch-auc:0.5309	eval-auc: 0.5769
+loss as step 163900: 0.543094	time: 33
+batch-auc:0.5310	eval-auc: 0.5760
+loss as step 164000: 0.511270	time: 33
+batch-auc:0.5443	eval-auc: 0.5758
+loss as step 164100: 0.617553	time: 38
+batch-auc:0.5431	eval-auc: 0.5790
+loss as step 164200: 0.585158	time: 33
+batch-auc:0.5319	eval-auc: 0.5772
+loss as step 164300: 0.564099	time: 33
+batch-auc:0.5348	eval-auc: 0.5752
+loss as step 164400: 0.564034	time: 33
+batch-auc:0.5210	eval-auc: 0.5759
+loss as step 164500: 0.564203	time: 33
+batch-auc:0.5497	eval-auc: 0.5744
+loss as step 164600: 0.595255	time: 33
+batch-auc:0.5641	eval-auc: 0.5730
+loss as step 164700: 0.553422	time: 33
+batch-auc:0.5378	eval-auc: 0.5774
+loss as step 164800: 0.596120	time: 33
+batch-auc:0.5370	eval-auc: 0.5766
+loss as step 164900: 0.626970	time: 33
+batch-auc:0.5455	eval-auc: 0.5766
+loss as step 165000: 0.585030	time: 33
+batch-auc:0.5781	eval-auc: 0.5755
+loss as step 165100: 0.605864	time: 38
+batch-auc:0.5708	eval-auc: 0.5750
+loss as step 165200: 0.648790	time: 33
+batch-auc:0.5556	eval-auc: 0.5782
+loss as step 165300: 0.585129	time: 32
+batch-auc:0.5309	eval-auc: 0.5770
+loss as step 165400: 0.606399	time: 33
+batch-auc:0.5478	eval-auc: 0.5749
+loss as step 165500: 0.595657	time: 34
+batch-auc:0.5611	eval-auc: 0.5757
+loss as step 165600: 0.575101	time: 33
+batch-auc:0.5362	eval-auc: 0.5787
+loss as step 165700: 0.521778	time: 33
+batch-auc:0.5240	eval-auc: 0.5740
+loss as step 165800: 0.564044	time: 33
+batch-auc:0.5659	eval-auc: 0.5743
+loss as step 165900: 0.628138	time: 33
+batch-auc:0.5434	eval-auc: 0.5764
+loss as step 166000: 0.553497	time: 33
+batch-auc:0.5554	eval-auc: 0.5762
+loss as step 166100: 0.616444	time: 38
+batch-auc:0.5477	eval-auc: 0.5738
+loss as step 166200: 0.616678	time: 32
+batch-auc:0.5781	eval-auc: 0.5743
+loss as step 166300: 0.564266	time: 33
+batch-auc:0.5568	eval-auc: 0.5743
+loss as step 166400: 0.616760	time: 33
+batch-auc:0.5376	eval-auc: 0.5732
+loss as step 166500: 0.543081	time: 33
+batch-auc:0.5414	eval-auc: 0.5721
+loss as step 166600: 0.553323	time: 32
+batch-auc:0.5626	eval-auc: 0.5747
+loss as step 166700: 0.595784	time: 33
+batch-auc:0.5456	eval-auc: 0.5746
+loss as step 166800: 0.615609	time: 33
+batch-auc:0.5456	eval-auc: 0.5702
+loss as step 166900: 0.595731	time: 33
+batch-auc:0.5602	eval-auc: 0.5737
+loss as step 167000: 0.574581	time: 33
+batch-auc:0.5480	eval-auc: 0.5700
+loss as step 167100: 0.522780	time: 37
+batch-auc:0.5634	eval-auc: 0.5707
+loss as step 167200: 0.564116	time: 33
+batch-auc:0.5414	eval-auc: 0.5709
+loss as step 167300: 0.532326	time: 33
+batch-auc:0.5530	eval-auc: 0.5719
+loss as step 167400: 0.553289	time: 33
+batch-auc:0.5131	eval-auc: 0.5735
+loss as step 167500: 0.553393	time: 33
+batch-auc:0.5197	eval-auc: 0.5732
+loss as step 167600: 0.628341	time: 33
+batch-auc:0.5210	eval-auc: 0.5722
+loss as step 167700: 0.606845	time: 33
+batch-auc:0.5201	eval-auc: 0.5706
+loss as step 167800: 0.595974	time: 33
+batch-auc:0.5259	eval-auc: 0.5702
+loss as step 167900: 0.543467	time: 33
+batch-auc:0.5467	eval-auc: 0.5679
+loss as step 168000: 0.521462	time: 34
+batch-auc:0.5335	eval-auc: 0.5715
+loss as step 168100: 0.531601	time: 37
+batch-auc:0.5175	eval-auc: 0.5711
+loss as step 168200: 0.584975	time: 33
+batch-auc:0.5435	eval-auc: 0.5648
+loss as step 168300: 0.543244	time: 34
+batch-auc:0.5446	eval-auc: 0.5676
+loss as step 168400: 0.595825	time: 32
+batch-auc:0.5426	eval-auc: 0.5693
+loss as step 168500: 0.616647	time: 32
+batch-auc:0.5320	eval-auc: 0.5664
+loss as step 168600: 0.670278	time: 33
+batch-auc:0.5262	eval-auc: 0.5690
+loss as step 168700: 0.574633	time: 33
+batch-auc:0.5323	eval-auc: 0.5681
+loss as step 168800: 0.564031	time: 33
+batch-auc:0.5404	eval-auc: 0.5682
+loss as step 168900: 0.626977	time: 32
+batch-auc:0.5390	eval-auc: 0.5679
+loss as step 169000: 0.574641	time: 33
+batch-auc:0.5277	eval-auc: 0.5706
+loss as step 169100: 0.564076	time: 39
+batch-auc:0.5366	eval-auc: 0.5703
+loss as step 169200: 0.510508	time: 33
+batch-auc:0.5332	eval-auc: 0.5716
+loss as step 169300: 0.659835	time: 33
+batch-auc:0.5406	eval-auc: 0.5699
+loss as step 169400: 0.543565	time: 33
+batch-auc:0.5549	eval-auc: 0.5678
+loss as step 169500: 0.649807	time: 33
+batch-auc:0.5533	eval-auc: 0.5695
+loss as step 169600: 0.650589	time: 33
+batch-auc:0.5340	eval-auc: 0.5721
+loss as step 169700: 0.564004	time: 32
+batch-auc:0.5192	eval-auc: 0.5733
+loss as step 169800: 0.605886	time: 33
+batch-auc:0.5236	eval-auc: 0.5706
+loss as step 169900: 0.564022	time: 33
+batch-auc:0.5443	eval-auc: 0.5690
+loss as step 170000: 0.584933	time: 33
+batch-auc:0.5466	eval-auc: 0.5704
+loss as step 170100: 0.574710	time: 38
+batch-auc:0.5512	eval-auc: 0.5708
+loss as step 170200: 0.574617	time: 34
+batch-auc:0.5542	eval-auc: 0.5677
+loss as step 170300: 0.511800	time: 33
+batch-auc:0.5572	eval-auc: 0.5688
+loss as step 170400: 0.499304	time: 33
+batch-auc:0.5525	eval-auc: 0.5711
+loss as step 170500: 0.458708	time: 33
+batch-auc:0.5225	eval-auc: 0.5666
+loss as step 170600: 0.606132	time: 33
+batch-auc:0.5523	eval-auc: 0.5661
+loss as step 170700: 0.500845	time: 33
+batch-auc:0.5687	eval-auc: 0.5680
+loss as step 170800: 0.532183	time: 33
+batch-auc:0.5378	eval-auc: 0.5717
+loss as step 170900: 0.638687	time: 33
+batch-auc:0.5652	eval-auc: 0.5714
+loss as step 171000: 0.605756	time: 33
+batch-auc:0.5638	eval-auc: 0.5677
+loss as step 171100: 0.542915	time: 37
+batch-auc:0.5697	eval-auc: 0.5702
+loss as step 171200: 0.478935	time: 33
+batch-auc:0.5608	eval-auc: 0.5733
+loss as step 171300: 0.616861	time: 33
+batch-auc:0.5356	eval-auc: 0.5717
+loss as step 171400: 0.543767	time: 33
+batch-auc:0.5551	eval-auc: 0.5689
+loss as step 171500: 0.522173	time: 33
+batch-auc:0.5706	eval-auc: 0.5709
+loss as step 171600: 0.585079	time: 33
+batch-auc:0.5690	eval-auc: 0.5728
+loss as step 171700: 0.637895	time: 33
+batch-auc:0.5386	eval-auc: 0.5743
+loss as step 171800: 0.574583	time: 32
+batch-auc:0.5465	eval-auc: 0.5705
+loss as step 171900: 0.564030	time: 33
+batch-auc:0.5529	eval-auc: 0.5702
+loss as step 172000: 0.647500	time: 33
+batch-auc:0.5598	eval-auc: 0.5700
+loss as step 172100: 0.553638	time: 38
+batch-auc:0.5444	eval-auc: 0.5696
+loss as step 172200: 0.553225	time: 33
+batch-auc:0.5523	eval-auc: 0.5736
+loss as step 172300: 0.510890	time: 33
+batch-auc:0.5174	eval-auc: 0.5705
+loss as step 172400: 0.574592	time: 32
+batch-auc:0.5358	eval-auc: 0.5682
+loss as step 172500: 0.492315	time: 33
+batch-auc:0.5545	eval-auc: 0.5684
+loss as step 172600: 0.554283	time: 33
+batch-auc:0.5519	eval-auc: 0.5652
+loss as step 172700: 0.594852	time: 32
+batch-auc:0.5856	eval-auc: 0.5681
+loss as step 172800: 0.574772	time: 33
+batch-auc:0.5439	eval-auc: 0.5759
+loss as step 172900: 0.467776	time: 33
+batch-auc:0.5236	eval-auc: 0.5744
+loss as step 173000: 0.595957	time: 32
+batch-auc:0.5430	eval-auc: 0.5716
+loss as step 173100: 0.625199	time: 38
+batch-auc:0.5762	eval-auc: 0.5683
+loss as step 173200: 0.564131	time: 33
+batch-auc:0.5535	eval-auc: 0.5716
+loss as step 173300: 0.596289	time: 33
+batch-auc:0.5424	eval-auc: 0.5748
+loss as step 173400: 0.510437	time: 33
+batch-auc:0.5228	eval-auc: 0.5749
+loss as step 173500: 0.669843	time: 32
+batch-auc:0.5308	eval-auc: 0.5735
+loss as step 173600: 0.574676	time: 34
+batch-auc:0.5425	eval-auc: 0.5757
+loss as step 173700: 0.680530	time: 33
+batch-auc:0.5427	eval-auc: 0.5742
+loss as step 173800: 0.564152	time: 33
+batch-auc:0.5685	eval-auc: 0.5712
+loss as step 173900: 0.657983	time: 32
+batch-auc:0.5706	eval-auc: 0.5705
+loss as step 174000: 0.626215	time: 33
+batch-auc:0.5471	eval-auc: 0.5722
+loss as step 174100: 0.595578	time: 38
+batch-auc:0.5339	eval-auc: 0.5732
+loss as step 174200: 0.543135	time: 33
+batch-auc:0.5380	eval-auc: 0.5723
+loss as step 174300: 0.564121	time: 33
+batch-auc:0.5261	eval-auc: 0.5752
+loss as step 174400: 0.564089	time: 33
+batch-auc:0.5343	eval-auc: 0.5722
+loss as step 174500: 0.564040	time: 33
+batch-auc:0.5351	eval-auc: 0.5744
+loss as step 174600: 0.510500	time: 33
+batch-auc:0.5426	eval-auc: 0.5769
+loss as step 174700: 0.585059	time: 33
+batch-auc:0.5221	eval-auc: 0.5743
+loss as step 174800: 0.585080	time: 34
+batch-auc:0.5526	eval-auc: 0.5731
+loss as step 174900: 0.553574	time: 32
+batch-auc:0.5505	eval-auc: 0.5745
+loss as step 175000: 0.595394	time: 34
+batch-auc:0.5572	eval-auc: 0.5720
+loss as step 175100: 0.595391	time: 38
+batch-auc:0.5570	eval-auc: 0.5718
+loss as step 175200: 0.646778	time: 33
+batch-auc:0.5571	eval-auc: 0.5727
+loss as step 175300: 0.637892	time: 33
+batch-auc:0.5590	eval-auc: 0.5731
+loss as step 175400: 0.574773	time: 33
+batch-auc:0.5355	eval-auc: 0.5749
+loss as step 175500: 0.553350	time: 33
+batch-auc:0.5308	eval-auc: 0.5746
+loss as step 175600: 0.596357	time: 32
+batch-auc:0.5365	eval-auc: 0.5753
+loss as step 175700: 0.679036	time: 33
+batch-auc:0.5560	eval-auc: 0.5714
+loss as step 175800: 0.669471	time: 33
+batch-auc:0.5548	eval-auc: 0.5719
+loss as step 175900: 0.564073	time: 33
+batch-auc:0.5302	eval-auc: 0.5751
+loss as step 176000: 0.553505	time: 33
+batch-auc:0.5285	eval-auc: 0.5733
+loss as step 176100: 0.504710	time: 38
+batch-auc:0.5479	eval-auc: 0.5703
+loss as step 176200: 0.574573	time: 33
+batch-auc:0.5842	eval-auc: 0.5715
+loss as step 176300: 0.656343	time: 33
+batch-auc:0.5568	eval-auc: 0.5702
+loss as step 176400: 0.606330	time: 33
+batch-auc:0.5617	eval-auc: 0.5742
+loss as step 176500: 0.637800	time: 33
+batch-auc:0.5598	eval-auc: 0.5740
+loss as step 176600: 0.607217	time: 33
+batch-auc:0.5489	eval-auc: 0.5769
+loss as step 176700: 0.616309	time: 33
+batch-auc:0.5362	eval-auc: 0.5747
+loss as step 176800: 0.606262	time: 33
+batch-auc:0.5416	eval-auc: 0.5754
+loss as step 176900: 0.484200	time: 32
+batch-auc:0.5424	eval-auc: 0.5724
+loss as step 177000: 0.574835	time: 33
+batch-auc:0.5354	eval-auc: 0.5784
+loss as step 177100: 0.542917	time: 38
+batch-auc:0.5265	eval-auc: 0.5738
+loss as step 177200: 0.595799	time: 33
+batch-auc:0.5367	eval-auc: 0.5742
+loss as step 177300: 0.574555	time: 33
+batch-auc:0.5463	eval-auc: 0.5709
+loss as step 177400: 0.490285	time: 33
+batch-auc:0.5503	eval-auc: 0.5723
+loss as step 177500: 0.605935	time: 34
+batch-auc:0.5317	eval-auc: 0.5708
+loss as step 177600: 0.584985	time: 33
+batch-auc:0.5344	eval-auc: 0.5725
+loss as step 177700: 0.523084	time: 33
+batch-auc:0.5641	eval-auc: 0.5702
+loss as step 177800: 0.553603	time: 33
+batch-auc:0.5682	eval-auc: 0.5733
+loss as step 177900: 0.585019	time: 33
+batch-auc:0.5351	eval-auc: 0.5739
+loss as step 178000: 0.595897	time: 33
+batch-auc:0.5369	eval-auc: 0.5741
+loss as step 178100: 0.553719	time: 38
+batch-auc:0.5314	eval-auc: 0.5731
+loss as step 178200: 0.533505	time: 33
+batch-auc:0.5498	eval-auc: 0.5714
+loss as step 178300: 0.564050	time: 32
+batch-auc:0.5511	eval-auc: 0.5752
+loss as step 178400: 0.553428	time: 33
+batch-auc:0.5312	eval-auc: 0.5772
+loss as step 178500: 0.553520	time: 33
+batch-auc:0.5264	eval-auc: 0.5757
+loss as step 178600: 0.521354	time: 33
+batch-auc:0.5272	eval-auc: 0.5763
+loss as step 178700: 0.553470	time: 33
+batch-auc:0.5375	eval-auc: 0.5753
+loss as step 178800: 0.543684	time: 33
+batch-auc:0.5471	eval-auc: 0.5738
+loss as step 178900: 0.585098	time: 33
+batch-auc:0.5779	eval-auc: 0.5757
+loss as step 179000: 0.637571	time: 33
+batch-auc:0.5348	eval-auc: 0.5772
+loss as step 179100: 0.468223	time: 38
+batch-auc:0.5526	eval-auc: 0.5799
+loss as step 179200: 0.616836	time: 33
+batch-auc:0.5422	eval-auc: 0.5744
+loss as step 179300: 0.542834	time: 33
+batch-auc:0.5355	eval-auc: 0.5762
+loss as step 179400: 0.564044	time: 33
+batch-auc:0.5548	eval-auc: 0.5760
+loss as step 179500: 0.615089	time: 33
+batch-auc:0.5463	eval-auc: 0.5692
+loss as step 179600: 0.522534	time: 33
+batch-auc:0.5610	eval-auc: 0.5735
+loss as step 179700: 0.533668	time: 33
+batch-auc:0.5830	eval-auc: 0.5741
+loss as step 179800: 0.511102	time: 33
+batch-auc:0.5268	eval-auc: 0.5774
+loss as step 179900: 0.628021	time: 33
+batch-auc:0.5271	eval-auc: 0.5765
+loss as step 180000: 0.564088	time: 34
+batch-auc:0.5368	eval-auc: 0.5753
+loss as step 180100: 0.574636	time: 38
+batch-auc:0.5226	eval-auc: 0.5755
+loss as step 180200: 0.574631	time: 33
+batch-auc:0.5392	eval-auc: 0.5762
+loss as step 180300: 0.522061	time: 33
+batch-auc:0.5275	eval-auc: 0.5729
+loss as step 180400: 0.521935	time: 33
+batch-auc:0.5587	eval-auc: 0.5748
+loss as step 180500: 0.554469	time: 33
+batch-auc:0.5520	eval-auc: 0.5749
+loss as step 180600: 0.647005	time: 33
+batch-auc:0.5506	eval-auc: 0.5761
+loss as step 180700: 0.553388	time: 33
+batch-auc:0.5569	eval-auc: 0.5784
+loss as step 180800: 0.647843	time: 34
+batch-auc:0.5506	eval-auc: 0.5748
+loss as step 180900: 0.574655	time: 34
+batch-auc:0.5459	eval-auc: 0.5758
+loss as step 181000: 0.564316	time: 33
+batch-auc:0.5513	eval-auc: 0.5735
+loss as step 181100: 0.616596	time: 38
+batch-auc:0.5539	eval-auc: 0.5761
+loss as step 181200: 0.532179	time: 34
+batch-auc:0.5496	eval-auc: 0.5758
+loss as step 181300: 0.564076	time: 33
+batch-auc:0.5502	eval-auc: 0.5759
+loss as step 181400: 0.513523	time: 34
+batch-auc:0.5838	eval-auc: 0.5730
+loss as step 181500: 0.606037	time: 33
+batch-auc:0.5683	eval-auc: 0.5763
+loss as step 181600: 0.564003	time: 33
+batch-auc:0.5513	eval-auc: 0.5780
+loss as step 181700: 0.532865	time: 33
+batch-auc:0.5537	eval-auc: 0.5749
+loss as step 181800: 0.460390	time: 33
+batch-auc:0.5484	eval-auc: 0.5755
+loss as step 181900: 0.585197	time: 33
+batch-auc:0.5484	eval-auc: 0.5741
+loss as step 182000: 0.616693	time: 34
+batch-auc:0.5478	eval-auc: 0.5742
+loss as step 182100: 0.639118	time: 38
+batch-auc:0.5617	eval-auc: 0.5767
+loss as step 182200: 0.605790	time: 33
+batch-auc:0.5392	eval-auc: 0.5721
+loss as step 182300: 0.543210	time: 33
+batch-auc:0.5562	eval-auc: 0.5751
+loss as step 182400: 0.502188	time: 33
+batch-auc:0.5540	eval-auc: 0.5728
+loss as step 182500: 0.605608	time: 33
+batch-auc:0.5603	eval-auc: 0.5760
+loss as step 182600: 0.625311	time: 33
+batch-auc:0.5653	eval-auc: 0.5755
+loss as step 182700: 0.637140	time: 33
+batch-auc:0.5795	eval-auc: 0.5763
+loss as step 182800: 0.574845	time: 33
+batch-auc:0.5605	eval-auc: 0.5797
+loss as step 182900: 0.574555	time: 33
+batch-auc:0.5290	eval-auc: 0.5773
+loss as step 183000: 0.657108	time: 33
+batch-auc:0.5690	eval-auc: 0.5758
+loss as step 183100: 0.553800	time: 37
+batch-auc:0.5342	eval-auc: 0.5764
+loss as step 183200: 0.543069	time: 33
+batch-auc:0.5649	eval-auc: 0.5778
+loss as step 183300: 0.605595	time: 33
+batch-auc:0.5530	eval-auc: 0.5755
+loss as step 183400: 0.585079	time: 33
+batch-auc:0.5326	eval-auc: 0.5789
+loss as step 183500: 0.625155	time: 33
+batch-auc:0.5452	eval-auc: 0.5727
+loss as step 183600: 0.595706	time: 32
+batch-auc:0.5331	eval-auc: 0.5748
+loss as step 183700: 0.553340	time: 34
+batch-auc:0.5339	eval-auc: 0.5780
+loss as step 183800: 0.575076	time: 33
+batch-auc:0.5129	eval-auc: 0.5780
+loss as step 183900: 0.532067	time: 34
+batch-auc:0.5424	eval-auc: 0.5750
+loss as step 184000: 0.595454	time: 33
+batch-auc:0.5308	eval-auc: 0.5744
+loss as step 184100: 0.542866	time: 38
+batch-auc:0.5456	eval-auc: 0.5763
+loss as step 184200: 0.553443	time: 33
+batch-auc:0.5273	eval-auc: 0.5763
+loss as step 184300: 0.585126	time: 33
+batch-auc:0.5487	eval-auc: 0.5746
+loss as step 184400: 0.646172	time: 33
+batch-auc:0.5497	eval-auc: 0.5707
+loss as step 184500: 0.488583	time: 33
+batch-auc:0.5549	eval-auc: 0.5796
+loss as step 184600: 0.574682	time: 33
+batch-auc:0.5344	eval-auc: 0.5794
+loss as step 184700: 0.595592	time: 32
+batch-auc:0.5481	eval-auc: 0.5754
+loss as step 184800: 0.543063	time: 33
+batch-auc:0.5451	eval-auc: 0.5744
+loss as step 184900: 0.521695	time: 33
+batch-auc:0.5368	eval-auc: 0.5743
+loss as step 185000: 0.585182	time: 33
+batch-auc:0.5432	eval-auc: 0.5729
+loss as step 185100: 0.553437	time: 38
+batch-auc:0.5293	eval-auc: 0.5748
+loss as step 185200: 0.521262	time: 33
+batch-auc:0.5294	eval-auc: 0.5761
+loss as step 185300: 0.595767	time: 33
+batch-auc:0.5247	eval-auc: 0.5745
+loss as step 185400: 0.635959	time: 34
+batch-auc:0.5504	eval-auc: 0.5703
+loss as step 185500: 0.521425	time: 33
+batch-auc:0.5571	eval-auc: 0.5753
+loss as step 185600: 0.574787	time: 33
+batch-auc:0.5398	eval-auc: 0.5733
+loss as step 185700: 0.627818	time: 33
+batch-auc:0.5424	eval-auc: 0.5735
+loss as step 185800: 0.595571	time: 33
+batch-auc:0.5706	eval-auc: 0.5732
+loss as step 185900: 0.669909	time: 33
+batch-auc:0.5499	eval-auc: 0.5728
+loss as step 186000: 0.616814	time: 33
+batch-auc:0.5402	eval-auc: 0.5717
+loss as step 186100: 0.564031	time: 37
+batch-auc:0.5382	eval-auc: 0.5715
+loss as step 186200: 0.553412	time: 33
+batch-auc:0.5431	eval-auc: 0.5712
+loss as step 186300: 0.534213	time: 32
+batch-auc:0.5365	eval-auc: 0.5689
+loss as step 186400: 0.513169	time: 33
+batch-auc:0.5723	eval-auc: 0.5696
+loss as step 186500: 0.489584	time: 33
+batch-auc:0.5452	eval-auc: 0.5760
+loss as step 186600: 0.574581	time: 33
+batch-auc:0.5339	eval-auc: 0.5730
+loss as step 186700: 0.574631	time: 33
+batch-auc:0.5404	eval-auc: 0.5744
+loss as step 186800: 0.658422	time: 33
+batch-auc:0.5328	eval-auc: 0.5713
+loss as step 186900: 0.584952	time: 33
+batch-auc:0.5626	eval-auc: 0.5726
+loss as step 187000: 0.554170	time: 33
+batch-auc:0.5462	eval-auc: 0.5712
+loss as step 187100: 0.478750	time: 37
+batch-auc:0.5391	eval-auc: 0.5754
+loss as step 187200: 0.500230	time: 33
+batch-auc:0.5142	eval-auc: 0.5746
+loss as step 187300: 0.553931	time: 33
+batch-auc:0.5531	eval-auc: 0.5708
+loss as step 187400: 0.605046	time: 33
+batch-auc:0.5713	eval-auc: 0.5701
+loss as step 187500: 0.574599	time: 33
+batch-auc:0.5816	eval-auc: 0.5748
+loss as step 187600: 0.543236	time: 33
+batch-auc:0.5635	eval-auc: 0.5755
+loss as step 187700: 0.626340	time: 33
+batch-auc:0.5605	eval-auc: 0.5737
+loss as step 187800: 0.543797	time: 34
+batch-auc:0.5477	eval-auc: 0.5740
+loss as step 187900: 0.532798	time: 32
+batch-auc:0.5728	eval-auc: 0.5755
+loss as step 188000: 0.511519	time: 33
+batch-auc:0.5522	eval-auc: 0.5787
+loss as step 188100: 0.605904	time: 38
+batch-auc:0.5484	eval-auc: 0.5730
+loss as step 188200: 0.584849	time: 33
+batch-auc:0.5599	eval-auc: 0.5729
+loss as step 188300: 0.585556	time: 33
+batch-auc:0.5459	eval-auc: 0.5779
+loss as step 188400: 0.605035	time: 33
+batch-auc:0.5464	eval-auc: 0.5718
+loss as step 188500: 0.617296	time: 33
+batch-auc:0.5419	eval-auc: 0.5772
+loss as step 188600: 0.574687	time: 33
+batch-auc:0.5301	eval-auc: 0.5751
+loss as step 188700: 0.532857	time: 33
+batch-auc:0.5478	eval-auc: 0.5739
+loss as step 188800: 0.564104	time: 33
+batch-auc:0.5427	eval-auc: 0.5755
+loss as step 188900: 0.584960	time: 33
+batch-auc:0.5290	eval-auc: 0.5748
+loss as step 189000: 0.585084	time: 32
+batch-auc:0.5351	eval-auc: 0.5756
+loss as step 189100: 0.510583	time: 38
+batch-auc:0.5281	eval-auc: 0.5802
+loss as step 189200: 0.604800	time: 33
+batch-auc:0.5265	eval-auc: 0.5708
+loss as step 189300: 0.585353	time: 33
+batch-auc:0.5404	eval-auc: 0.5773
+loss as step 189400: 0.669401	time: 33
+batch-auc:0.5390	eval-auc: 0.5739
+loss as step 189500: 0.542648	time: 33
+batch-auc:0.5441	eval-auc: 0.5794
+loss as step 189600: 0.584969	time: 33
+batch-auc:0.5489	eval-auc: 0.5743
+loss as step 189700: 0.616788	time: 34
+batch-auc:0.5532	eval-auc: 0.5760
+loss as step 189800: 0.522772	time: 33
+batch-auc:0.5321	eval-auc: 0.5766
+loss as step 189900: 0.637687	time: 33
+batch-auc:0.5548	eval-auc: 0.5738
+loss as step 190000: 0.667118	time: 33
+batch-auc:0.5546	eval-auc: 0.5749
+loss as step 190100: 0.667780	time: 37
+batch-auc:0.5617	eval-auc: 0.5752
+loss as step 190200: 0.626979	time: 33
+batch-auc:0.5711	eval-auc: 0.5755
+loss as step 190300: 0.595301	time: 33
+batch-auc:0.5451	eval-auc: 0.5763
+loss as step 190400: 0.512056	time: 33
+batch-auc:0.5633	eval-auc: 0.5761
+loss as step 190500: 0.543036	time: 33
+batch-auc:0.5681	eval-auc: 0.5751
+loss as step 190600: 0.564106	time: 33
+batch-auc:0.5307	eval-auc: 0.5767
+loss as step 190700: 0.635442	time: 32
+batch-auc:0.5325	eval-auc: 0.5741
+loss as step 190800: 0.639272	time: 33
+batch-auc:0.5393	eval-auc: 0.5794
+loss as step 190900: 0.543260	time: 33
+batch-auc:0.5452	eval-auc: 0.5750
+loss as step 191000: 0.574700	time: 33
+batch-auc:0.5313	eval-auc: 0.5776
+loss as step 191100: 0.543122	time: 38
+batch-auc:0.5300	eval-auc: 0.5775
+loss as step 191200: 0.532590	time: 32
+batch-auc:0.5491	eval-auc: 0.5785
+loss as step 191300: 0.595645	time: 33
+batch-auc:0.5549	eval-auc: 0.5785
+loss as step 191400: 0.585071	time: 33
+batch-auc:0.5309	eval-auc: 0.5775
+loss as step 191500: 0.585098	time: 33
+batch-auc:0.5538	eval-auc: 0.5760
+loss as step 191600: 0.525232	time: 33
+batch-auc:0.5722	eval-auc: 0.5719
+loss as step 191700: 0.479921	time: 33
+batch-auc:0.5507	eval-auc: 0.5774
+loss as step 191800: 0.512338	time: 34
+batch-auc:0.5450	eval-auc: 0.5771
+loss as step 191900: 0.543769	time: 33
+batch-auc:0.5437	eval-auc: 0.5748
+loss as step 192000: 0.574552	time: 33
+batch-auc:0.5495	eval-auc: 0.5763
+loss as step 192100: 0.543676	time: 38
+batch-auc:0.5625	eval-auc: 0.5770
+loss as step 192200: 0.501210	time: 33
+batch-auc:0.5711	eval-auc: 0.5766
+loss as step 192300: 0.564112	time: 33
+batch-auc:0.5189	eval-auc: 0.5843
+loss as step 192400: 0.585459	time: 33
+batch-auc:0.5269	eval-auc: 0.5816
+loss as step 192500: 0.604905	time: 33
+batch-auc:0.5620	eval-auc: 0.5740
+loss as step 192600: 0.595160	time: 33
+batch-auc:0.5463	eval-auc: 0.5800
+loss as step 192700: 0.616249	time: 33
+batch-auc:0.5612	eval-auc: 0.5791
+loss as step 192800: 0.584913	time: 33
+batch-auc:0.5554	eval-auc: 0.5796
+loss as step 192900: 0.564150	time: 32
+batch-auc:0.5378	eval-auc: 0.5782
+loss as step 193000: 0.606333	time: 33
+batch-auc:0.5676	eval-auc: 0.5827
+loss as step 193100: 0.501777	time: 38
+batch-auc:0.5238	eval-auc: 0.5804
+loss as step 193200: 0.584937	time: 33
+batch-auc:0.5438	eval-auc: 0.5805
+loss as step 193300: 0.628041	time: 33
+batch-auc:0.5501	eval-auc: 0.5811
+loss as step 193400: 0.616818	time: 33
+batch-auc:0.5433	eval-auc: 0.5811
+loss as step 193500: 0.553629	time: 33
+batch-auc:0.5541	eval-auc: 0.5803
+loss as step 193600: 0.574569	time: 33
+batch-auc:0.5629	eval-auc: 0.5780
+loss as step 193700: 0.544169	time: 33
+batch-auc:0.5502	eval-auc: 0.5760
+loss as step 193800: 0.511376	time: 33
+batch-auc:0.5485	eval-auc: 0.5802
+loss as step 193900: 0.553572	time: 33
+batch-auc:0.5345	eval-auc: 0.5780
+loss as step 194000: 0.553644	time: 33
+batch-auc:0.5529	eval-auc: 0.5776
+loss as step 194100: 0.542943	time: 38
+batch-auc:0.5595	eval-auc: 0.5793
+loss as step 194200: 0.553687	time: 33
+batch-auc:0.5459	eval-auc: 0.5783
+loss as step 194300: 0.511798	time: 33
+batch-auc:0.5471	eval-auc: 0.5795
+loss as step 194400: 0.501709	time: 33
+batch-auc:0.5423	eval-auc: 0.5780
+loss as step 194500: 0.627289	time: 33
+batch-auc:0.5565	eval-auc: 0.5770
+loss as step 194600: 0.626823	time: 33
+batch-auc:0.5491	eval-auc: 0.5757
+loss as step 194700: 0.626061	time: 32
+batch-auc:0.5597	eval-auc: 0.5757
+loss as step 194800: 0.636963	time: 32
+batch-auc:0.5642	eval-auc: 0.5750
+loss as step 194900: 0.604861	time: 32
+batch-auc:0.5538	eval-auc: 0.5745
+loss as step 195000: 0.606482	time: 32
+batch-auc:0.5404	eval-auc: 0.5803
+loss as step 195100: 0.553540	time: 37
+batch-auc:0.5309	eval-auc: 0.5805
+loss as step 195200: 0.446622	time: 32
+batch-auc:0.5168	eval-auc: 0.5838
+loss as step 195300: 0.521914	time: 31
+batch-auc:0.5271	eval-auc: 0.5795
+loss as step 195400: 0.616963	time: 32
+batch-auc:0.5467	eval-auc: 0.5828
+loss as step 195500: 0.574672	time: 32
+batch-auc:0.5415	eval-auc: 0.5788
+loss as step 195600: 0.605665	time: 32
+batch-auc:0.5357	eval-auc: 0.5782
+loss as step 195700: 0.595499	time: 32
+batch-auc:0.5744	eval-auc: 0.5778
+loss as step 195800: 0.671289	time: 33
+batch-auc:0.5077	eval-auc: 0.5808
+loss as step 195900: 0.584983	time: 31
+batch-auc:0.5248	eval-auc: 0.5793
+loss as step 196000: 0.521403	time: 32
+batch-auc:0.5375	eval-auc: 0.5819
+loss as step 196100: 0.585176	time: 38
+batch-auc:0.5278	eval-auc: 0.5780
+loss as step 196200: 0.564139	time: 32
+batch-auc:0.5356	eval-auc: 0.5801
+loss as step 196300: 0.648067	time: 32
+batch-auc:0.5547	eval-auc: 0.5792
+loss as step 196400: 0.489635	time: 32
+batch-auc:0.5211	eval-auc: 0.5808
+loss as step 196500: 0.532514	time: 32
+batch-auc:0.5230	eval-auc: 0.5789
+loss as step 196600: 0.532883	time: 32
+batch-auc:0.5730	eval-auc: 0.5781
+loss as step 196700: 0.553687	time: 32
+batch-auc:0.5396	eval-auc: 0.5784
+loss as step 196800: 0.564196	time: 32
+batch-auc:0.5535	eval-auc: 0.5776
+loss as step 196900: 0.584975	time: 33
+batch-auc:0.5549	eval-auc: 0.5784
+loss as step 197000: 0.531857	time: 33
+batch-auc:0.5404	eval-auc: 0.5816
+loss as step 197100: 0.543277	time: 37
+batch-auc:0.5524	eval-auc: 0.5751
+loss as step 197200: 0.574809	time: 32
+batch-auc:0.5716	eval-auc: 0.5788
+loss as step 197300: 0.595440	time: 33
+batch-auc:0.5505	eval-auc: 0.5750
+loss as step 197400: 0.595673	time: 32
+batch-auc:0.5604	eval-auc: 0.5748
+loss as step 197500: 0.574655	time: 32
+batch-auc:0.5683	eval-auc: 0.5754
+loss as step 197600: 0.637720	time: 33
+batch-auc:0.5739	eval-auc: 0.5758
+loss as step 197700: 0.574620	time: 33
+batch-auc:0.5599	eval-auc: 0.5755
+loss as step 197800: 0.531578	time: 33
+batch-auc:0.5331	eval-auc: 0.5811
+loss as step 197900: 0.500033	time: 33
+batch-auc:0.5329	eval-auc: 0.5783
+loss as step 198000: 0.564149	time: 32
+batch-auc:0.5533	eval-auc: 0.5750
+loss as step 198100: 0.553519	time: 38
+batch-auc:0.5505	eval-auc: 0.5766
+loss as step 198200: 0.574563	time: 33
+batch-auc:0.5676	eval-auc: 0.5738
+loss as step 198300: 0.584930	time: 32
+batch-auc:0.5681	eval-auc: 0.5733
+loss as step 198400: 0.470520	time: 33
+batch-auc:0.5634	eval-auc: 0.5749
+loss as step 198500: 0.564111	time: 33
+batch-auc:0.5613	eval-auc: 0.5766
+loss as step 198600: 0.554090	time: 33
+batch-auc:0.5450	eval-auc: 0.5768
+loss as step 198700: 0.574667	time: 33
+batch-auc:0.5508	eval-auc: 0.5746
+loss as step 198800: 0.574722	time: 33
+batch-auc:0.5438	eval-auc: 0.5735
+loss as step 198900: 0.521889	time: 33
+batch-auc:0.5820	eval-auc: 0.5798
+loss as step 199000: 0.574600	time: 32
+batch-auc:0.5324	eval-auc: 0.5794
+loss as step 199100: 0.511718	time: 38
+batch-auc:0.5607	eval-auc: 0.5793
+loss as step 199200: 0.574661	time: 33
+batch-auc:0.5421	eval-auc: 0.5787
+loss as step 199300: 0.585178	time: 32
+batch-auc:0.5467	eval-auc: 0.5800
+loss as step 199400: 0.574592	time: 33
+batch-auc:0.5398	eval-auc: 0.5802
+loss as step 199500: 0.564017	time: 32
+batch-auc:0.5150	eval-auc: 0.5800
+loss as step 199600: 0.585525	time: 33
+batch-auc:0.5570	eval-auc: 0.5785
+loss as step 199700: 0.627461	time: 32
+batch-auc:0.5487	eval-auc: 0.5766
+loss as step 199800: 0.616219	time: 32
+batch-auc:0.5658	eval-auc: 0.5767
+loss as step 199900: 0.542719	time: 32
+batch-auc:0.5307	eval-auc: 0.5787
+loss as step 200000: 0.501762	time: 33
+batch-auc:0.5364	eval-auc: 0.5774
+loss as step 200100: 0.469564	time: 38
+batch-auc:0.5491	eval-auc: 0.5770
+loss as step 200200: 0.511066	time: 32
+batch-auc:0.5380	eval-auc: 0.5774
+loss as step 200300: 0.670559	time: 32
+batch-auc:0.5212	eval-auc: 0.5763
+loss as step 200400: 0.574678	time: 33
+batch-auc:0.5237	eval-auc: 0.5788
+loss as step 200500: 0.627358	time: 33
+batch-auc:0.5224	eval-auc: 0.5778
+loss as step 200600: 0.627690	time: 33
+batch-auc:0.5500	eval-auc: 0.5760
+loss as step 200700: 0.616382	time: 33
+batch-auc:0.5573	eval-auc: 0.5749
+loss as step 200800: 0.532454	time: 33
+batch-auc:0.5480	eval-auc: 0.5762
+loss as step 200900: 0.606062	time: 33
+batch-auc:0.5730	eval-auc: 0.5740
+loss as step 201000: 0.564284	time: 33
+batch-auc:0.5601	eval-auc: 0.5732
+loss as step 201100: 0.574636	time: 37
+batch-auc:0.5505	eval-auc: 0.5776
+loss as step 201200: 0.521356	time: 32
+batch-auc:0.5375	eval-auc: 0.5794
+loss as step 201300: 0.533910	time: 33
+batch-auc:0.5368	eval-auc: 0.5752
+loss as step 201400: 0.480632	time: 33
+batch-auc:0.5530	eval-auc: 0.5741
+loss as step 201500: 0.543044	time: 32
+batch-auc:0.5471	eval-auc: 0.5753
+loss as step 201600: 0.522377	time: 32
+batch-auc:0.5555	eval-auc: 0.5736
+loss as step 201700: 0.574828	time: 32
+batch-auc:0.5504	eval-auc: 0.5743
+loss as step 201800: 0.564140	time: 32
+batch-auc:0.5319	eval-auc: 0.5761
+loss as step 201900: 0.553450	time: 33
+batch-auc:0.5319	eval-auc: 0.5756
+loss as step 202000: 0.553332	time: 32
+batch-auc:0.5542	eval-auc: 0.5774
+loss as step 202100: 0.574704	time: 37
+batch-auc:0.5469	eval-auc: 0.5763
+loss as step 202200: 0.596158	time: 33
+batch-auc:0.5495	eval-auc: 0.5768
+loss as step 202300: 0.648401	time: 33
+batch-auc:0.5219	eval-auc: 0.5737
+loss as step 202400: 0.574562	time: 33
+batch-auc:0.5432	eval-auc: 0.5727
+loss as step 202500: 0.585365	time: 33
+batch-auc:0.5331	eval-auc: 0.5769
+loss as step 202600: 0.616885	time: 33
+batch-auc:0.5398	eval-auc: 0.5750
+loss as step 202700: 0.584896	time: 33
+batch-auc:0.5539	eval-auc: 0.5733
+loss as step 202800: 0.647939	time: 33
+batch-auc:0.5608	eval-auc: 0.5737
+loss as step 202900: 0.553639	time: 33
+batch-auc:0.5581	eval-auc: 0.5753
+loss as step 203000: 0.489061	time: 33
+batch-auc:0.5406	eval-auc: 0.5787
+loss as step 203100: 0.584919	time: 38
+batch-auc:0.5434	eval-auc: 0.5715
+loss as step 203200: 0.626866	time: 32
+batch-auc:0.5547	eval-auc: 0.5749
+loss as step 203300: 0.564222	time: 32
+batch-auc:0.5418	eval-auc: 0.5755
+loss as step 203400: 0.489418	time: 33
+batch-auc:0.5408	eval-auc: 0.5781
+loss as step 203500: 0.532334	time: 32
+batch-auc:0.5226	eval-auc: 0.5763
+loss as step 203600: 0.616403	time: 33
+batch-auc:0.5519	eval-auc: 0.5769
+loss as step 203700: 0.574565	time: 33
+batch-auc:0.5447	eval-auc: 0.5779
+loss as step 203800: 0.511729	time: 34
+batch-auc:0.5427	eval-auc: 0.5796
+loss as step 203900: 0.584943	time: 33
+batch-auc:0.5388	eval-auc: 0.5770
+loss as step 204000: 0.564413	time: 32
+batch-auc:0.5491	eval-auc: 0.5740
+loss as step 204100: 0.595883	time: 38
+batch-auc:0.5391	eval-auc: 0.5765
+loss as step 204200: 0.499898	time: 33
+batch-auc:0.5493	eval-auc: 0.5801
+loss as step 204300: 0.574665	time: 34
+batch-auc:0.5267	eval-auc: 0.5777
+loss as step 204400: 0.574605	time: 33
+batch-auc:0.5202	eval-auc: 0.5770
+loss as step 204500: 0.564048	time: 33
+batch-auc:0.5586	eval-auc: 0.5770
+loss as step 204600: 0.532519	time: 33
+batch-auc:0.5501	eval-auc: 0.5767
+loss as step 204700: 0.531782	time: 33
+batch-auc:0.5384	eval-auc: 0.5776
+loss as step 204800: 0.543513	time: 33
+batch-auc:0.5647	eval-auc: 0.5732
+loss as step 204900: 0.521709	time: 32
+batch-auc:0.5442	eval-auc: 0.5779
+loss as step 205000: 0.596013	time: 33
+batch-auc:0.5342	eval-auc: 0.5786
+loss as step 205100: 0.521538	time: 38
+batch-auc:0.5352	eval-auc: 0.5781
+loss as step 205200: 0.628190	time: 32
+batch-auc:0.5305	eval-auc: 0.5802
+loss as step 205300: 0.522167	time: 32
+batch-auc:0.5362	eval-auc: 0.5769
+loss as step 205400: 0.574587	time: 33
+batch-auc:0.5648	eval-auc: 0.5748
+loss as step 205500: 0.605789	time: 33
+batch-auc:0.5664	eval-auc: 0.5773
+loss as step 205600: 0.511874	time: 33
+batch-auc:0.5585	eval-auc: 0.5762
+loss as step 205700: 0.553459	time: 33
+batch-auc:0.5583	eval-auc: 0.5787
+loss as step 205800: 0.585115	time: 33
+batch-auc:0.5540	eval-auc: 0.5789
+loss as step 205900: 0.585127	time: 33
+batch-auc:0.5453	eval-auc: 0.5780
+loss as step 206000: 0.532153	time: 33
+batch-auc:0.5358	eval-auc: 0.5780
+loss as step 206100: 0.455789	time: 38
+batch-auc:0.5408	eval-auc: 0.5822
+loss as step 206200: 0.606990	time: 33
+batch-auc:0.5357	eval-auc: 0.5799
+loss as step 206300: 0.635580	time: 33
+batch-auc:0.5413	eval-auc: 0.5743
+loss as step 206400: 0.491208	time: 33
+batch-auc:0.5732	eval-auc: 0.5764
+loss as step 206500: 0.596057	time: 33
+batch-auc:0.5572	eval-auc: 0.5788
+loss as step 206600: 0.500576	time: 33
+batch-auc:0.5452	eval-auc: 0.5795
+loss as step 206700: 0.494744	time: 33
+batch-auc:0.5615	eval-auc: 0.5763
+loss as step 206800: 0.513365	time: 33
+batch-auc:0.5554	eval-auc: 0.5768
+loss as step 206900: 0.636840	time: 32
+batch-auc:0.5550	eval-auc: 0.5768
+loss as step 207000: 0.447647	time: 32
+batch-auc:0.5381	eval-auc: 0.5822
+loss as step 207100: 0.543648	time: 37
+batch-auc:0.5434	eval-auc: 0.5745
+loss as step 207200: 0.595591	time: 32
+batch-auc:0.5743	eval-auc: 0.5762
+loss as step 207300: 0.564782	time: 33
+batch-auc:0.5648	eval-auc: 0.5736
+loss as step 207400: 0.627465	time: 33
+batch-auc:0.5678	eval-auc: 0.5801
+loss as step 207500: 0.523536	time: 33
+batch-auc:0.5371	eval-auc: 0.5783
+loss as step 207600: 0.553801	time: 33
+batch-auc:0.5312	eval-auc: 0.5777
+loss as step 207700: 0.617218	time: 33
+batch-auc:0.5485	eval-auc: 0.5803
+loss as step 207800: 0.626775	time: 33
+batch-auc:0.5492	eval-auc: 0.5781
+loss as step 207900: 0.605156	time: 33
+batch-auc:0.5480	eval-auc: 0.5768
+loss as step 208000: 0.543308	time: 32
+batch-auc:0.5355	eval-auc: 0.5815
+loss as step 208100: 0.585040	time: 37
+batch-auc:0.5475	eval-auc: 0.5786
+loss as step 208200: 0.499893	time: 33
+batch-auc:0.5552	eval-auc: 0.5835
+loss as step 208300: 0.708569	time: 33
+batch-auc:0.5494	eval-auc: 0.5763
+loss as step 208400: 0.595418	time: 33
+batch-auc:0.5612	eval-auc: 0.5782
+loss as step 208500: 0.595586	time: 33
+batch-auc:0.5492	eval-auc: 0.5778
+loss as step 208600: 0.584800	time: 32
+batch-auc:0.5509	eval-auc: 0.5740
+loss as step 208700: 0.617246	time: 33
+batch-auc:0.5393	eval-auc: 0.5803
+loss as step 208800: 0.647636	time: 33
+batch-auc:0.5373	eval-auc: 0.5779
+loss as step 208900: 0.542678	time: 33
+batch-auc:0.5585	eval-auc: 0.5820
+loss as step 209000: 0.574573	time: 33
+batch-auc:0.5465	eval-auc: 0.5784
+loss as step 209100: 0.489852	time: 38
+batch-auc:0.5421	eval-auc: 0.5806
+loss as step 209200: 0.595632	time: 33
+batch-auc:0.5274	eval-auc: 0.5793
+loss as step 209300: 0.574578	time: 33
+batch-auc:0.5509	eval-auc: 0.5798
+loss as step 209400: 0.511005	time: 32
+batch-auc:0.5609	eval-auc: 0.5815
+loss as step 209500: 0.648374	time: 33
+batch-auc:0.5254	eval-auc: 0.5789
+loss as step 209600: 0.542622	time: 33
+batch-auc:0.5400	eval-auc: 0.5834
+loss as step 209700: 0.521785	time: 33
+batch-auc:0.5163	eval-auc: 0.5815
+loss as step 209800: 0.594866	time: 33
+batch-auc:0.5565	eval-auc: 0.5757
+loss as step 209900: 0.606621	time: 33
+batch-auc:0.5479	eval-auc: 0.5812
+loss as step 210000: 0.606119	time: 33
+batch-auc:0.5375	eval-auc: 0.5784
+loss as step 210100: 0.626802	time: 38
+batch-auc:0.5445	eval-auc: 0.5768
+loss as step 210200: 0.511220	time: 33
+batch-auc:0.5613	eval-auc: 0.5770
+loss as step 210300: 0.595747	time: 34
+batch-auc:0.5355	eval-auc: 0.5766
+loss as step 210400: 0.521956	time: 33
+batch-auc:0.5382	eval-auc: 0.5777
+loss as step 210500: 0.542728	time: 33
+batch-auc:0.5297	eval-auc: 0.5794
+loss as step 210600: 0.574557	time: 33
+batch-auc:0.5098	eval-auc: 0.5803
+loss as step 210700: 0.543397	time: 33
+batch-auc:0.5344	eval-auc: 0.5773
+loss as step 210800: 0.595404	time: 33
+batch-auc:0.5473	eval-auc: 0.5749
+loss as step 210900: 0.555028	time: 33
+batch-auc:0.5807	eval-auc: 0.5747
+loss as step 211000: 0.636360	time: 33
+batch-auc:0.5686	eval-auc: 0.5752
+loss as step 211100: 0.553703	time: 38
+batch-auc:0.5772	eval-auc: 0.5767
+loss as step 211200: 0.564184	time: 32
+batch-auc:0.5712	eval-auc: 0.5760
+loss as step 211300: 0.594988	time: 32
+batch-auc:0.5682	eval-auc: 0.5732
+loss as step 211400: 0.574676	time: 33
+batch-auc:0.5420	eval-auc: 0.5749
+loss as step 211500: 0.542947	time: 33
+batch-auc:0.5342	eval-auc: 0.5761
+loss as step 211600: 0.646892	time: 33
+batch-auc:0.5458	eval-auc: 0.5742
+loss as step 211700: 0.637343	time: 33
+batch-auc:0.5585	eval-auc: 0.5748
+loss as step 211800: 0.585223	time: 33
+batch-auc:0.5411	eval-auc: 0.5763
+loss as step 211900: 0.595734	time: 33
+batch-auc:0.5414	eval-auc: 0.5773
+loss as step 212000: 0.532363	time: 33
+batch-auc:0.5467	eval-auc: 0.5761
+loss as step 212100: 0.564213	time: 37
+batch-auc:0.5357	eval-auc: 0.5741
+loss as step 212200: 0.616661	time: 33
+batch-auc:0.5632	eval-auc: 0.5773
+loss as step 212300: 0.658251	time: 32
+batch-auc:0.5219	eval-auc: 0.5774
+loss as step 212400: 0.564045	time: 33
+batch-auc:0.5195	eval-auc: 0.5784
+loss as step 212500: 0.648692	time: 33
+batch-auc:0.5640	eval-auc: 0.5762
+loss as step 212600: 0.542563	time: 33
+batch-auc:0.5256	eval-auc: 0.5794
+loss as step 212700: 0.564051	time: 33
+batch-auc:0.5278	eval-auc: 0.5766
+loss as step 212800: 0.595885	time: 33
+batch-auc:0.5413	eval-auc: 0.5768
+loss as step 212900: 0.554075	time: 33
+batch-auc:0.5357	eval-auc: 0.5746
+loss as step 213000: 0.585033	time: 33
+batch-auc:0.5738	eval-auc: 0.5770
+loss as step 213100: 0.553777	time: 37
+batch-auc:0.5841	eval-auc: 0.5760
+loss as step 213200: 0.543192	time: 33
+batch-auc:0.5597	eval-auc: 0.5785
+loss as step 213300: 0.606977	time: 31
+batch-auc:0.5496	eval-auc: 0.5810
+loss as step 213400: 0.638679	time: 32
+batch-auc:0.5165	eval-auc: 0.5802
+loss as step 213500: 0.524751	time: 32
+batch-auc:0.5392	eval-auc: 0.5759
+loss as step 213600: 0.521172	time: 33
+batch-auc:0.5280	eval-auc: 0.5794
+loss as step 213700: 0.678568	time: 32
+batch-auc:0.5569	eval-auc: 0.5740
+loss as step 213800: 0.574620	time: 32
+batch-auc:0.5536	eval-auc: 0.5778
+loss as step 213900: 0.595777	time: 33
+batch-auc:0.5349	eval-auc: 0.5755
+loss as step 214000: 0.617693	time: 33
+batch-auc:0.5488	eval-auc: 0.5774
+loss as step 214100: 0.616154	time: 38
+batch-auc:0.5406	eval-auc: 0.5728
+loss as step 214200: 0.596142	time: 32
+batch-auc:0.5606	eval-auc: 0.5755
+loss as step 214300: 0.647928	time: 33
+batch-auc:0.5423	eval-auc: 0.5720
+loss as step 214400: 0.522029	time: 33
+batch-auc:0.5722	eval-auc: 0.5757
+loss as step 214500: 0.605689	time: 32
+batch-auc:0.5332	eval-auc: 0.5775
+loss as step 214600: 0.447148	time: 33
+batch-auc:0.5343	eval-auc: 0.5789
+loss as step 214700: 0.644554	time: 33
+batch-auc:0.5398	eval-auc: 0.5741
+loss as step 214800: 0.564006	time: 33
+batch-auc:0.5156	eval-auc: 0.5796
+loss as step 214900: 0.532413	time: 33
+batch-auc:0.5472	eval-auc: 0.5784
+loss as step 215000: 0.553498	time: 33
+batch-auc:0.5404	eval-auc: 0.5791
+loss as step 215100: 0.605519	time: 38
+batch-auc:0.5707	eval-auc: 0.5769
+loss as step 215200: 0.553609	time: 33
+batch-auc:0.5560	eval-auc: 0.5780
+loss as step 215300: 0.574964	time: 32
+batch-auc:0.5436	eval-auc: 0.5821
+loss as step 215400: 0.563969	time: 32
+batch-auc:0.5196	eval-auc: 0.5823
+loss as step 215500: 0.574582	time: 33
+batch-auc:0.5275	eval-auc: 0.5764
+loss as step 215600: 0.532296	time: 33
+batch-auc:0.5571	eval-auc: 0.5771
+loss as step 215700: 0.585505	time: 32
+batch-auc:0.5376	eval-auc: 0.5779
+loss as step 215800: 0.564008	time: 33
+batch-auc:0.5248	eval-auc: 0.5791
+loss as step 215900: 0.647322	time: 33
+batch-auc:0.5460	eval-auc: 0.5760
+loss as step 216000: 0.564773	time: 32
+batch-auc:0.5534	eval-auc: 0.5764
+loss as step 216100: 0.585065	time: 38
+batch-auc:0.5350	eval-auc: 0.5767
+loss as step 216200: 0.627749	time: 33
+batch-auc:0.5396	eval-auc: 0.5768
+loss as step 216300: 0.521394	time: 34
+batch-auc:0.5446	eval-auc: 0.5794
+loss as step 216400: 0.585182	time: 33
+batch-auc:0.5409	eval-auc: 0.5759
+loss as step 216500: 0.522032	time: 33
+batch-auc:0.5637	eval-auc: 0.5781
+loss as step 216600: 0.606210	time: 32
+batch-auc:0.5445	eval-auc: 0.5764
+loss as step 216700: 0.574645	time: 33
+batch-auc:0.5411	eval-auc: 0.5776
+loss as step 216800: 0.595600	time: 33
+batch-auc:0.5400	eval-auc: 0.5767
+loss as step 216900: 0.659192	time: 33
+batch-auc:0.5455	eval-auc: 0.5772
+loss as step 217000: 0.595755	time: 33
+batch-auc:0.5561	eval-auc: 0.5777
+loss as step 217100: 0.585304	time: 37
+batch-auc:0.5365	eval-auc: 0.5764
+loss as step 217200: 0.585284	time: 32
+batch-auc:0.5205	eval-auc: 0.5767
+loss as step 217300: 0.542879	time: 33
+batch-auc:0.5194	eval-auc: 0.5773
+loss as step 217400: 0.637087	time: 33
+batch-auc:0.5498	eval-auc: 0.5726
+loss as step 217500: 0.500376	time: 32
+batch-auc:0.5469	eval-auc: 0.5771
+loss as step 217600: 0.532210	time: 33
+batch-auc:0.5467	eval-auc: 0.5792
+loss as step 217700: 0.553925	time: 33
+batch-auc:0.5542	eval-auc: 0.5752
+loss as step 217800: 0.564131	time: 33
+batch-auc:0.5626	eval-auc: 0.5766
+loss as step 217900: 0.585078	time: 32
+batch-auc:0.5704	eval-auc: 0.5774
+loss as step 218000: 0.502198	time: 32
+batch-auc:0.5657	eval-auc: 0.5766
+loss as step 218100: 0.564186	time: 37
+batch-auc:0.5643	eval-auc: 0.5754
+loss as step 218200: 0.512802	time: 32
+batch-auc:0.5320	eval-auc: 0.5748
+loss as step 218300: 0.584871	time: 33
+batch-auc:0.5625	eval-auc: 0.5730
+loss as step 218400: 0.502655	time: 33
+batch-auc:0.5797	eval-auc: 0.5746
+loss as step 218500: 0.521650	time: 32
+batch-auc:0.5535	eval-auc: 0.5787
+loss as step 218600: 0.617506	time: 33
+batch-auc:0.5326	eval-auc: 0.5776
+loss as step 218700: 0.574644	time: 33
+batch-auc:0.5216	eval-auc: 0.5771
+loss as step 218800: 0.445423	time: 32
+batch-auc:0.5186	eval-auc: 0.5776
+loss as step 218900: 0.644538	time: 33
+batch-auc:0.5479	eval-auc: 0.5709
+loss as step 219000: 0.532396	time: 32
+batch-auc:0.5643	eval-auc: 0.5751
+loss as step 219100: 0.616081	time: 37
+batch-auc:0.5446	eval-auc: 0.5728
+loss as step 219200: 0.543604	time: 34
+batch-auc:0.5674	eval-auc: 0.5732
+loss as step 219300: 0.521787	time: 33
+batch-auc:0.5579	eval-auc: 0.5758
+loss as step 219400: 0.564097	time: 33
+batch-auc:0.5538	eval-auc: 0.5750
+loss as step 219500: 0.574554	time: 33
+batch-auc:0.5503	eval-auc: 0.5755
+loss as step 219600: 0.616413	time: 33
+batch-auc:0.5384	eval-auc: 0.5754
+loss as step 219700: 0.584931	time: 33
+batch-auc:0.5625	eval-auc: 0.5726
+loss as step 219800: 0.606523	time: 33
+batch-auc:0.5683	eval-auc: 0.5751
+loss as step 219900: 0.522451	time: 33
+batch-auc:0.5351	eval-auc: 0.5762
+loss as step 220000: 0.533588	time: 33
+batch-auc:0.5763	eval-auc: 0.5747
+loss as step 220100: 0.595633	time: 39
+batch-auc:0.5643	eval-auc: 0.5761
+loss as step 220200: 0.512904	time: 33
+batch-auc:0.5408	eval-auc: 0.5731
+loss as step 220300: 0.596032	time: 33
+batch-auc:0.5487	eval-auc: 0.5762
+loss as step 220400: 0.574603	time: 33
+batch-auc:0.5414	eval-auc: 0.5750
+loss as step 220500: 0.574903	time: 33
+batch-auc:0.5481	eval-auc: 0.5758
+loss as step 220600: 0.478859	time: 33
+batch-auc:0.5467	eval-auc: 0.5738
+loss as step 220700: 0.521719	time: 33
+batch-auc:0.5387	eval-auc: 0.5730
+loss as step 220800: 0.563986	time: 34
+batch-auc:0.5202	eval-auc: 0.5742
+loss as step 220900: 0.605925	time: 33
+batch-auc:0.5271	eval-auc: 0.5726
+loss as step 221000: 0.574584	time: 33
+batch-auc:0.5437	eval-auc: 0.5724
+loss as step 221100: 0.490966	time: 38
+batch-auc:0.5337	eval-auc: 0.5727
+loss as step 221200: 0.574566	time: 33
+batch-auc:0.5504	eval-auc: 0.5709
+loss as step 221300: 0.542752	time: 33
+batch-auc:0.5525	eval-auc: 0.5751
+loss as step 221400: 0.637827	time: 33
+batch-auc:0.5369	eval-auc: 0.5724
+loss as step 221500: 0.585225	time: 34
+batch-auc:0.5363	eval-auc: 0.5739
+loss as step 221600: 0.647578	time: 33
+batch-auc:0.5406	eval-auc: 0.5722
+loss as step 221700: 0.543342	time: 33
+batch-auc:0.5477	eval-auc: 0.5731
+loss as step 221800: 0.553521	time: 34
+batch-auc:0.5576	eval-auc: 0.5752
+loss as step 221900: 0.543228	time: 33
+batch-auc:0.5470	eval-auc: 0.5734
+loss as step 222000: 0.595400	time: 33
+batch-auc:0.5423	eval-auc: 0.5727
+loss as step 222100: 0.585095	time: 38
+batch-auc:0.5555	eval-auc: 0.5750
+loss as step 222200: 0.574557	time: 33
+batch-auc:0.5387	eval-auc: 0.5747
+loss as step 222300: 0.564268	time: 33
+batch-auc:0.5510	eval-auc: 0.5727
+loss as step 222400: 0.637507	time: 33
+batch-auc:0.5627	eval-auc: 0.5747
+loss as step 222500: 0.564101	time: 33
+batch-auc:0.5671	eval-auc: 0.5789
+loss as step 222600: 0.511571	time: 33
+batch-auc:0.5223	eval-auc: 0.5775
+loss as step 222700: 0.532145	time: 33
+batch-auc:0.5368	eval-auc: 0.5793
+loss as step 222800: 0.584975	time: 33
+batch-auc:0.5641	eval-auc: 0.5753
+loss as step 222900: 0.522164	time: 34
+batch-auc:0.5540	eval-auc: 0.5779
+loss as step 223000: 0.491071	time: 33
+batch-auc:0.5500	eval-auc: 0.5762
+loss as step 223100: 0.521463	time: 37
+batch-auc:0.5391	eval-auc: 0.5791
+loss as step 223200: 0.637369	time: 32
+batch-auc:0.5375	eval-auc: 0.5783
+loss as step 223300: 0.606160	time: 33
+batch-auc:0.5268	eval-auc: 0.5779
+loss as step 223400: 0.563972	time: 33
+batch-auc:0.5124	eval-auc: 0.5813
+loss as step 223500: 0.585512	time: 33
+batch-auc:0.5199	eval-auc: 0.5797
+loss as step 223600: 0.628587	time: 33
+batch-auc:0.5414	eval-auc: 0.5800
+loss as step 223700: 0.670532	time: 33
+batch-auc:0.5305	eval-auc: 0.5763
+loss as step 223800: 0.524360	time: 33
+batch-auc:0.5552	eval-auc: 0.5735
+loss as step 223900: 0.544067	time: 33
+batch-auc:0.5689	eval-auc: 0.5747
+loss as step 224000: 0.669097	time: 32
+batch-auc:0.5309	eval-auc: 0.5761
+loss as step 224100: 0.543164	time: 38
+batch-auc:0.5603	eval-auc: 0.5774
+loss as step 224200: 0.595043	time: 33
+batch-auc:0.5641	eval-auc: 0.5744
+loss as step 224300: 0.574569	time: 33
+batch-auc:0.5687	eval-auc: 0.5731
+loss as step 224400: 0.522414	time: 33
+batch-auc:0.5706	eval-auc: 0.5748
+loss as step 224500: 0.595650	time: 34
+batch-auc:0.5346	eval-auc: 0.5766
+loss as step 224600: 0.585133	time: 32
+batch-auc:0.5568	eval-auc: 0.5752
+loss as step 224700: 0.510978	time: 33
+batch-auc:0.5343	eval-auc: 0.5753
+loss as step 224800: 0.606286	time: 33
+batch-auc:0.5372	eval-auc: 0.5728
+loss as step 224900: 0.637428	time: 32
+batch-auc:0.5392	eval-auc: 0.5721
+loss as step 225000: 0.585418	time: 33
+batch-auc:0.5347	eval-auc: 0.5781
+loss as step 225100: 0.659873	time: 37
+batch-auc:0.5219	eval-auc: 0.5767
+loss as step 225200: 0.596198	time: 32
+batch-auc:0.5171	eval-auc: 0.5743
+loss as step 225300: 0.553395	time: 33
+batch-auc:0.5428	eval-auc: 0.5739
+loss as step 225400: 0.509922	time: 32
+batch-auc:0.5344	eval-auc: 0.5771
+loss as step 225500: 0.584879	time: 32
+batch-auc:0.5275	eval-auc: 0.5717
+loss as step 225600: 0.585141	time: 33
+batch-auc:0.5658	eval-auc: 0.5711
+loss as step 225700: 0.574600	time: 33
+batch-auc:0.5441	eval-auc: 0.5741
+loss as step 225800: 0.574566	time: 34
+batch-auc:0.5331	eval-auc: 0.5705
+loss as step 225900: 0.532063	time: 33
+batch-auc:0.5596	eval-auc: 0.5727
+loss as step 226000: 0.616009	time: 32
+batch-auc:0.5495	eval-auc: 0.5702
+loss as step 226100: 0.584859	time: 39
+batch-auc:0.5612	eval-auc: 0.5697
+loss as step 226200: 0.657865	time: 33
+batch-auc:0.5637	eval-auc: 0.5715
+loss as step 226300: 0.584844	time: 33
+batch-auc:0.5698	eval-auc: 0.5729
+loss as step 226400: 0.564061	time: 33
+batch-auc:0.5393	eval-auc: 0.5754
+loss as step 226500: 0.605801	time: 33
+batch-auc:0.5270	eval-auc: 0.5733
+loss as step 226600: 0.606169	time: 32
+batch-auc:0.5294	eval-auc: 0.5734
+loss as step 226700: 0.521782	time: 33
+batch-auc:0.5515	eval-auc: 0.5744
+loss as step 226800: 0.500816	time: 33
+batch-auc:0.5626	eval-auc: 0.5725
+loss as step 226900: 0.542966	time: 33
+batch-auc:0.5512	eval-auc: 0.5755
+loss as step 227000: 0.553234	time: 33
+batch-auc:0.5283	eval-auc: 0.5769
+loss as step 227100: 0.521862	time: 38
+batch-auc:0.5229	eval-auc: 0.5754
+loss as step 227200: 0.617073	time: 33
+batch-auc:0.5322	eval-auc: 0.5744
+loss as step 227300: 0.657692	time: 33
+batch-auc:0.5444	eval-auc: 0.5718
+loss as step 227400: 0.563996	time: 33
+batch-auc:0.5370	eval-auc: 0.5749
+loss as step 227500: 0.574669	time: 33
+batch-auc:0.5135	eval-auc: 0.5739
+loss as step 227600: 0.596313	time: 33
+batch-auc:0.5177	eval-auc: 0.5734
+loss as step 227700: 0.585256	time: 33
+batch-auc:0.5346	eval-auc: 0.5716
+loss as step 227800: 0.606414	time: 33
+batch-auc:0.5539	eval-auc: 0.5745
+loss as step 227900: 0.553489	time: 33
+batch-auc:0.5509	eval-auc: 0.5734
+loss as step 228000: 0.523643	time: 33
+batch-auc:0.5478	eval-auc: 0.5718
+loss as step 228100: 0.656937	time: 38
+batch-auc:0.5558	eval-auc: 0.5717
+loss as step 228200: 0.698645	time: 33
+batch-auc:0.5537	eval-auc: 0.5720
+loss as step 228300: 0.574609	time: 32
+batch-auc:0.5471	eval-auc: 0.5713
+loss as step 228400: 0.554117	time: 33
+batch-auc:0.5706	eval-auc: 0.5730
+loss as step 228500: 0.532056	time: 33
+batch-auc:0.5552	eval-auc: 0.5770
+loss as step 228600: 0.543023	time: 33
+batch-auc:0.5370	eval-auc: 0.5739
+loss as step 228700: 0.543426	time: 33
+batch-auc:0.5354	eval-auc: 0.5739
+loss as step 228800: 0.532325	time: 33
+batch-auc:0.5423	eval-auc: 0.5738
+loss as step 228900: 0.606350	time: 33
+batch-auc:0.5388	eval-auc: 0.5724
+loss as step 229000: 0.595499	time: 34
+batch-auc:0.5595	eval-auc: 0.5751
+loss as step 229100: 0.492207	time: 38
+batch-auc:0.5563	eval-auc: 0.5729
+loss as step 229200: 0.543406	time: 33
+batch-auc:0.5408	eval-auc: 0.5730
+loss as step 229300: 0.564036	time: 33
+batch-auc:0.5499	eval-auc: 0.5764
+loss as step 229400: 0.564051	time: 33
+batch-auc:0.5245	eval-auc: 0.5750
+loss as step 229500: 0.616974	time: 33
+batch-auc:0.5294	eval-auc: 0.5756
+loss as step 229600: 0.489794	time: 33
+batch-auc:0.5497	eval-auc: 0.5775
+loss as step 229700: 0.648018	time: 33
+batch-auc:0.5597	eval-auc: 0.5741
+loss as step 229800: 0.490851	time: 33
+batch-auc:0.5549	eval-auc: 0.5768
+loss as step 229900: 0.574621	time: 33
+batch-auc:0.5105	eval-auc: 0.5784
+loss as step 230000: 0.521419	time: 33
+batch-auc:0.5355	eval-auc: 0.5755
+loss as step 230100: 0.666866	time: 37
+batch-auc:0.5491	eval-auc: 0.5705
+loss as step 230200: 0.625234	time: 33
+batch-auc:0.5692	eval-auc: 0.5742
+loss as step 230300: 0.543717	time: 33
+batch-auc:0.5403	eval-auc: 0.5725
+loss as step 230400: 0.627020	time: 32
+batch-auc:0.5617	eval-auc: 0.5764
+loss as step 230500: 0.584781	time: 32
+batch-auc:0.5502	eval-auc: 0.5734
+loss as step 230600: 0.501029	time: 33
+batch-auc:0.5704	eval-auc: 0.5790
+loss as step 230700: 0.616407	time: 33
+batch-auc:0.5450	eval-auc: 0.5744
+loss as step 230800: 0.596054	time: 33
+batch-auc:0.5400	eval-auc: 0.5786
+loss as step 230900: 0.532123	time: 32
+batch-auc:0.5329	eval-auc: 0.5779
+loss as step 231000: 0.648574	time: 33
+batch-auc:0.5376	eval-auc: 0.5770
+loss as step 231100: 0.636051	time: 38
+batch-auc:0.5430	eval-auc: 0.5733
+loss as step 231200: 0.659362	time: 33
+batch-auc:0.5506	eval-auc: 0.5769
+loss as step 231300: 0.605409	time: 33
+batch-auc:0.5440	eval-auc: 0.5774
+loss as step 231400: 0.667738	time: 34
+batch-auc:0.5495	eval-auc: 0.5743
+loss as step 231500: 0.574555	time: 33
+batch-auc:0.5700	eval-auc: 0.5772
+loss as step 231600: 0.627915	time: 33
+batch-auc:0.5222	eval-auc: 0.5787
+loss as step 231700: 0.647647	time: 33
+batch-auc:0.5542	eval-auc: 0.5746
+loss as step 231800: 0.543231	time: 34
+batch-auc:0.5591	eval-auc: 0.5752
+loss as step 231900: 0.616967	time: 33
+batch-auc:0.5506	eval-auc: 0.5775
+loss as step 232000: 0.585403	time: 33
+batch-auc:0.5376	eval-auc: 0.5799
+loss as step 232100: 0.564173	time: 38
+batch-auc:0.5413	eval-auc: 0.5771
+loss as step 232200: 0.615835	time: 32
+batch-auc:0.5775	eval-auc: 0.5778
+loss as step 232300: 0.669589	time: 32
+batch-auc:0.5418	eval-auc: 0.5794
+loss as step 232400: 0.595523	time: 33
+batch-auc:0.5445	eval-auc: 0.5825
+loss as step 232500: 0.595690	time: 33
+batch-auc:0.5408	eval-auc: 0.5817
+loss as step 232600: 0.606276	time: 33
+batch-auc:0.5604	eval-auc: 0.5785
+loss as step 232700: 0.553517	time: 33
+batch-auc:0.5479	eval-auc: 0.5799
+loss as step 232800: 0.585079	time: 32
+batch-auc:0.5491	eval-auc: 0.5804
+loss as step 232900: 0.542519	time: 33
+batch-auc:0.5283	eval-auc: 0.5829
+loss as step 233000: 0.553471	time: 32
+batch-auc:0.5388	eval-auc: 0.5792
+loss as step 233100: 0.617235	time: 38
+batch-auc:0.5344	eval-auc: 0.5770
+loss as step 233200: 0.553778	time: 33
+batch-auc:0.5460	eval-auc: 0.5746
+loss as step 233300: 0.532994	time: 33
+batch-auc:0.5410	eval-auc: 0.5769
+loss as step 233400: 0.564056	time: 33
+batch-auc:0.5358	eval-auc: 0.5781
+loss as step 233500: 0.574556	time: 33
+batch-auc:0.5360	eval-auc: 0.5772
+loss as step 233600: 0.553728	time: 33
+batch-auc:0.5634	eval-auc: 0.5772
+loss as step 233700: 0.553495	time: 33
+batch-auc:0.5453	eval-auc: 0.5765
+loss as step 233800: 0.521873	time: 33
+batch-auc:0.5642	eval-auc: 0.5760
+loss as step 233900: 0.553620	time: 33
+batch-auc:0.5315	eval-auc: 0.5751
+loss as step 234000: 0.594987	time: 33
+batch-auc:0.5688	eval-auc: 0.5712
+loss as step 234100: 0.605776	time: 37
+batch-auc:0.5519	eval-auc: 0.5734
+loss as step 234200: 0.564026	time: 33
+batch-auc:0.5311	eval-auc: 0.5747
+loss as step 234300: 0.564128	time: 33
+batch-auc:0.5275	eval-auc: 0.5726
+loss as step 234400: 0.606173	time: 32
+batch-auc:0.5561	eval-auc: 0.5759
+loss as step 234500: 0.542795	time: 32
+batch-auc:0.5417	eval-auc: 0.5757
+loss as step 234600: 0.532824	time: 32
+batch-auc:0.5307	eval-auc: 0.5742
+loss as step 234700: 0.521105	time: 32
+batch-auc:0.5450	eval-auc: 0.5773
+loss as step 234800: 0.553900	time: 33
+batch-auc:0.5336	eval-auc: 0.5756
+loss as step 234900: 0.617405	time: 32
+batch-auc:0.5493	eval-auc: 0.5782
+loss as step 235000: 0.606481	time: 33
+batch-auc:0.5366	eval-auc: 0.5760
+loss as step 235100: 0.563990	time: 38
+batch-auc:0.5274	eval-auc: 0.5777
+loss as step 235200: 0.648374	time: 33
+batch-auc:0.5481	eval-auc: 0.5740
+loss as step 235300: 0.491476	time: 33
+batch-auc:0.5905	eval-auc: 0.5751
+loss as step 235400: 0.585203	time: 33
+batch-auc:0.5535	eval-auc: 0.5741
+loss as step 235500: 0.585229	time: 33
+batch-auc:0.5407	eval-auc: 0.5758
+loss as step 235600: 0.604928	time: 33
+batch-auc:0.5535	eval-auc: 0.5712
+loss as step 235700: 0.501257	time: 33
+batch-auc:0.5734	eval-auc: 0.5726
+loss as step 235800: 0.522398	time: 34
+batch-auc:0.5597	eval-auc: 0.5719
+loss as step 235900: 0.532765	time: 33
+batch-auc:0.5355	eval-auc: 0.5734
+loss as step 236000: 0.553563	time: 33
+batch-auc:0.5442	eval-auc: 0.5735
+loss as step 236100: 0.522241	time: 37
+batch-auc:0.5770	eval-auc: 0.5730
+loss as step 236200: 0.708535	time: 33
+batch-auc:0.5552	eval-auc: 0.5709
+loss as step 236300: 0.606113	time: 33
+batch-auc:0.5555	eval-auc: 0.5732
+loss as step 236400: 0.616265	time: 33
+batch-auc:0.5546	eval-auc: 0.5730
+loss as step 236500: 0.639741	time: 33
+batch-auc:0.5204	eval-auc: 0.5765
+loss as step 236600: 0.627510	time: 33
+batch-auc:0.5335	eval-auc: 0.5735
+loss as step 236700: 0.532560	time: 33
+batch-auc:0.5341	eval-auc: 0.5723
+loss as step 236800: 0.605692	time: 32
+batch-auc:0.5700	eval-auc: 0.5701
+loss as step 236900: 0.616560	time: 33
+batch-auc:0.5644	eval-auc: 0.5745
+loss as step 237000: 0.574584	time: 33
+batch-auc:0.5601	eval-auc: 0.5717
+loss as step 237100: 0.481185	time: 38
+batch-auc:0.5614	eval-auc: 0.5741
+loss as step 237200: 0.543254	time: 33
+batch-auc:0.5535	eval-auc: 0.5733
+loss as step 237300: 0.543208	time: 33
+batch-auc:0.5436	eval-auc: 0.5721
+loss as step 237400: 0.595832	time: 32
+batch-auc:0.5351	eval-auc: 0.5730
+loss as step 237500: 0.668705	time: 33
+batch-auc:0.5330	eval-auc: 0.5712
+loss as step 237600: 0.657429	time: 33
+batch-auc:0.5187	eval-auc: 0.5703
+loss as step 237700: 0.532758	time: 33
+batch-auc:0.5559	eval-auc: 0.5707
+loss as step 237800: 0.480620	time: 33
+batch-auc:0.5354	eval-auc: 0.5720
+loss as step 237900: 0.553892	time: 33
+batch-auc:0.5301	eval-auc: 0.5705
+loss as step 238000: 0.595652	time: 33
+batch-auc:0.5481	eval-auc: 0.5705
+loss as step 238100: 0.564113	time: 38
+batch-auc:0.5394	eval-auc: 0.5716
+loss as step 238200: 0.448533	time: 33
+batch-auc:0.5485	eval-auc: 0.5719
+loss as step 238300: 0.585199	time: 33
+batch-auc:0.5541	eval-auc: 0.5730
+loss as step 238400: 0.673028	time: 33
+batch-auc:0.5083	eval-auc: 0.5760
+loss as step 238500: 0.574559	time: 33
+batch-auc:0.5176	eval-auc: 0.5696
+loss as step 238600: 0.635542	time: 33
+batch-auc:0.5443	eval-auc: 0.5681
+loss as step 238700: 0.500786	time: 33
+batch-auc:0.5623	eval-auc: 0.5704
+loss as step 238800: 0.605157	time: 33
+batch-auc:0.5415	eval-auc: 0.5675
+loss as step 238900: 0.574607	time: 34
+batch-auc:0.5460	eval-auc: 0.5691
+loss as step 239000: 0.605824	time: 33
+batch-auc:0.5432	eval-auc: 0.5710
+loss as step 239100: 0.605580	time: 38
+batch-auc:0.5515	eval-auc: 0.5683
+loss as step 239200: 0.605876	time: 32
+batch-auc:0.5214	eval-auc: 0.5705
+loss as step 239300: 0.532788	time: 33
+batch-auc:0.5263	eval-auc: 0.5710
+loss as step 239400: 0.533180	time: 33
+batch-auc:0.5324	eval-auc: 0.5703
+loss as step 239500: 0.553205	time: 33
+batch-auc:0.5152	eval-auc: 0.5747
+loss as step 239600: 0.584902	time: 33
+batch-auc:0.5311	eval-auc: 0.5700
+loss as step 239700: 0.574578	time: 33
+batch-auc:0.5542	eval-auc: 0.5694
+loss as step 239800: 0.606502	time: 33
+batch-auc:0.5415	eval-auc: 0.5737
+loss as step 239900: 0.564540	time: 32
+batch-auc:0.5402	eval-auc: 0.5709
+loss as step 240000: 0.596154	time: 34
+batch-auc:0.5660	eval-auc: 0.5746
+loss as step 240100: 0.574567	time: 37
+batch-auc:0.5532	eval-auc: 0.5727
+loss as step 240200: 0.553514	time: 33
+batch-auc:0.5707	eval-auc: 0.5718
+loss as step 240300: 0.617144	time: 34
+batch-auc:0.5589	eval-auc: 0.5732
+loss as step 240400: 0.606080	time: 33
+batch-auc:0.5221	eval-auc: 0.5724
+loss as step 240500: 0.554012	time: 33
+batch-auc:0.5547	eval-auc: 0.5700
+loss as step 240600: 0.617472	time: 34
+batch-auc:0.5491	eval-auc: 0.5738
+loss as step 240700: 0.532588	time: 33
+batch-auc:0.5456	eval-auc: 0.5735
+loss as step 240800: 0.585131	time: 32
+batch-auc:0.5479	eval-auc: 0.5716
+loss as step 240900: 0.668997	time: 33
+batch-auc:0.5596	eval-auc: 0.5727
+loss as step 241000: 0.627073	time: 33
+batch-auc:0.5622	eval-auc: 0.5716
+loss as step 241100: 0.595248	time: 39
+batch-auc:0.5711	eval-auc: 0.5700
+loss as step 241200: 0.626595	time: 33
+batch-auc:0.5482	eval-auc: 0.5713
+loss as step 241300: 0.542395	time: 33
+batch-auc:0.5346	eval-auc: 0.5762
+loss as step 241400: 0.595465	time: 34
+batch-auc:0.5281	eval-auc: 0.5702
+loss as step 241500: 0.595223	time: 34
+batch-auc:0.5606	eval-auc: 0.5705
+loss as step 241600: 0.605363	time: 33
+batch-auc:0.5527	eval-auc: 0.5681
+loss as step 241700: 0.617439	time: 33
+batch-auc:0.5269	eval-auc: 0.5729
+loss as step 241800: 0.606604	time: 33
+batch-auc:0.5368	eval-auc: 0.5722
+loss as step 241900: 0.479156	time: 33
+batch-auc:0.5540	eval-auc: 0.5718
+loss as step 242000: 0.606556	time: 33
+batch-auc:0.5396	eval-auc: 0.5730
+loss as step 242100: 0.543908	time: 38
+batch-auc:0.5514	eval-auc: 0.5706
+loss as step 242200: 0.574833	time: 33
+batch-auc:0.5479	eval-auc: 0.5759
+loss as step 242300: 0.532353	time: 33
+batch-auc:0.5294	eval-auc: 0.5722
+loss as step 242400: 0.521655	time: 34
+batch-auc:0.5421	eval-auc: 0.5722
+loss as step 242500: 0.605759	time: 33
+batch-auc:0.5596	eval-auc: 0.5712
+loss as step 242600: 0.533436	time: 33
+batch-auc:0.5662	eval-auc: 0.5681
+loss as step 242700: 0.595977	time: 33
+batch-auc:0.5578	eval-auc: 0.5732
+loss as step 242800: 0.520996	time: 33
+batch-auc:0.5286	eval-auc: 0.5766
+loss as step 242900: 0.585050	time: 34
+batch-auc:0.5401	eval-auc: 0.5721
+loss as step 243000: 0.605098	time: 33
+batch-auc:0.5560	eval-auc: 0.5695
+loss as step 243100: 0.543856	time: 38
+batch-auc:0.5855	eval-auc: 0.5719
+loss as step 243200: 0.616076	time: 33
+batch-auc:0.5558	eval-auc: 0.5710
+loss as step 243300: 0.542891	time: 33
+batch-auc:0.5502	eval-auc: 0.5732
+loss as step 243400: 0.563975	time: 33
+batch-auc:0.5264	eval-auc: 0.5745
+loss as step 243500: 0.637899	time: 34
+batch-auc:0.5319	eval-auc: 0.5702
+loss as step 243600: 0.596118	time: 33
+batch-auc:0.5479	eval-auc: 0.5730
+loss as step 243700: 0.574657	time: 33
+batch-auc:0.5409	eval-auc: 0.5707
+loss as step 243800: 0.617462	time: 33
+batch-auc:0.5242	eval-auc: 0.5738
+loss as step 243900: 0.553417	time: 33
+batch-auc:0.5231	eval-auc: 0.5749
+loss as step 244000: 0.595946	time: 33
+batch-auc:0.5129	eval-auc: 0.5744
+loss as step 244100: 0.522034	time: 38
+batch-auc:0.5392	eval-auc: 0.5690
+loss as step 244200: 0.574614	time: 32
+batch-auc:0.5568	eval-auc: 0.5703
+loss as step 244300: 0.521501	time: 34
+batch-auc:0.5474	eval-auc: 0.5737
+loss as step 244400: 0.574587	time: 33
+batch-auc:0.5461	eval-auc: 0.5706
+loss as step 244500: 0.481371	time: 33
+batch-auc:0.5391	eval-auc: 0.5693
+loss as step 244600: 0.480786	time: 33
+batch-auc:0.5684	eval-auc: 0.5701
+loss as step 244700: 0.564310	time: 34
+batch-auc:0.5349	eval-auc: 0.5709
+loss as step 244800: 0.564108	time: 33
+batch-auc:0.5559	eval-auc: 0.5751
+loss as step 244900: 0.563994	time: 33
+batch-auc:0.5213	eval-auc: 0.5743
+loss as step 245000: 0.553905	time: 33
+batch-auc:0.5402	eval-auc: 0.5712
+loss as step 245100: 0.553997	time: 38
+batch-auc:0.5762	eval-auc: 0.5709
+loss as step 245200: 0.553443	time: 33
+batch-auc:0.5680	eval-auc: 0.5736
+loss as step 245300: 0.564401	time: 32
+batch-auc:0.5474	eval-auc: 0.5705
+loss as step 245400: 0.636272	time: 33
+batch-auc:0.5608	eval-auc: 0.5699
+loss as step 245500: 0.554152	time: 33
+batch-auc:0.5580	eval-auc: 0.5694
+loss as step 245600: 0.513172	time: 33
+batch-auc:0.5769	eval-auc: 0.5720
+loss as step 245700: 0.595823	time: 33
+batch-auc:0.5523	eval-auc: 0.5737
+loss as step 245800: 0.594990	time: 33
+batch-auc:0.5765	eval-auc: 0.5733
+loss as step 245900: 0.585080	time: 34
+batch-auc:0.5591	eval-auc: 0.5741
+loss as step 246000: 0.523349	time: 34
+batch-auc:0.5730	eval-auc: 0.5730
+loss as step 246100: 0.521898	time: 38
+batch-auc:0.5657	eval-auc: 0.5767
+loss as step 246200: 0.574600	time: 32
+batch-auc:0.5348	eval-auc: 0.5758
+loss as step 246300: 0.542781	time: 33
+batch-auc:0.5360	eval-auc: 0.5791
+loss as step 246400: 0.574562	time: 33
+batch-auc:0.5261	eval-auc: 0.5764
+loss as step 246500: 0.564166	time: 34
+batch-auc:0.5607	eval-auc: 0.5747
+loss as step 246600: 0.626195	time: 33
+batch-auc:0.5541	eval-auc: 0.5743
+loss as step 246700: 0.534434	time: 33
+batch-auc:0.5639	eval-auc: 0.5737
+loss as step 246800: 0.532686	time: 33
+batch-auc:0.5622	eval-auc: 0.5759
+loss as step 246900: 0.617353	time: 33
+batch-auc:0.5517	eval-auc: 0.5786
+loss as step 247000: 0.522166	time: 33
+batch-auc:0.5355	eval-auc: 0.5772
+loss as step 247100: 0.616010	time: 38
+batch-auc:0.5431	eval-auc: 0.5757
+loss as step 247200: 0.542843	time: 34
+batch-auc:0.5534	eval-auc: 0.5784
+loss as step 247300: 0.625352	time: 33
+batch-auc:0.5602	eval-auc: 0.5744
+loss as step 247400: 0.542899	time: 33
+batch-auc:0.5595	eval-auc: 0.5787
+loss as step 247500: 0.585071	time: 33
+batch-auc:0.5694	eval-auc: 0.5785
+loss as step 247600: 0.500653	time: 33
+batch-auc:0.5401	eval-auc: 0.5781
+loss as step 247700: 0.595639	time: 33
+batch-auc:0.5377	eval-auc: 0.5762
+loss as step 247800: 0.574552	time: 33
+batch-auc:0.5610	eval-auc: 0.5773
+loss as step 247900: 0.595564	time: 33
+batch-auc:0.5431	eval-auc: 0.5763
+loss as step 248000: 0.489702	time: 33
+batch-auc:0.5463	eval-auc: 0.5774
+loss as step 248100: 0.564030	time: 37
+batch-auc:0.5486	eval-auc: 0.5763
+loss as step 248200: 0.584827	time: 33
+batch-auc:0.5640	eval-auc: 0.5713
+loss as step 248300: 0.637907	time: 33
+batch-auc:0.5533	eval-auc: 0.5759
+loss as step 248400: 0.564174	time: 33
+batch-auc:0.5408	eval-auc: 0.5751
+loss as step 248500: 0.511918	time: 33
+batch-auc:0.5341	eval-auc: 0.5777
+loss as step 248600: 0.512323	time: 33
+batch-auc:0.5232	eval-auc: 0.5741
+loss as step 248700: 0.574561	time: 33
+batch-auc:0.5385	eval-auc: 0.5740
+loss as step 248800: 0.636921	time: 33
+batch-auc:0.5300	eval-auc: 0.5740
+loss as step 248900: 0.522014	time: 33
+batch-auc:0.5531	eval-auc: 0.5755
+loss as step 249000: 0.574706	time: 33
+batch-auc:0.5432	eval-auc: 0.5763
+loss as step 249100: 0.627526	time: 37
+batch-auc:0.5527	eval-auc: 0.5741
+loss as step 249200: 0.532908	time: 33
+batch-auc:0.5818	eval-auc: 0.5717
+loss as step 249300: 0.627060	time: 32
+batch-auc:0.5320	eval-auc: 0.5774
+loss as step 249400: 0.512205	time: 33
+batch-auc:0.5293	eval-auc: 0.5735
+loss as step 249500: 0.533267	time: 32
+batch-auc:0.5741	eval-auc: 0.5747
+loss as step 249600: 0.574549	time: 33
+batch-auc:0.5584	eval-auc: 0.5765
+loss as step 249700: 0.564191	time: 34
+batch-auc:0.5383	eval-auc: 0.5740
+loss as step 249800: 0.564170	time: 33
+batch-auc:0.5548	eval-auc: 0.5726
+loss as step 249900: 0.585170	time: 33
+batch-auc:0.5616	eval-auc: 0.5749
+loss as step 250000: 0.595209	time: 32
+batch-auc:0.5411	eval-auc: 0.5762
+loss as step 250100: 0.521988	time: 38
+batch-auc:0.5442	eval-auc: 0.5742
+loss as step 250200: 0.563982	time: 33
+batch-auc:0.5299	eval-auc: 0.5770
+loss as step 250300: 0.626963	time: 33
+batch-auc:0.5272	eval-auc: 0.5732
+loss as step 250400: 0.553845	time: 34
+batch-auc:0.5406	eval-auc: 0.5733
+loss as step 250500: 0.617725	time: 34
+batch-auc:0.5274	eval-auc: 0.5746
+loss as step 250600: 0.605855	time: 34
+batch-auc:0.5348	eval-auc: 0.5731
+loss as step 250700: 0.532613	time: 33
+batch-auc:0.5411	eval-auc: 0.5718
+loss as step 250800: 0.533659	time: 33
+batch-auc:0.5675	eval-auc: 0.5729
+loss as step 250900: 0.500167	time: 34
+batch-auc:0.5324	eval-auc: 0.5754
+loss as step 251000: 0.595749	time: 33
+batch-auc:0.5340	eval-auc: 0.5720
+loss as step 251100: 0.481014	time: 37
+batch-auc:0.5521	eval-auc: 0.5720
+loss as step 251200: 0.605304	time: 33
+batch-auc:0.5504	eval-auc: 0.5727
+loss as step 251300: 0.554095	time: 33
+batch-auc:0.5777	eval-auc: 0.5749
+loss as step 251400: 0.574603	time: 33
+batch-auc:0.5604	eval-auc: 0.5741
+loss as step 251500: 0.637798	time: 33
+batch-auc:0.5430	eval-auc: 0.5746
+loss as step 251600: 0.584882	time: 34
+batch-auc:0.5573	eval-auc: 0.5728
+loss as step 251700: 0.553597	time: 33
+batch-auc:0.5424	eval-auc: 0.5739
+loss as step 251800: 0.660139	time: 33
+batch-auc:0.5264	eval-auc: 0.5768
+loss as step 251900: 0.553930	time: 34
+batch-auc:0.5481	eval-auc: 0.5714
+loss as step 252000: 0.521521	time: 33
+batch-auc:0.5573	eval-auc: 0.5753
+loss as step 252100: 0.543177	time: 38
+batch-auc:0.5346	eval-auc: 0.5732
+loss as step 252200: 0.532903	time: 33
+batch-auc:0.5748	eval-auc: 0.5739
+loss as step 252300: 0.627844	time: 33
+batch-auc:0.5339	eval-auc: 0.5752
+loss as step 252400: 0.606040	time: 33
+batch-auc:0.5396	eval-auc: 0.5742
+loss as step 252500: 0.595663	time: 33
+batch-auc:0.5272	eval-auc: 0.5779
+loss as step 252600: 0.521641	time: 33
+batch-auc:0.5245	eval-auc: 0.5764
+loss as step 252700: 0.595507	time: 34
+batch-auc:0.5359	eval-auc: 0.5739
+loss as step 252800: 0.501398	time: 33
+batch-auc:0.5517	eval-auc: 0.5754
+loss as step 252900: 0.553460	time: 33
+batch-auc:0.5345	eval-auc: 0.5783
+loss as step 253000: 0.564332	time: 33
+batch-auc:0.5336	eval-auc: 0.5757
+loss as step 253100: 0.574573	time: 37
+batch-auc:0.5317	eval-auc: 0.5752
+loss as step 253200: 0.564080	time: 34
+batch-auc:0.5373	eval-auc: 0.5755
+loss as step 253300: 0.595385	time: 34
+batch-auc:0.5553	eval-auc: 0.5737
+loss as step 253400: 0.595514	time: 33
+batch-auc:0.5646	eval-auc: 0.5748
+loss as step 253500: 0.532244	time: 33
+batch-auc:0.5312	eval-auc: 0.5769
+loss as step 253600: 0.606055	time: 33
+batch-auc:0.5647	eval-auc: 0.5738
+loss as step 253700: 0.532186	time: 33
+batch-auc:0.5365	eval-auc: 0.5765
+loss as step 253800: 0.585561	time: 33
+batch-auc:0.5408	eval-auc: 0.5741
+loss as step 253900: 0.532528	time: 33
+batch-auc:0.5595	eval-auc: 0.5738
+loss as step 254000: 0.585054	time: 33
+batch-auc:0.5553	eval-auc: 0.5722
+loss as step 254100: 0.564125	time: 38
+batch-auc:0.5566	eval-auc: 0.5714
+loss as step 254200: 0.510717	time: 33
+batch-auc:0.5434	eval-auc: 0.5771
+loss as step 254300: 0.523086	time: 33
+batch-auc:0.5356	eval-auc: 0.5725
+loss as step 254400: 0.625440	time: 33
+batch-auc:0.5683	eval-auc: 0.5709
+loss as step 254500: 0.626309	time: 33
+batch-auc:0.5714	eval-auc: 0.5756
+loss as step 254600: 0.481391	time: 33
+batch-auc:0.5496	eval-auc: 0.5767
+loss as step 254700: 0.636162	time: 33
+batch-auc:0.5492	eval-auc: 0.5713
+loss as step 254800: 0.521622	time: 33
+batch-auc:0.5525	eval-auc: 0.5763
+loss as step 254900: 0.585669	time: 33
+batch-auc:0.5241	eval-auc: 0.5773
+loss as step 255000: 0.564325	time: 33
+batch-auc:0.5471	eval-auc: 0.5718
+loss as step 255100: 0.543043	time: 38
+batch-auc:0.5808	eval-auc: 0.5732
+loss as step 255200: 0.499021	time: 34
+batch-auc:0.5153	eval-auc: 0.5792
+loss as step 255300: 0.584982	time: 33
+batch-auc:0.5373	eval-auc: 0.5741
+loss as step 255400: 0.532567	time: 32
+batch-auc:0.5518	eval-auc: 0.5748
+loss as step 255500: 0.543039	time: 33
+batch-auc:0.5613	eval-auc: 0.5733
+loss as step 255600: 0.564029	time: 33
+batch-auc:0.5502	eval-auc: 0.5757
+loss as step 255700: 0.542768	time: 33
+batch-auc:0.5203	eval-auc: 0.5752
+loss as step 255800: 0.626715	time: 34
+batch-auc:0.5455	eval-auc: 0.5725
+loss as step 255900: 0.585189	time: 33
+batch-auc:0.5590	eval-auc: 0.5724
+loss as step 256000: 0.649438	time: 33
+batch-auc:0.5344	eval-auc: 0.5745
+loss as step 256100: 0.479387	time: 38
+batch-auc:0.5444	eval-auc: 0.5758
+loss as step 256200: 0.511787	time: 33
+batch-auc:0.5399	eval-auc: 0.5738
+loss as step 256300: 0.708829	time: 33
+batch-auc:0.5650	eval-auc: 0.5723
+loss as step 256400: 0.553495	time: 33
+batch-auc:0.5576	eval-auc: 0.5764
+loss as step 256500: 0.584845	time: 34
+batch-auc:0.5673	eval-auc: 0.5711
+loss as step 256600: 0.584925	time: 33
+batch-auc:0.5603	eval-auc: 0.5744
+loss as step 256700: 0.542794	time: 33
+batch-auc:0.5337	eval-auc: 0.5748
+loss as step 256800: 0.731566	time: 34
+batch-auc:0.5470	eval-auc: 0.5718
+loss as step 256900: 0.606392	time: 33
+batch-auc:0.5186	eval-auc: 0.5745
+loss as step 257000: 0.564198	time: 33
+batch-auc:0.5505	eval-auc: 0.5718
+loss as step 257100: 0.564051	time: 38
+batch-auc:0.5351	eval-auc: 0.5731
+loss as step 257200: 0.522333	time: 33
+batch-auc:0.5486	eval-auc: 0.5727
+loss as step 257300: 0.595170	time: 33
+batch-auc:0.5338	eval-auc: 0.5717
+loss as step 257400: 0.635614	time: 34
+batch-auc:0.5537	eval-auc: 0.5686
+loss as step 257500: 0.564070	time: 35
+batch-auc:0.5299	eval-auc: 0.5739
+loss as step 257600: 0.510746	time: 34
+batch-auc:0.5309	eval-auc: 0.5735
+loss as step 257700: 0.595138	time: 33
+batch-auc:0.5464	eval-auc: 0.5702
+loss as step 257800: 0.500201	time: 33
+batch-auc:0.5491	eval-auc: 0.5755
+loss as step 257900: 0.564107	time: 33
+batch-auc:0.5332	eval-auc: 0.5753
+loss as step 258000: 0.585166	time: 34
+batch-auc:0.5432	eval-auc: 0.5737
+loss as step 258100: 0.627469	time: 39
+batch-auc:0.5384	eval-auc: 0.5755
+loss as step 258200: 0.637646	time: 37
+batch-auc:0.5324	eval-auc: 0.5732
+loss as step 258300: 0.512172	time: 32
+batch-auc:0.5517	eval-auc: 0.5713
+loss as step 258400: 0.553973	time: 33
+batch-auc:0.5785	eval-auc: 0.5705
+loss as step 258500: 0.574561	time: 33
+batch-auc:0.5550	eval-auc: 0.5713
+loss as step 258600: 0.511734	time: 33
+batch-auc:0.5786	eval-auc: 0.5724
+loss as step 258700: 0.584930	time: 33
+batch-auc:0.5708	eval-auc: 0.5715
+loss as step 258800: 0.606714	time: 32
+batch-auc:0.5490	eval-auc: 0.5745
+loss as step 258900: 0.616353	time: 33
+batch-auc:0.5179	eval-auc: 0.5744
+loss as step 259000: 0.595401	time: 33
+batch-auc:0.5225	eval-auc: 0.5728
+loss as step 259100: 0.584857	time: 38
+batch-auc:0.5489	eval-auc: 0.5737
+loss as step 259200: 0.564056	time: 33
+batch-auc:0.5624	eval-auc: 0.5750
+loss as step 259300: 0.574615	time: 32
+batch-auc:0.5341	eval-auc: 0.5765
+loss as step 259400: 0.574759	time: 33
+batch-auc:0.5320	eval-auc: 0.5748
+loss as step 259500: 0.553631	time: 32
+batch-auc:0.5682	eval-auc: 0.5754
+loss as step 259600: 0.637071	time: 32
+batch-auc:0.5387	eval-auc: 0.5734
+loss as step 259700: 0.605903	time: 30
+batch-auc:0.5665	eval-auc: 0.5749
+loss as step 259800: 0.647691	time: 33
+batch-auc:0.5478	eval-auc: 0.5741
+loss as step 259900: 0.584960	time: 33
+batch-auc:0.5636	eval-auc: 0.5762
+loss as step 260000: 0.564000	time: 33
+batch-auc:0.5297	eval-auc: 0.5784
+loss as step 260100: 0.574607	time: 38
+batch-auc:0.5336	eval-auc: 0.5759
+loss as step 260200: 0.616490	time: 33
+batch-auc:0.5334	eval-auc: 0.5750
+loss as step 260300: 0.574813	time: 33
+batch-auc:0.5259	eval-auc: 0.5770
+loss as step 260400: 0.564005	time: 34
+batch-auc:0.5265	eval-auc: 0.5766
+loss as step 260500: 0.606586	time: 34
+batch-auc:0.5295	eval-auc: 0.5734
+loss as step 260600: 0.553390	time: 33
+batch-auc:0.5387	eval-auc: 0.5738
+loss as step 260700: 0.574666	time: 33
+batch-auc:0.5456	eval-auc: 0.5719
+loss as step 260800: 0.698014	time: 33
+batch-auc:0.5480	eval-auc: 0.5707
+loss as step 260900: 0.626947	time: 32
+batch-auc:0.5597	eval-auc: 0.5723
+loss as step 261000: 0.595763	time: 34
+batch-auc:0.5586	eval-auc: 0.5719
+loss as step 261100: 0.490308	time: 38
+batch-auc:0.5484	eval-auc: 0.5748
+loss as step 261200: 0.595529	time: 32
+batch-auc:0.5311	eval-auc: 0.5736
+loss as step 261300: 0.511447	time: 31
+batch-auc:0.5564	eval-auc: 0.5729
+loss as step 261400: 0.532007	time: 31
+batch-auc:0.5488	eval-auc: 0.5743
+loss as step 261500: 0.563991	time: 23
+batch-auc:0.5206	eval-auc: 0.5741
+loss as step 261600: 0.521885	time: 24
+batch-auc:0.5442	eval-auc: 0.5710
+loss as step 261700: 0.554194	time: 30
+batch-auc:0.5311	eval-auc: 0.5690
+loss as step 261800: 0.595030	time: 29
+batch-auc:0.5317	eval-auc: 0.5661
+loss as step 261900: 0.532248	time: 29
+batch-auc:0.5284	eval-auc: 0.5710
+loss as step 262000: 0.564088	time: 29
+batch-auc:0.5252	eval-auc: 0.5701
+loss as step 262100: 0.585293	time: 32
+batch-auc:0.5347	eval-auc: 0.5737
+loss as step 262200: 0.574694	time: 22
+batch-auc:0.5490	eval-auc: 0.5736
+loss as step 262300: 0.553767	time: 28
+batch-auc:0.5324	eval-auc: 0.5716
+loss as step 262400: 0.595858	time: 28
+batch-auc:0.5579	eval-auc: 0.5727
+loss as step 262500: 0.532994	time: 28
+batch-auc:0.5667	eval-auc: 0.5715
+loss as step 262600: 0.532191	time: 27
+batch-auc:0.5448	eval-auc: 0.5748
+loss as step 262700: 0.512158	time: 29
+batch-auc:0.5177	eval-auc: 0.5718
+loss as step 262800: 0.483181	time: 28
+batch-auc:0.5454	eval-auc: 0.5692
+loss as step 262900: 0.531939	time: 27
+batch-auc:0.5465	eval-auc: 0.5768
+loss as step 263000: 0.553869	time: 26
+batch-auc:0.5339	eval-auc: 0.5714
+loss as step 263100: 0.564069	time: 32
+batch-auc:0.5237	eval-auc: 0.5728
+loss as step 263200: 0.615889	time: 27
+batch-auc:0.5465	eval-auc: 0.5711
+loss as step 263300: 0.585081	time: 27
+batch-auc:0.5472	eval-auc: 0.5707
+loss as step 263400: 0.554202	time: 26
+batch-auc:0.5339	eval-auc: 0.5680
+loss as step 263500: 0.564252	time: 27
+batch-auc:0.5415	eval-auc: 0.5712
+loss as step 263600: 0.543164	time: 27
+batch-auc:0.5359	eval-auc: 0.5713
+loss as step 263700: 0.595486	time: 27
+batch-auc:0.5349	eval-auc: 0.5708
+loss as step 263800: 0.596184	time: 26
+batch-auc:0.5258	eval-auc: 0.5747
+loss as step 263900: 0.617803	time: 27
+batch-auc:0.5173	eval-auc: 0.5738
+loss as step 264000: 0.564040	time: 27
+batch-auc:0.5285	eval-auc: 0.5708
+loss as step 264100: 0.511162	time: 32
+batch-auc:0.5425	eval-auc: 0.5726
+loss as step 264200: 0.564185	time: 26
+batch-auc:0.5313	eval-auc: 0.5723
+loss as step 264300: 0.521974	time: 27
+batch-auc:0.5430	eval-auc: 0.5741
+loss as step 264400: 0.574575	time: 27
+batch-auc:0.5375	eval-auc: 0.5728
+loss as step 264500: 0.553245	time: 27
+batch-auc:0.5238	eval-auc: 0.5742
+loss as step 264600: 0.553529	time: 27
+batch-auc:0.5159	eval-auc: 0.5723
+loss as step 264700: 0.636019	time: 28
+batch-auc:0.5469	eval-auc: 0.5686
+loss as step 264800: 0.512049	time: 28
+batch-auc:0.5768	eval-auc: 0.5700
+loss as step 264900: 0.616216	time: 28
+batch-auc:0.5482	eval-auc: 0.5722
+loss as step 265000: 0.512588	time: 28
+batch-auc:0.5707	eval-auc: 0.5714
+loss as step 265100: 0.493206	time: 32
+batch-auc:0.5554	eval-auc: 0.5711
+loss as step 265200: 0.574565	time: 28
+batch-auc:0.5644	eval-auc: 0.5705
+loss as step 265300: 0.595601	time: 28
+batch-auc:0.5412	eval-auc: 0.5727
+loss as step 265400: 0.532678	time: 29
+batch-auc:0.5403	eval-auc: 0.5727
+loss as step 265500: 0.543058	time: 28
+batch-auc:0.5408	eval-auc: 0.5742
+loss as step 265600: 0.617202	time: 28
+batch-auc:0.5654	eval-auc: 0.5736
+loss as step 265700: 0.659320	time: 28
+batch-auc:0.5583	eval-auc: 0.5730
+loss as step 265800: 0.690294	time: 29
+batch-auc:0.5390	eval-auc: 0.5727
+loss as step 265900: 0.616668	time: 27
+batch-auc:0.5468	eval-auc: 0.5721
+loss as step 266000: 0.626967	time: 28
+batch-auc:0.5390	eval-auc: 0.5709
+loss as step 266100: 0.626711	time: 33
+batch-auc:0.5450	eval-auc: 0.5688
+loss as step 266200: 0.522004	time: 29
+batch-auc:0.5387	eval-auc: 0.5708
+loss as step 266300: 0.584958	time: 27
+batch-auc:0.5604	eval-auc: 0.5710

@@ -27,29 +27,36 @@ file_list = ['../data/nds.10.shuf.ind', '../data/nds.10.shuf.ind']
 file_index = 0
 line_index = 0
 
-batch_size = 1
+batch_size = 10
 buffer_size = 100000
 eval_size = 1000
 epoch = 100
+nds_rate = 0.1
 
+# 'create', 'restore'
+train_mode = 'create'
+ckpt = 1000
 # 'LR', 'FM'
-_algo = 'LR'
-_rank = 2
-_log_path = '../log/' + time.strftime('%c') + ' ' + _algo
-if _algo == 'FM':
-    _log_path += str(_rank)
+algo = 'LR'
+rank = 2
+if train_mode == 'create':
+    tag = time.strftime('%c') + ' ' + algo
+    if algo == 'FM':
+        tag += str(rank)
+else:
+    tag = 'Mon Mar 21 10:27:48 2016 LR'
+log_path = '../log/%s' % tag
+model_path = '../model/%s' % tag
 
-_learning_rate = 0.0001
+_learning_rate = 0.001
 # _alpha = 1
-_lambda = 0.01
+_lambda = 0.05
 _keep_prob = 0.5
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
 _stddev = 0.001
 _min_val = -0.001
 _max_val = -1 * _min_val
-
-_nds_rate = 0.1
 
 
 # extract feature from a line
@@ -111,8 +118,12 @@ def get_batch_xy(size):
     return np.array(labels), np.array(rows), np.array(cols), np.array(values)
 
 
-def write_log(vals):
-    with open(_log_path, 'a') as log_in:
+def write_log(vals, erase=False):
+    if erase:
+        mode = 'w'
+    else:
+        mode = 'a'
+    with open(log_path, mode) as log_in:
         log_in.write('\t'.join([str(_x) for _x in vals]) + '\n')
 
 
@@ -122,7 +133,7 @@ ax = fig.add_subplot(111)
 
 
 def show_log():
-    logs = np.loadtxt(_log_path, delimiter='\t', skiprows=3)
+    logs = np.loadtxt(log_path, delimiter='\t', skiprows=3)
     if logs.ndim < 2:
         return
     ax.clear()
@@ -130,19 +141,20 @@ def show_log():
     ax.plot(logs[-10000:, 0], logs[-10000:, 2], label='batch-auc')
     ax.plot(logs[-10000:, 0], logs[-10000:, 3], label='eval-auc')
     ax.legend()
-    ax.set_title(_log_path)
+    ax.set_title(log_path)
     ax.set_xlabel('step')
     fig.canvas.draw()
 
 
-print _log_path
+print train_mode, log_path
 
-headers = ['batch: %d, epoch: %d, buffer_size: %d, eval_size: %d' % (batch_size, epoch, buffer_size, eval_size),
+headers = ['batch: %d, epoch: %d, buffer_size: %d, eval_size: %d, checkpoint: %d' % (
+    batch_size, epoch, buffer_size, eval_size, ckpt),
            'lr: %f, lambda: %f, keep_prob: %f' % (_learning_rate, _lambda, _keep_prob),
            'init method: %s, stddev: %f, interval: [%f, %f]' % (_init_method, _stddev, _min_val, _max_val)]
 
 for h in headers:
-    write_log([h])
+    write_log([h], h == headers[0])
     print h
 
 sp_train_inds = []
@@ -177,6 +189,36 @@ for i in range(batch_size):
         sp_train_inds.append([i, j])
 
 
+def pre_train(sess, var_map):
+    saver = tf.train.Saver(var_map)
+    if train_mode == 'create':
+        tf.initialize_all_variables().run()
+        print 'model initialized'
+    else:
+        saver.restore(sess, model_path)
+        print 'model restored'
+    return saver
+
+
+def watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_preds):
+    if step % epoch == 0:
+        print 'loss as step %d: %f\ttime: %d' % (step, l, time.time() - start_time)
+        try:
+            batch_auc = roc_auc_score(batch_labels, batch_preds)
+            valid_auc = roc_auc_score(valid_labels, valid_preds)
+            print 'batch-auc:%.4f\teval-auc: %.4f' % (batch_auc, valid_auc)
+        except ValueError:
+            batch_auc = 0
+            valid_auc = roc_auc_score(valid_labels, valid_preds)
+            print 'batch-auc:None\teval-auc: %.4f' % valid_auc
+        write_log([step, l, batch_auc, valid_auc])
+        show_log()
+        if step % ckpt == 0:
+            saver.save(sess, model_path)
+            print 'model saved as: %s' % model_path
+        return True
+
+
 def lr():
     graph = tf.Graph()
     with graph.as_default():
@@ -204,12 +246,11 @@ def lr():
         train_pred = tf.sigmoid(logits)
         unif_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_valid_ids, tf_sp_valid_weights,
                                                           combiner='sum')
-        valid_pred = tf.sigmoid(unif_valid_logits)
-        valid_pred /= valid_pred + (1 - valid_pred) / _nds_rate
+        valid_preds = tf.sigmoid(unif_valid_logits)
+        valid_preds /= valid_preds + (1 - valid_preds) / nds_rate
 
-    with tf.Session(graph=graph) as session:
-        tf.initialize_all_variables().run()
-        print 'initialized'
+    with tf.Session(graph=graph) as sess:
+        saver = pre_train(sess, {'weights': weights, 'bias': bias})
         step = 0
         batch_preds = []
         batch_labels = []
@@ -221,30 +262,18 @@ def lr():
                 feed_dict = {tf_sp_id_vals: cols[_i * batch_size * X_feas: (_i + 1) * batch_size * X_feas],
                              tf_sp_weight_vals: values[_i * batch_size * X_feas: (_i + 1) * batch_size * X_feas],
                              tf_train_label: label[_i * batch_size: (_i + 1) * batch_size]}
-                _, l, pred = session.run([optimizer, loss, train_pred], feed_dict=feed_dict)
+                _, l, pred = sess.run([optimizer, loss, train_pred], feed_dict=feed_dict)
 
                 batch_preds.extend(_x[0] for _x in pred)
                 batch_labels.extend(label[_i * batch_size: (_i + 1) * batch_size])
-
-                if step % epoch == 0:
-                    print 'loss as step %d: %f\ttime: %d' % (step, l, time.time() - start_time)
+                if watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_preds.eval()):
                     start_time = time.time()
-                    try:
-                        batch_auc = roc_auc_score(batch_labels, batch_preds)
-                        batch_preds = []
-                        batch_labels = []
-                        valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-                        print 'batch-auc:%.4f\teval-auc: %.4f' % (batch_auc, valid_auc)
-                    except ValueError:
-                        batch_auc = 0
-                        valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-                        print 'batch-auc:None\teval-auc: %.4f' % valid_auc
-                    write_log([step, l, batch_auc, valid_auc])
-                    show_log()
+                    batch_preds = []
+                    batch_labels = []
 
 
 def fm():
-    print 'rank: %d' % _rank
+    print 'rank: %d' % rank
     graph = tf.Graph()
 
     def factorization(sp_ids, sp_weights, sp_weights2):
@@ -269,13 +298,13 @@ def fm():
 
         if _init_method == 'normal':
             W = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev))
-            V = tf.Variable(tf.random_normal([X_dim, _rank], stddev=_stddev))
+            V = tf.Variable(tf.random_normal([X_dim, rank], stddev=_stddev))
         elif _init_method == 't-normal':
             W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
-            V = tf.Variable(tf.truncated_normal([X_dim, _rank], stddev=_stddev))
+            V = tf.Variable(tf.truncated_normal([X_dim, rank], stddev=_stddev))
         else:
             W = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val))
-            V = tf.Variable(tf.random_uniform([X_dim, _rank], minval=_min_val, maxval=_max_val))
+            V = tf.Variable(tf.random_uniform([X_dim, rank], minval=_min_val, maxval=_max_val))
         b = tf.Variable(0.0)
 
         logit = factorization(tf_sp_ids, tf_sp_weights, tf_sp_weights2)
@@ -285,11 +314,10 @@ def fm():
         train_pred = tf.sigmoid(logit)
         valid_logits = factorization(tf_sp_valid_ids, tf_sp_valid_weights, tf_sp_valid_weights2)
         valid_pred = tf.sigmoid(valid_logits)
-        valid_pred /= valid_pred + (1 - valid_pred) / _nds_rate
+        valid_pred /= valid_pred + (1 - valid_pred) / nds_rate
 
-    with tf.Session(graph=graph) as session:
-        tf.initialize_all_variables().run()
-        print 'initialized'
+    with tf.Session(graph=graph) as sess:
+        saver = pre_train(sess, {'W': W, 'V': V, 'b': b})
         step = 0
         batch_preds = []
         batch_labels = []
@@ -305,28 +333,17 @@ def fm():
 
                 feed_dict = {tf_sp_id_vals: _cols, tf_sp_weight_vals: _vals, tf_sp_weight2_vals: _vals2,
                              tf_train_label: _label}
-                _, l, pred, lg = session.run([optimizer, loss, train_pred, logit], feed_dict=feed_dict)
+                _, l, pred, lg = sess.run([optimizer, loss, train_pred, logit], feed_dict=feed_dict)
                 batch_preds.extend(_x[0] for _x in pred)
                 batch_labels.extend(label[_i * batch_size: (_i + 1) * batch_size])
-                if step % epoch == 0:
-                    print 'loss as step %d: %f\ttime: %d' % (step, l, time.time() - start_time)
+                if watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_pred.eval()):
                     start_time = time.time()
-                    try:
-                        batch_auc = roc_auc_score(batch_labels, batch_preds)
-                        batch_preds = []
-                        batch_labels = []
-                        valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-                        print 'batch-auc:%.4f\teval-auc: %.4f' % (batch_auc, valid_auc)
-                    except ValueError:
-                        batch_auc = 0
-                        valid_auc = roc_auc_score(valid_labels, valid_pred.eval())
-                        print 'batch-auc:None\teval-auc: %.4f' % valid_auc
-                    write_log([step, l, batch_auc, valid_auc])
-                    show_log()
+                    batch_preds = []
+                    batch_labels = []
 
 
 if __name__ == '__main__':
-    if _algo == 'LR':
+    if algo == 'LR':
         lr()
-    elif _algo == 'FM':
+    elif algo == 'FM':
         fm()
