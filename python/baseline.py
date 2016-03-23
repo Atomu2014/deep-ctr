@@ -37,20 +37,20 @@ nds_rate = 0.1
 train_mode = 'create'
 ckpt = 1000
 # 'LR', 'FM'
-algo = 'LR'
+algo = 'FM'
 rank = 2
 if train_mode == 'create':
     tag = time.strftime('%c') + ' ' + algo
     if algo == 'FM':
         tag += str(rank)
 else:
-    tag = 'Mon Mar 21 10:27:48 2016 LR'
+    tag = ''
 log_path = '../log/%s' % tag
 model_path = '../model/%s' % tag
 
 _learning_rate = 0.001
 # _alpha = 1
-_lambda = 0.05
+_lambda = 0.01
 _keep_prob = 0.5
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
