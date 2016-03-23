@@ -1,12 +1,12 @@
 import time
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
+# import seaborn as sns
 import tensorflow as tf
 from sklearn.metrics import roc_auc_score
 
-sns.set_style('darkgrid')
+# sns.set_style('darkgrid')
 
 # scale valued-fields to [0, 1]
 max_vals = [65535, 8000, 705, 249000, 7974, 14159, 946, 43970, 5448, 11, 471, 35070017, 8376]
@@ -29,13 +29,13 @@ line_index = 0
 
 batch_size = 10
 buffer_size = 100000
-eval_size = 1000
-epoch = 100
+eval_size = 10000
+epoch = 500
 nds_rate = 0.1
 
 # 'create', 'restore'
 train_mode = 'create'
-ckpt = 1000
+ckpt = epoch * 10
 # 'LR', 'FM'
 algo = 'FM'
 rank = 2
@@ -127,31 +127,31 @@ def write_log(vals, erase=False):
         log_in.write('\t'.join([str(_x) for _x in vals]) + '\n')
 
 
-plt.ion()
-fig = plt.figure()
-ax = fig.add_subplot(111)
+# plt.ion()
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
 
 
-def show_log():
-    logs = np.loadtxt(log_path, delimiter='\t', skiprows=3)
-    if logs.ndim < 2:
-        return
-    ax.clear()
-    ax.plot(logs[-10000:, 0], logs[-10000:, 1], label='loss')
-    ax.plot(logs[-10000:, 0], logs[-10000:, 2], label='batch-auc')
-    ax.plot(logs[-10000:, 0], logs[-10000:, 3], label='eval-auc')
-    ax.legend()
-    ax.set_title(log_path)
-    ax.set_xlabel('step')
-    fig.canvas.draw()
+# def show_log():
+#     logs = np.loadtxt(log_path, delimiter='\t', skiprows=3)
+#     if logs.ndim < 2:
+#         return
+#     ax.clear()
+#     ax.plot(logs[-10000:, 0], logs[-10000:, 1], label='loss')
+#     ax.plot(logs[-10000:, 0], logs[-10000:, 2], label='batch-auc')
+#     ax.plot(logs[-10000:, 0], logs[-10000:, 3], label='eval-auc')
+#     ax.legend()
+#     ax.set_title(log_path)
+#     ax.set_xlabel('step')
+#     fig.canvas.draw()
 
 
 print train_mode, log_path
 
 headers = ['batch: %d, epoch: %d, buffer_size: %d, eval_size: %d, checkpoint: %d' % (
     batch_size, epoch, buffer_size, eval_size, ckpt),
-           'lr: %f, lambda: %f, keep_prob: %f' % (_learning_rate, _lambda, _keep_prob),
-           'init method: %s, stddev: %f, interval: [%f, %f]' % (_init_method, _stddev, _min_val, _max_val)]
+    'lr: %f, lambda: %f, keep_prob: %f' % (_learning_rate, _lambda, _keep_prob),
+    'init method: %s, stddev: %f, interval: [%f, %f]' % (_init_method, _stddev, _min_val, _max_val)]
 
 for h in headers:
     write_log([h], h == headers[0])
@@ -212,7 +212,7 @@ def watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, val
             valid_auc = roc_auc_score(valid_labels, valid_preds)
             print 'batch-auc:None\teval-auc: %.4f' % valid_auc
         write_log([step, l, batch_auc, valid_auc])
-        show_log()
+        # show_log()
         if step % ckpt == 0:
             saver.save(sess, model_path)
             print 'model saved as: %s' % model_path
