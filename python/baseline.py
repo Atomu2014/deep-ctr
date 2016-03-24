@@ -28,7 +28,7 @@ file_index = 0
 line_index = 0
 
 batch_size = 10
-buffer_size = 100000
+buffer_size = 1000000
 eval_size = 10000
 epoch = 500
 nds_rate = 0.1
@@ -48,9 +48,9 @@ else:
 log_path = '../log/%s' % tag
 model_path = '../model/%s' % tag
 
-_learning_rate = 0.001
+_learning_rate = 0.0005
 # _alpha = 1
-_lambda = 0.01
+_lambda = 0.05
 _keep_prob = 0.5
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'

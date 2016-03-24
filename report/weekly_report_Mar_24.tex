@@ -1,0 +1,102 @@
+% book example for classicthesis.sty
+\documentclass[
+  % Replace twoside with oneside if you are printing your thesis on a single side
+  % of the paper, or for viewing on screen.
+  oneside,
+  11pt, a4paper,
+  footinclude=false,
+  headinclude=false,
+]{scrbook}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\begin{document}
+
+\chapter{Current Work}
+
+\section{Deploy Tensorflow on GPU}
+
+Tensorflow has been successfully deployed on GPU, current speed up: x10.
+
+On our 3,000,000 dim data: 1). run 1,000,000 - 2,500,000 iterations within one day, 2). mini-batch increases training process linearly.
+
+\section{Performance}
+
+Sgd performs best, while mini-batch sees more data.
+
+\begin{center}
+  \begin{tabular}{ | l | l | l | l | }
+    \hline
+    algo & opt & iter & auc \\ \hline
+    lr & sgd & 3,000,000 & 0.764 \\ \hline
+    lr & mini-batch(10) & 1,300,000 & ~0.67 \\ \hline
+    fm(rank=2) & sgd & 1,000,000 & 0.753 \\ \hline
+    fm(rank=2) & mini-batch(10) & 270,000 & 0.67-0.68 \\ \hline
+  \end{tabular}
+\end{center}
+
+(Images are packaged alone, see for more details.)
+
+\chapter{Challenges}
+
+\section{Data Scale}
+
+For now, 10,000,000 training data is possible (batch-size=10, within one day), however mini-batch drags performance. 
+
+0.1 negative down training set is about 200,000,000, 45GB. But referring to this paper \emph{Practical Lessons from predicting Clicks on Ads at Facebook}, fb chooses nds-rate=0.025.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=12cm]{fb_nds.png}
+    \caption{nds-performance}
+\end{figure}
+
+Test is done every other 500 iters, need to decide test size according to train size (currently only 10,000). 
+
+\section{Feature Space}
+
+Using frequency filter, decrease dim from 90,000,000 to 3,000,000, i.e. assigning items appearing less than 10 times to category "other". From the discussion of Wed., need to decide: 1). drop this huge "other" class, 2). filter threshold setting.
+
+Another problem is raised that, does our model only counting on several features or feature interactions? How to prove?
+
+Bag-of-Word assumption? 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=13cm]{ff_dim.png}
+    \caption{dimension reduction}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=13cm]{ff_s_ratio.png}
+    \caption{dimension reduction on different fields}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=13cm]{ff_w_ratio.png}
+    \caption{item weights on different fields}
+\end{figure}
+
+\section{Experiment}
+
+Too long for data, and baseline... MXNet proposed by @Ken Ren, still at phase of exploring (sparse support, flexibility).
+
+1). Continue experiments on LR and FM?
+
+2). FNN, and SNN as baseline.
+
+3). Effects of random seed. Comparison between FM-init embedding layer and random-init? (fine-tuning)
+
+4). Variable init method: normal(deprecated), truncated-normal(deprecated), uniform([-0.0001, 0.0001]-[-0.001]).
+
+5). Mini-batch vs. sgd.
+
+6). Step decrease learning rate? 0.001-0.0001
+
+7). L2 regularization to control over-fitting. 0.01-0.001
+
+8). Embedding and prediction?
+
+\end{document}
