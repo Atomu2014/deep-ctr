@@ -50,7 +50,7 @@ model_path = '../model/%s' % tag
 
 _learning_rate = 0.0005
 # _alpha = 1
-_lambda = 0.05
+_lambda = 0.025
 _keep_prob = 0.5
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'

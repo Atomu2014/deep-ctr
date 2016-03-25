@@ -7,28 +7,42 @@ sns.set_style('darkgrid')
 colors = sns.color_palette()
 
 
-def show_log(log_path, mode, p1, p2):
+def show_log(log_path, mode, p1, p2, p3, p4):
     logs = np.loadtxt(log_path, delimiter='\t', skiprows=3)
     fig = plt.figure()
     ax0 = fig.add_subplot(211)
     ax1 = fig.add_subplot(212)
 
     if mode == 'all':
-        ax0.plot(logs[:, 0], logs[:, 1], label='loss', color=colors[0])
-        ax1.plot(logs[:, 0], logs[:, 2], label='batch-auc', color=colors[1])
-        ax1.plot(logs[:, 0], logs[:, 3], label='eval-auc', color=colors[2])
+        step = logs[::p3, 0]
+        loss = logs[::p3, 1]
+        batch_auc = logs[::p3, 2]
+        eval_auc = logs[::p3, 3]
     elif mode == 'head':
-        ax0.plot(logs[:p1, 0], logs[:p1, 1], label='loss', color=colors[0])
-        ax1.plot(logs[:p1, 0], logs[:p1, 2], label='batch-auc', color=colors[1])
-        ax1.plot(logs[:p1, 0], logs[:p1, 3], label='eval-auc', color=colors[2])
+        step = logs[:p1:p3, 0]
+        loss = logs[:p1:p3, 1]
+        batch_auc = logs[:p1:p3, 2]
+        eval_auc = logs[:p1:p3, 3]
     elif mode == 'tail':
-        ax0.plot(logs[p2:, 0], logs[p2:, 1], label='loss', color=colors[0])
-        ax1.plot(logs[p2:, 0], logs[p2:, 2], label='batch-auc', color=colors[1])
-        ax1.plot(logs[p2:, 0], logs[p2:, 3], label='eval-auc', color=colors[2])
+        step = logs[p2::p3, 0]
+        loss = logs[p2::p3, 1]
+        batch_auc = logs[p2::p3, 2]
+        eval_auc = logs[p2::p3, 3]
     else:
-        ax0.plot(logs[p1:p2, 0], logs[p1:p2, 1], label='loss', color=colors[0])
-        ax1.plot(logs[p1:p2, 0], logs[p1:p2, 2], label='batch-auc', color=colors[1])
-        ax1.plot(logs[p1:p2, 0], logs[p1:p2, 3], label='eval-auc', color=colors[2])
+        step = logs[p1:p2:p3, 0]
+        loss = logs[p1:p2:p3, 1]
+        batch_auc = logs[p1:p2:p3, 2]
+        eval_auc = logs[p1:p2:p3, 3]
+
+    smooth_auc = np.array(eval_auc[p4 - 1:])
+    for i in range(p4 - 1):
+        smooth_auc += eval_auc[i:(i - p4 + 1)]
+    smooth_auc /= p4
+
+    ax0.plot(step, loss, label='loss', color=colors[0])
+    ax1.plot(step, batch_auc, label='batch-auc', color=colors[1])
+    ax1.plot(step, eval_auc, label='eval-auc', color=colors[2])
+    ax1.plot(step[p4 - 1:], smooth_auc, label='smoothed eval-auc', color=colors[3])
 
     ax0.legend()
     ax0.set_title(log_path)
@@ -40,16 +54,15 @@ def show_log(log_path, mode, p1, p2):
     plt.show()
 
 
-# show_log('../log/Wed Mar 23 14:43:38 2016 FM2')
-
 if __name__ == '__main__':
     assert len(sys.argv) > 1, 'must input log path'
-    log_path = ' '.join(sys.argv[1:-3])
-    if sys.argv[-3] == 'all':
-        show_log('../log/' + log_path, sys.argv[-3], None, None)
-    elif sys.argv[-3] == 'head':
-        show_log('../log/' + log_path, sys.argv[-3], int(sys.argv[-2]), None)
-    elif sys.argv[-3] == 'tail':
-        show_log('../log/' + log_path, sys.argv[-3], None, int(sys.argv[-1]))
+    log_path = ' '.join(sys.argv[1:-5])
+    mode = sys.argv[-5]
+    if mode == 'all':
+        show_log('../log/' + log_path, mode, None, None, int(sys.argv[-2]), int(sys.argv[-1]))
+    elif mode == 'head':
+        show_log('../log/' + log_path, mode, int(sys.argv[-4]), None, int(sys.argv[-2]), int(sys.argv[-1]))
+    elif mode == 'tail':
+        show_log('../log/' + log_path, mode, None, int(sys.argv[-3]), int(sys.argv[-2]), int(sys.argv[-1]))
     else:
-        show_log('../log/' + log_path, sys.argv[-3], int(sys.argv[-2]), int(sys.argv[-1]))
+        show_log('../log/' + log_path, mode, int(sys.argv[-4]), int(sys.argv[-3]), int(sys.argv[-2]), int(sys.argv[-1]))
