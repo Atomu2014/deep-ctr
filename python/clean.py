@@ -135,7 +135,7 @@ def merge_file(file_list, fout_path):
     num_lines = 0
     while True:
         start_time = time.time()
-        buf = rand_collect(fins, 100000)
+        buf = collect(fins)
         num_lines += len(buf)
         if len(buf) < 1:
             return
@@ -159,7 +159,7 @@ def make_index(fin_path, fout_path, indices, trivial):
     with open(fout_path, 'wb') as fout:
         while True:
             start_time = time.time()
-            buf = collect(fin, 100000)
+            buf = collect(fin)
             num_lines += len(buf)
 
             if len(buf) < 1:
@@ -178,19 +178,19 @@ def make_index(fin_path, fout_path, indices, trivial):
 
 
 if __name__ == '__main__':
-    # save = pickle.load(open('../data/stat.pickle', 'rb'))
-    # indices = [{} for i in range(26)]
-    # trivial = [set() for i in range(26)]
-    #
-    # for i in range(26):
-    #     set = save['sets'][i]
-    #     for k, v in set.iteritems():
-    #         if v > 10:
-    #             indices[i][k] = len(indices[i])
-    #         else:
-    #             trivial[i].add(k)
-    #
-    # print [len(x) + 1 for x in indices]
+    save = pickle.load(open('../data/stat.pickle', 'rb'))
+    indices = [{} for i in range(26)]
+    trivial = [set() for i in range(26)]
+
+    for i in range(26):
+        set = save['sets'][i]
+        for k, v in set.iteritems():
+            if v > 10:
+                indices[i][k] = len(indices[i])
+            else:
+                trivial[i].add(k)
+
+    print [len(x) + 1 for x in indices]
     #
     # pickle.dump({'ind': indices, 'tri': trivial}, open('../data/stat.index.pickle', 'wb'))
     # save = pickle.load(open('../data/stat.index.pickle'))
