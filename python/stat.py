@@ -65,27 +65,36 @@ def stat_freq_filter(stat_file):
     total_sizes = [len(sets[i]) for i in range(26)]
 
     def foo(freq):
+    	print 'threshold:%d' % freq
         sizes = [np.array(sets[i].values()) for i in range(26)]
         inds = [np.where(sizes[i] > freq)[0] for i in range(26)]
         f_sizes = [len(inds[i]) for i in range(26)]
         f_weights = [np.sum(sizes[i][inds[i]]) for i in range(26)]
         f_s_ratios = [f_sizes[i] * 1.0 / total_sizes[i] for i in range(26)]
         f_w_ratios = [f_weights[i] * 1.0 / total_weights[i] for i in range(26)]
-        # print 'dimension %d->%d' % (np.sum(total_sizes), np.sum(f_sizes))
-        # print 'field\tt_size\tt_weight\tf_size\tf_weight\tfs_ratio\tfw_ratio'
-        # for i in range(26):
-        # print '%3d%10d%12d%10d%12d\t%.4f\t%.4f' % (i, total_sizes[i],
-        # total_weights[i], f_sizes[i], f_weights[i], f_s_ratios[i],
-        # f_w_ratios[i])
-        return f_s_ratios, f_w_ratios
+        print 'dimension %d->%d' % (np.sum(total_sizes), np.sum(f_sizes))
+        print 'field\tt_size\tt_weight\tf_size\tf_weight\tfs_ratio\tfw_ratio'
+        for i in range(26):
+        	print '%3d%10d%12d%10d%12d\t%.4f\t%.4f' % (i, total_sizes[i],
+        		total_weights[i], f_sizes[i], f_weights[i], f_s_ratios[i],
+        		f_w_ratios[i])
+        return f_s_ratios, f_w_ratios, np.sum(f_sizes)
 
     s_ratios = []
     w_ratios = []
+    sizes = []
     thresholds = [10, 20, 50, 100, 200, 500, 1000]
     for i in thresholds:
-        s, w = foo(i)
+        s, w, ss = foo(i)
         s_ratios.append(s)
         w_ratios.append(w)
+        sizes.append(ss)
+
+    plt.plot(thresholds, sizes)
+    plt.xlabel('freq threshold')
+    plt.ylabel('dim')
+    plt.title('dim reduction')
+    plt.show()
 
     s_ratios = np.array(s_ratios)
     w_ratios = np.array(w_ratios)
@@ -106,5 +115,5 @@ def stat_freq_filter(stat_file):
 
 
 if __name__ == '__main__':
-    # stat_freq_filter('../data/stat.pickle')
-    stat2(['../data/nds.2.5.shuf', '../data/test.nds.2.5.shuf', '../data/test.unif.2.5.shuf'], '../data/2.5.stat.pickle')
+    stat_freq_filter('../data/2.5.stat.pickle')
+    # stat2(['../data/nds.2.5.shuf', '../data/test.nds.2.5.shuf', '../data/test.unif.2.5.shuf'], '../data/2.5.stat.pickle')

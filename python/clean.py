@@ -145,15 +145,24 @@ def merge_file(file_list, fout_path):
         print num_lines, time.time() - start_time
 
 
-def make_index(fin_path, fout_path, indices, trivial):
+def build_indices(sets, fltr):
+    inds = [{} for i in range(26)]
+    for i in range(26):
+        for k, v in sets[i].iteritems():
+            if v > fltr:
+                inds[i][k] = len(inds[i])
+    return inds
+
+
+def make_index(fin_path, fout_path, inds, fltr):
     print 'processing', fin_path
     fin = open(fin_path, 'rb')
 
     def get_index(i, key):
-        if key in trivial[i]:
-            return len(indices[i])
+        if key in inds[i]:
+            return inds[i][key]
         else:
-            return indices[i][key]
+            return len(inds[i])
 
     num_lines = 0
     with open(fout_path, 'wb') as fout:
@@ -178,27 +187,31 @@ def make_index(fin_path, fout_path, indices, trivial):
 
 
 if __name__ == '__main__':
-    save = pickle.load(open('../data/stat.pickle', 'rb'))
-    indices = [{} for i in range(26)]
-    trivial = [set() for i in range(26)]
+    # save = pickle.load(open('../data/stat.pickle', 'rb'))
+    # indices = [{} for i in range(26)]
+    # trivial = [set() for i in range(26)]
 
-    for i in range(26):
-        set = save['sets'][i]
-        for k, v in set.iteritems():
-            if v > 10:
-                indices[i][k] = len(indices[i])
-            else:
-                trivial[i].add(k)
+    # for i in range(26):
+    #     set = save['sets'][i]
+    #     for k, v in set.iteritems():
+    #         if v > 10:
+    #             indices[i][k] = len(indices[i])
+    #         else:
+    #             trivial[i].add(k)
 
-    print [len(x) + 1 for x in indices]
+    # print [len(x) + 1 for x in indices]
     #
     # pickle.dump({'ind': indices, 'tri': trivial}, open('../data/stat.index.pickle', 'wb'))
-    # save = pickle.load(open('../data/stat.index.pickle'))
-    # indices = save['ind']
-    # trivial = save['tri']
-    # make_index('../data/nds.10.shuf', '../data/nds.10.shuf.ind', indices, trivial)
-    # make_index('../data/test.nds.10.shuf', '../data/test.nds.10.shuf.ind', indices, trivial)
-    # make_index('../data/test.unif.10.shuf', '../data/test.unif.10.shuf.ind', indices, trivial)
+    save = pickle.load(open('../data/2.5.stat.pickle'))
+    cats = save['sets']
+    for fltr in [10, 20, 50, 100]:
+        inds = build_indices(cats, fltr)
+        make_index('../data/nds.2.5.shuf', '../data/nds.2.5.shuf.ind.%d' % fltr, inds, fltr)
+        print [len(x) for x in inds]
+        make_index('../data/test.nds.2.5.shuf', '../data/test.nds.2.5.shuf.ind.%d' % fltr, inds, fltr)
+        print [len(x) for x in inds]
+        make_index('../data/test.unif.2.5.shuf', '../data/test.unif.2.5.shuf.ind.%d' % fltr, inds, fltr)
+        print [len(x) for x in inds]
 
     # shuffle and merge files
     # file_list = ['../data/nds.2.5.' + str(i) for i in range(1, 20)]

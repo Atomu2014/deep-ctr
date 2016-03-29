@@ -4,15 +4,15 @@ import time
 import numpy as np
 # import seaborn as sns
 import tensorflow as tf
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, mean_squared_error, log_loss
 
 # sns.set_style('darkgrid')
 
 # scale valued-fields to [0, 1]
 max_vals = [65535, 8000, 705, 249000, 7974, 14159, 946, 43970, 5448, 11, 471, 35070017, 8376]
-cat_sizes = np.array(
-    [631839, 25297, 15534, 7109, 19273, 4, 6754, 1303, 55, 527815, 147691, 110674, 11, 2202, 9023, 63, 5, 946, 15,
-     639542, 357567, 600328, 118442, 10217, 78, 34])
+cat_sizes = np.array([631839, 25297, 15534, 7109, 19273, 4, 6754, 1303, 55, 527815, 147691, 110674,
+                      11, 2202, 9023, 63, 5, 946, 15, 639542, 357567, 600328, 118442, 10217, 78, 34])
+
 # brute feature selection
 mask = np.where(cat_sizes > 0)[0]
 offsets = [13 + sum(cat_sizes[mask[:i]]) for i in range(len(mask))]
@@ -22,25 +22,24 @@ X_feas = 13 + len(mask)
 
 print len(mask), np.sum(cat_sizes[mask])
 
+train_path = '../data/nds.10.shuf.ind'
+eval_path = '../data/test.nds.10.shuf.ind'
 fin = None
-file_list = ['../data/nds.10.shuf.ind', '../data/nds.10.shuf.ind']
-file_index = 0
-line_index = 0
 
 batch_size = 10
 buffer_size = 1000000
 eval_size = 10000
-epoch = 500
+epoch = 1000
 nds_rate = 0.1
 
 # 'create', 'restore'
 train_mode = 'create'
 ckpt = epoch * 10
 # 'LR', 'FM'
-algo = 'FM'
+algo = 'LR'
 rank = 2
 if train_mode == 'create':
-    tag = time.strftime('%c') + ' ' + algo
+    tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
     if algo == 'FM':
         tag += str(rank)
 else:
@@ -48,15 +47,24 @@ else:
 log_path = '../log/%s' % tag
 model_path = '../model/%s' % tag
 
-_learning_rate = 0.0005
+print train_mode, log_path
+
+_learning_rate = 0.00001
 # _alpha = 1
-_lambda = 0.025
+_lambda = 0.005
+_epsilon = 1e-8
 _keep_prob = 0.5
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
 _stddev = 0.001
 _min_val = -0.001
 _max_val = -1 * _min_val
+_seeds = [0x01234567, 0x89ABCDEF]
+
+least_step = 100 * epoch
+skip_window = 10
+smooth_window = 10
+stop_window = 10
 
 
 # extract feature from a line
@@ -72,7 +80,7 @@ def get_fxy(_line):
 
 
 # generate a batch of data
-def get_batch_sparse_tensor(file_name, start_index, size, row_start=0):
+def get_batch_sparse_tensor(file_name, size, row_start=0):
     global fin
     if fin is None:
         fin = open(file_name, 'r')
@@ -81,7 +89,7 @@ def get_batch_sparse_tensor(file_name, start_index, size, row_start=0):
     values = []
     rows = []
     row_num = row_start
-    for _i in range(start_index, start_index + size):
+    for _i in range(size):
         try:
             _line = next(fin)
             if len(_line.strip()):
@@ -102,15 +110,11 @@ def get_batch_sparse_tensor(file_name, start_index, size, row_start=0):
 
 
 def get_batch_xy(size):
-    global file_index, line_index
-    labels, rows, cols, values = get_batch_sparse_tensor(file_list[file_index], line_index, size)
+    labels, rows, cols, values = get_batch_sparse_tensor(train_path, size)
     if len(labels) == size:
-        line_index += size
         return np.array(labels), np.array(rows), np.array(cols), np.array(values)
 
-    file_index = (file_index + 1) % len(file_list)
-    line_index = size - len(labels)
-    l, r, c, v = get_batch_sparse_tensor(file_list[file_index], 0, size - len(labels))
+    l, r, c, v = get_batch_sparse_tensor(train_path, size - len(labels))
     labels.extend(l)
     rows.extend(r)
     cols.extend(c)
@@ -127,31 +131,11 @@ def write_log(vals, erase=False):
         log_in.write('\t'.join([str(_x) for _x in vals]) + '\n')
 
 
-# plt.ion()
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-
-
-# def show_log():
-#     logs = np.loadtxt(log_path, delimiter='\t', skiprows=3)
-#     if logs.ndim < 2:
-#         return
-#     ax.clear()
-#     ax.plot(logs[-10000:, 0], logs[-10000:, 1], label='loss')
-#     ax.plot(logs[-10000:, 0], logs[-10000:, 2], label='batch-auc')
-#     ax.plot(logs[-10000:, 0], logs[-10000:, 3], label='eval-auc')
-#     ax.legend()
-#     ax.set_title(log_path)
-#     ax.set_xlabel('step')
-#     fig.canvas.draw()
-
-
-print train_mode, log_path
-
-headers = ['batch: %d, epoch: %d, buffer_size: %d, eval_size: %d, checkpoint: %d' % (
-    batch_size, epoch, buffer_size, eval_size, ckpt),
-    'lr: %f, lambda: %f, keep_prob: %f' % (_learning_rate, _lambda, _keep_prob),
-    'init method: %s, stddev: %f, interval: [%f, %f]' % (_init_method, _stddev, _min_val, _max_val)]
+headers = ['train: %s, eval: %s' % (train_path, eval_path),
+           'batch: %d, epoch: %d, buffer_size: %d, eval_size: %d, checkpoint: %d, skip: %d, smooth: %d, stop: %d' % (
+               batch_size, epoch, buffer_size, eval_size, ckpt, skip_window, smooth_window, stop_window),
+           'lr: %f, lambda: %f, epsilon:%f, keep_prob: %f' % (_learning_rate, _lambda, _epsilon, _keep_prob),
+           'init method: %s, stddev: %f, interval: [%f, %f], seeds: %s' % (_init_method, _stddev, _min_val, _max_val, str(_seeds))]
 
 for h in headers:
     write_log([h], h == headers[0])
@@ -166,7 +150,7 @@ valid_cols = []
 valid_vals = []
 valid_num_row = 0
 
-with open('../data/test.unif.10.shuf.ind', 'r') as valid_fin:
+with open(eval_path, 'r') as valid_fin:
     buf = []
     for line in valid_fin:
         buf.append(line)
@@ -200,23 +184,42 @@ def pre_train(sess, var_map):
     return saver
 
 
-def watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_preds):
+def watch_train(sess, saver, step, batch_loss, start_time, batch_labels, batch_preds, valid_preds, auc_track):
     if step % epoch == 0:
-        print 'loss as step %d: %f\ttime: %d' % (step, l, time.time() - start_time)
+        print 'step: %d\ttime: %d' % (step, time.time() - start_time)
         try:
             batch_auc = roc_auc_score(batch_labels, batch_preds)
-            valid_auc = roc_auc_score(valid_labels, valid_preds)
-            print 'batch-auc:%.4f\teval-auc: %.4f' % (batch_auc, valid_auc)
         except ValueError:
-            batch_auc = 0
-            valid_auc = roc_auc_score(valid_labels, valid_preds)
-            print 'batch-auc:None\teval-auc: %.4f' % valid_auc
-        write_log([step, l, batch_auc, valid_auc])
-        # show_log()
+            batch_auc = -1
+        valid_auc = roc_auc_score(valid_labels, valid_preds)
+        auc_track.append(valid_auc)
+        auc_track = auc_track[2 * skip_window * (stop_window + smooth_window):]
+        batch_rmse = np.sqrt(mean_squared_error(batch_labels, batch_preds))
+        valid_rmse = np.sqrt(mean_squared_error(valid_labels, valid_preds))
+        valid_loss = log_loss(valid_labels, valid_preds)
+        print 'batch-loss: %.4f\teval-loss: %.4f\tbatch-auc:%.4f\teval-auc: %.4f\tbatch-rmse: %f\teval-rmse: %f' % (batch_loss, valid_loss, batch_auc, valid_auc, batch_rmse, valid_rmse)
+        write_log([step, batch_loss, valid_loss, batch_auc, valid_auc, batch_rmse, valid_rmse])
         if step % ckpt == 0:
-            saver.save(sess, model_path)
-            print 'model saved as: %s' % model_path
+            saver.save(sess, model_path + '_%d' % step)
+            print 'model saved as: %s_%d' % (model_path, step)
         return True
+    return False
+
+
+def early_stop(step, eval_auc):
+    if step > least_step:
+        skip_auc = eval_auc[::skip_window]
+        smooth_auc = np.array(skip_auc[smooth_window - 1:])
+        for i in range(smooth_auc - 1):
+            smooth_auc += skip_auc[i:(i - p4 + 1)]
+        smooth_auc /= smooth_window
+        smooth_error = smooth_auc[stop_window - 1:] - smooth_auc[:1 - stop_window]
+        if smooth_error[-1] < 0:
+            print 'early stop at step %d' % step
+            print 'smoothed error', str(smooth_error)
+            return True
+        return False
+    return False
 
 
 def lr():
@@ -231,17 +234,18 @@ def lr():
         tf_sp_valid_weights = tf.SparseTensor(sp_valid_inds, valid_vals, shape=[valid_num_row, X_feas])
 
         if _init_method == 'normal':
-            weights = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev))
+            weights = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev, seed=_seeds[0]))
         elif _init_method == 't-normal':
-            weights = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
+            weights = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev, seed=_seeds[0]))
         else:
-            weights = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val))
+            weights = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val, seed=_seeds[0]))
         bias = tf.Variable(0.0)
 
         logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_ids, tf_sp_weights, combiner='sum') + bias
         loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, tf_train_label)) + _lambda * (
             tf.nn.l2_loss(weights) + tf.nn.l2_loss(bias))
-        optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
+        # optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(learning_rate=_learning_rate, epsilon=_epsilon).minimize(loss)
 
         train_pred = tf.sigmoid(logits)
         unif_valid_logits = tf.nn.embedding_lookup_sparse(weights, tf_sp_valid_ids, tf_sp_valid_weights,
@@ -255,6 +259,7 @@ def lr():
         batch_preds = []
         batch_labels = []
         start_time = time.time()
+        auc_track = []
         while True:
             label, _, cols, values = get_batch_xy(buffer_size)
             for _i in range(label.shape[0] / batch_size):
@@ -266,10 +271,12 @@ def lr():
 
                 batch_preds.extend(_x[0] for _x in pred)
                 batch_labels.extend(label[_i * batch_size: (_i + 1) * batch_size])
-                if watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_preds.eval()):
+                if watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_preds.eval(), auc_track):
                     start_time = time.time()
                     batch_preds = []
                     batch_labels = []
+                    if early_stop(step, auc_track):
+                        return
 
 
 def fm():
@@ -297,20 +304,21 @@ def fm():
         tf_sp_valid_weights2 = tf.SparseTensor(sp_valid_inds, valid_vals2, shape=[valid_num_row, X_feas])
 
         if _init_method == 'normal':
-            W = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev))
-            V = tf.Variable(tf.random_normal([X_dim, rank], stddev=_stddev))
+            W = tf.Variable(tf.random_normal([X_dim, 1], stddev=_stddev, seed=_seeds[0]))
+            V = tf.Variable(tf.random_normal([X_dim, rank], stddev=_stddev, seed=_seeds[1]))
         elif _init_method == 't-normal':
-            W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev))
-            V = tf.Variable(tf.truncated_normal([X_dim, rank], stddev=_stddev))
+            W = tf.Variable(tf.truncated_normal([X_dim, 1], stddev=_stddev, seed=_seeds[0]))
+            V = tf.Variable(tf.truncated_normal([X_dim, rank], stddev=_stddev, seed=_seeds[1]))
         else:
-            W = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val))
-            V = tf.Variable(tf.random_uniform([X_dim, rank], minval=_min_val, maxval=_max_val))
+            W = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val, seed=_seeds[0]))
+            V = tf.Variable(tf.random_uniform([X_dim, rank], minval=_min_val, maxval=_max_val, seed=_seeds[1]))
         b = tf.Variable(0.0)
 
         logit = factorization(tf_sp_ids, tf_sp_weights, tf_sp_weights2)
         loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logit, tf_train_label)) + _lambda * (
             tf.nn.l2_loss(W) + tf.nn.l2_loss(V) + tf.nn.l2_loss(b))
-        optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
+        # optimizer = tf.train.GradientDescentOptimizer(_learning_rate).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(learning_rate=_learning_rate, epsilon=_epsilon).minimize(loss)
         train_pred = tf.sigmoid(logit)
         valid_logits = factorization(tf_sp_valid_ids, tf_sp_valid_weights, tf_sp_valid_weights2)
         valid_pred = tf.sigmoid(valid_logits)
@@ -336,10 +344,12 @@ def fm():
                 _, l, pred, lg = sess.run([optimizer, loss, train_pred, logit], feed_dict=feed_dict)
                 batch_preds.extend(_x[0] for _x in pred)
                 batch_labels.extend(label[_i * batch_size: (_i + 1) * batch_size])
-                if watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_pred.eval()):
+                if watch_train(sess, saver, step, l, start_time, batch_labels, batch_preds, valid_pred.eval(), auc_track):
                     start_time = time.time()
                     batch_preds = []
                     batch_labels = []
+                    if early_stop(step, auc_track):
+                        return
 
 
 if __name__ == '__main__':

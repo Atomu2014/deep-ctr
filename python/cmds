@@ -10,3 +10,8 @@ python show_plots.py Thu Mar 24 13:45:48 2016 FM2 all 0 0
 python show_plots.py Thu Mar 24 19:00:11 2016 FM2 all 0 0
 
 python show_plots.py Fri Mar 25 09:12:49 2016 FM2 all 0 0 1 100
+python show_plots.py Fri Mar 25 15:19:43 2016 LR all 0 0 1 100
+python show_plots.py Fri_Mar_25_15:28:12_2016_LR all 0 0 1 10
+python show_plots.py Fri_Mar_25_17:01:13_2016_LR all 0 0 1 10
+
+python show_plots.py Mon_Mar_28_14:07:21_2016_LR all 0 0 1 10
