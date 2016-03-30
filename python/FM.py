@@ -1,72 +1,48 @@
-from fastFM import sgd
-from pyfm import pylibfm
-from sklearn.metrics import roc_auc_score
+import cPickle as pickle
 
-from dl_utils import libsvm_2_sparse
-
-
-def fm_fastfm(X_train, y_train, X_test, y_test, n_iter=10000000, init_stdev=0.001, rank=2, step_size=0.002,
-              path='train'):
-    fm = sgd.FMClassification(n_iter=n_iter, init_stdev=init_stdev, l2_reg_w=0, l2_reg_V=0, rank=rank,
-                              step_size=step_size)
-    fm.fit(X_train, y_train)
-
-    print path
-    print n_iter, init_stdev, rank, step_size
-    print 'train auc: %.4f\ttest auc: %.4f' % (
-        roc_auc_score(y_train, fm.predict_proba(X_train)), roc_auc_score(y_test, fm.predict_proba(X_test)))
+import numpy as np
+import tensorflow as tf
 
 
-def fm_pyfm(X_train, y_train, X_test, y_test, num_factors=10, num_iter=100, learning_rate=0.001, path='train'):
-    fm = pylibfm.FM(num_factors=num_factors, num_iter=num_iter, verbose=True, task='classification',
-                    initial_learning_rate=learning_rate, learning_rate_schedule='optimal')
+class FM:
+    def __init__(self, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts,
+                 rank, _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon):
+        self.graph = tf.Graph()
+        eval_wts2 = np.array(eval_wts) ** 2
 
-    print path
-    print num_factors, num_iter, learning_rate
+        with self.graph.as_default():
+            self.sp_id_hldr = tf.placeholder(tf.int64, shape=[batch_size * X_feas])
+            self.sp_wt_hldr = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
+            sp_ids = tf.SparseTensor(sp_train_inds, self.sp_id_hldr, shape=[batch_size, X_feas])
+            sp_wts = tf.SparseTensor(sp_train_inds, self.sp_wt_hldr, shape=[batch_size, X_feas])
+            self.lbl_hldr = tf.placeholder(tf.float32)
+            self.sp_wt2_hldr = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
+            sp_wts2 = tf.SparseTensor(sp_train_inds, self.sp_wt2_hldr, shape=[batch_size, X_feas])
+            sp_eval_ids = tf.SparseTensor(sp_eval_inds, eval_cols, shape=[eval_size, X_feas])
+            sp_eval_wts = tf.SparseTensor(sp_eval_inds, eval_wts, shape=[eval_size, X_feas])
+            sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, eval_wts2, shape=[eval_size, X_feas])
 
-    fm.fit(X_train, y_train)
-    from sklearn.metrics import roc_auc_score
+            self.W = tf.Variable(tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val, seed=_seeds[0]))
+            self.V = tf.Variable(tf.random_uniform([X_dim, rank], minval=_min_val, maxval=_max_val, seed=_seeds[1]))
+            self.b = tf.Variable(0.0)
 
-    print path
-    print num_factors, num_iter, learning_rate
+            logits = self.factorization(sp_ids, sp_wts, sp_wts2)
+            self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
+                tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
+            self.ptmzr = tf.train.AdamOptimizer(learning_rate=_learning_rate, epsilon=_epsilon).minimize(self.loss)
+            self.train_preds = tf.sigmoid(logits)
+            eval_logits = self.factorization(sp_eval_ids, sp_eval_wts, sp_eval_wts2)
+            self.eval_preds = tf.sigmoid(eval_logits)
 
-    print 'train auc: %.4f\ttest auc: %.4f' % (
-        roc_auc_score(y_train, fm.predict(X_train)), roc_auc_score(y_test, fm.predict(X_test)))
+    def factorization(self, sp_ids, sp_weights, sp_weights2):
+        yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_weights, combiner='sum') + self.b
+        _Vx = tf.nn.embedding_lookup_sparse(self.V, sp_ids, sp_weights, combiner='sum')
+        _V2x2 = tf.nn.embedding_lookup_sparse(tf.square(self.V), sp_ids, sp_weights2, combiner='sum')
+        yhat += 0.5 * tf.reshape(tf.reduce_sum(tf.matmul(_Vx, _Vx, transpose_b=True), 1) - tf.reduce_sum(_V2x2, 1),
+                                 shape=[-1, 1])
+        return yhat
 
-
-if __name__ == '__main__':
-    path = 'train_x10'
-    train_path = '../data/day_0_train_x10_concat'
-    test_path = '../data/day_0_test_x10_concat'
-
-    with open(train_path, 'r') as fin:
-        rows = []
-        for line in fin:
-            rows.append(line)
-        X_train, y_train = libsvm_2_sparse(rows)
-
-    with open(test_path, 'r') as fin:
-        rows = []
-        for line in fin:
-            rows.append(line)
-        X_test, y_test = libsvm_2_sparse(rows)
-
-    # num_factors = 10
-    # num_iter = 100
-    # learning_rate = 0.001
-    # fm_pyfm(X_train, y_train, X_test, y_test, num_factors=num_factors, num_iter=num_iter, learning_rate=learning_rate,
-    #         path=path)
-    # exit(0)
-
-    y_train *= 2
-    y_train -= 1
-    y_test *= 2
-    y_test -= 1
-
-    # n_iter = 10000000
-    rank = 2
-    for n_iter in [60000000, 70000000, 80000000]:
-        for init_stdev in [0.003, 0.004, 0.005]:
-            for step_size in [0.0009, 0.001, 0.0011]:
-                fm_fastfm(X_train, y_train, X_test, y_test, n_iter=n_iter, init_stdev=init_stdev, rank=rank,
-                      step_size=step_size, path=path)
+    def dump(self, model_path):
+        var_map = {'W': self.W.eval(), 'V': self.V.eval(), 'b': self.b.eval()}
+        pickle.dump(var_map, open(model_path, 'wb'))
+        print 'model dumped at %s' % model_path
