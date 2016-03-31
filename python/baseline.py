@@ -22,7 +22,7 @@ train_set = None
 # cat_sizes = np.array([631838, 25296, 15533, 7108, 19272, 3, 6753, 1302, 54, 527814, 147690, 110673,
 #                       10, 2201, 9022, 62, 4, 945, 14, 639541, 357566, 600327, 118441, 10216, 77, 33])
 # nds = 0.025, ind = 10
-max_vals = [65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8, 221, 3023897, 8072]
+max_vals = np.array([65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8, 221, 3023897, 8072])
 cat_sizes = np.array([284414, 22289, 15249, 7022, 18956, 3, 6730, 1286, 50, 253234, 93011, 81371,
                       10, 2187, 8396, 61, 4, 932, 14, 286828, 190408, 274540, 79781, 9690, 70, 33])
 cat_sizes += 1
@@ -37,7 +37,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FM2'
+algo = 'FNN10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 if 'FM' in algo:
     rank = int(algo[2:])
@@ -60,7 +60,7 @@ smooth_window = 100
 stop_window = 10
 
 if 'LR' in algo:
-    _learning_rate = 1e-5
+    _learning_rate = 1e-6
     _min_val = -0.001
     _alpha = 0
     _lambda = 0.001
@@ -73,6 +73,16 @@ elif 'FM' in algo:
     _lambda = 0.01
     _epsilon = 1e-8
     _stddev = 0.001
+elif 'FNN' in algo:
+    _learning_rate = 1e-5
+    _min_val = -0.001
+    _alpha = 0
+    _lambda = 0.001
+    _epsilon = 1e-8
+    _stddev = 0.001
+    epoch = 100
+    ckpt = 10 * epoch
+    least_step = 1000 * epoch
 else:
     _learning_rate = 1e-5
     _min_val = -0.001
@@ -87,17 +97,17 @@ _init_method = 'uniform'
 _max_val = -1 * _min_val
 seeds_pool = [0x0123, 0x4567, 0x89AB, 0xCDEF, 0x3210, 0x7654, 0xBA98, 0xFEDC]
 # _seeds = seeds_pool[0:2]
-# _seeds = seeds_pool[2:4]
-_seeds = seeds_pool[4:6]
+_seeds = seeds_pool[2:]
+# _seeds = seeds_pool[4:6]
 # _seeds = seeds_pool[6:8]
 
-headers = ['train_path: %s, eval_path: %s, tag: %s, nds_rate: %f, re_calibration: %s' % (
+headers = ['train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration: %s' % (
     train_path, eval_path, tag, nds_rate, str(re_calibration)),
            'batch_size: %d, epoch: %d, buffer_size: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % (
                batch_size, epoch, buffer_size, eval_size, ckpt, least_step, skip_window, smooth_window, stop_window),
-           'learning_rate: %s, alpha:%f, lambda: %f, epsilon:%s, keep_prob: %f' % (
-               str(_learning_rate), _alpha, _lambda, str(_epsilon), _keep_prob),
-           'init_method: %s, stddev: %f, interval: [%f, %f], seeds: %s' % (
+           'learning_rate: %g, alpha:%g, lambda: %g, epsilon:%g, keep_prob: %g' % (
+               _learning_rate, _alpha, _lambda, _epsilon, _keep_prob),
+           'init_method: %s, stddev: %g, interval: [%g, %g], seeds: %s' % (
                _init_method, _stddev, _min_val, _max_val, str(_seeds))]
 
 
@@ -168,14 +178,10 @@ def get_batch_xy(size):
     return np.array(_labels), np.array(_rows), np.array(_cols), np.array(_vals)
 
 
-sp_train_inds = []
-sp_eval_inds = []
-
 eval_labels = []
 eval_cols = []
 eval_wts = []
 eval_cnt = 0
-
 with open(eval_path, 'r') as eval_set:
     buf = []
     for line in eval_set:
@@ -188,16 +194,21 @@ with open(eval_path, 'r') as eval_set:
         eval_cols.extend(f)
         eval_wts.extend(x)
         eval_labels.append(y)
+eval_cols = np.array(eval_cols)
+eval_wts = np.array(eval_wts)
+eval_labels = np.array(eval_labels)
 
-for i in range(eval_cnt):
+sp_eval_inds = []
+for i in range(eval_size):
     for j in range(X_feas):
         sp_eval_inds.append([i, j])
+sp_eval_inds = np.array(sp_eval_inds)
 
-sp_train_fld_inds = []
+sp_train_inds = []
 for i in range(batch_size):
-    sp_train_fld_inds.append([i, 1])
     for j in range(X_feas):
         sp_train_inds.append([i, j])
+sp_train_inds = np.array(sp_train_inds)
 
 
 def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
@@ -211,7 +222,8 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
     eval_ntrp = np.float32(log_loss(eval_labels, eval_preds))
     batch_ntrp = np.float32(log_loss(batch_labels, eval_preds))
     write_log([step, batch_ntrp, eval_ntrp, batch_auc, eval_auc, batch_rmse, eval_rmse, batch_loss])
-    return {'batch_loss': batch_loss, 'batch_entropy': batch_ntrp, 'eval_entropy': eval_ntrp, 'batch_auc': batch_auc, 'eval_auc': eval_auc,
+    return {'batch_loss': batch_loss, 'batch_entropy': batch_ntrp, 'eval_entropy': eval_ntrp, 'batch_auc': batch_auc,
+            'eval_auc': eval_auc,
             'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
 
 
@@ -234,15 +246,19 @@ def early_stop(step, eval_auc):
 
 
 def train():
+    global eval_cols, eval_wts, eval_labels
+
     if 'LR' in algo:
         model = LR(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _min_val,
                    _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
     elif 'FM' in algo:
-        model = FM(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts,
-                   rank, _min_val, _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
+        model = FM(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank,
+                   _min_val, _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
     elif 'FNN' in algo:
-        model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols,
-                    eval_wts, rank, _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon)
+        eval_cols = eval_cols.reshape((eval_size, X_feas))
+        eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
+        model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
+                    _max_val, _seeds, _learning_rate, _alpha, _lambda)
 
     with tf.Session(graph=model.graph, config=sess_config) as sess:
         tf.initialize_all_variables().run()
@@ -269,14 +285,8 @@ def train():
                 elif 'FNN' in algo:
                     _cols = _cols.reshape((batch_size, X_feas))
                     _vals = _vals.reshape((batch_size, X_feas))
-                    feed_dict = {model.tf_vf_x: _vals[:, :13], model.id_vals: _cols[:, 13:] - offsets,
-                                 model.weight_vals: _vals[:, 13:]}
-                    fetch_list = [model.tf_mbd]
-                    l = sess.run(fetch_list, feed_dict)
-                    for item in l:
-                        print np.array(item)
-                    print np.array(item).shape
-                    exit(0)
+                    feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
+                                 model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
                 _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
                 batch_preds.extend(_x[0] for _x in p)

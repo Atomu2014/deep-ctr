@@ -5,7 +5,6 @@ import tensorflow as tf
 
 
 class FM:
-
     def __init__(self, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts,
                  rank, _min_val, _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon):
         self.graph = tf.Graph()
@@ -29,7 +28,8 @@ class FM:
 
             logits = self.factorization(sp_ids, sp_wts, sp_wts2)
             self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
-                tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b)) + _alpha * (tf.reduce_sum(tf.abs(self.W)) + tf.reduce_sum(tf.abs(self.V)) + tf.abs(self.b))
+                tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b)) + _alpha * (
+                tf.reduce_sum(tf.abs(self.W)) + tf.reduce_sum(tf.abs(self.V)) + tf.abs(self.b))
             self.ptmzr = tf.train.AdamOptimizer(learning_rate=_learning_rate, epsilon=_epsilon).minimize(self.loss)
             self.train_preds = tf.sigmoid(logits)
             eval_logits = self.factorization(sp_eval_ids, sp_eval_wts, sp_eval_wts2)
