@@ -3,7 +3,7 @@ import tensorflow as tf
 
 class FNN:
     def __init__(self, cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols,
-                 eval_wts, rank, _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon):
+                 eval_wts, rank, _min_val, _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon):
         self.graph = tf.Graph()
         sp_fld_inds = []
         for _i in range(batch_size):

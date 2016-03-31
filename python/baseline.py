@@ -95,8 +95,8 @@ headers = ['train_path: %s, eval_path: %s, tag: %s, nds_rate: %f, re_calibration
     train_path, eval_path, tag, nds_rate, str(re_calibration)),
            'batch_size: %d, epoch: %d, buffer_size: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % (
                batch_size, epoch, buffer_size, eval_size, ckpt, least_step, skip_window, smooth_window, stop_window),
-           'learning_rate: %s, lambda: %f, epsilon:%s, keep_prob: %f' % (
-               str(_learning_rate), _lambda, str(_epsilon), _keep_prob),
+           'learning_rate: %s, alpha:%f, lambda: %f, epsilon:%s, keep_prob: %f' % (
+               str(_learning_rate), _alpha, _lambda, str(_epsilon), _keep_prob),
            'init_method: %s, stddev: %f, interval: [%f, %f], seeds: %s' % (
                _init_method, _stddev, _min_val, _max_val, str(_seeds))]
 
