@@ -208,9 +208,10 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
     eval_auc = np.float32(roc_auc_score(eval_labels, eval_preds))
     batch_rmse = np.float32(np.sqrt(mean_squared_error(batch_labels, batch_preds)))
     eval_rmse = np.float32(np.sqrt(mean_squared_error(eval_labels, eval_preds)))
-    eval_loss = np.float32(log_loss(eval_labels, eval_preds))
-    write_log([step, batch_loss, eval_loss, batch_auc, eval_auc, batch_rmse, eval_rmse])
-    return {'batch_loss': batch_loss, 'eval_loss': eval_loss, 'batch_auc': batch_auc, 'eval_auc': eval_auc,
+    eval_ntrp = np.float32(log_loss(eval_labels, eval_preds))
+    batch_ntrp = np.float32(log_loss(batch_labels, eval_preds))
+    write_log([step, batch_ntrp, eval_ntrp, batch_auc, eval_auc, batch_rmse, eval_rmse, batch_loss])
+    return {'batch_loss': batch_loss, 'batch_entropy': batch_ntrp, 'eval_entropy': eval_ntrp, 'batch_auc': batch_auc, 'eval_auc': eval_auc,
             'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
 
 
@@ -279,7 +280,7 @@ def train():
 
                 _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
                 batch_preds.extend(_x[0] for _x in p)
-                batch_labels.extend(labels[_i * batch_size: (_i + 1) * batch_size])
+                batch_labels.extend(_labels)
                 if step % epoch == 0:
                     print 'step: %d\ttime: %d' % (step, time.time() - start_time)
                     start_time = time.time()
