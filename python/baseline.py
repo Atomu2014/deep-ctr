@@ -37,7 +37,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'LR'
+algo = 'FM2'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 if 'FM' in algo:
     rank = int(algo[2:])
@@ -62,23 +62,34 @@ stop_window = 10
 if 'LR' in algo:
     _learning_rate = 1e-5
     _min_val = -0.001
+    _alpha = 0
     _lambda = 0.001
+    _epsilon = 1e-8
+    _stddev = 0.001
 elif 'FM' in algo:
     _learning_rate = 1e-8
-    _min_val = -0.0001
+    _min_val = 1e-3
+    _alpha = 0.01
     _lambda = 0.01
+    _epsilon = 1e-8
+    _stddev = 0.001
 else:
     _learning_rate = 1e-5
     _min_val = -0.001
+    _alpha = 0
     _lambda = 0.001
+    _epsilon = 1e-8
+    _stddev = 0.001
 
-_epsilon = 1e-8
 _keep_prob = 0.5
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
-_stddev = 0.001
 _max_val = -1 * _min_val
-_seeds = [0x01234567, 0x89ABCDEF]
+seeds_pool = [0x0123, 0x4567, 0x89AB, 0xCDEF, 0x3210, 0x7654, 0xBA98, 0xFEDC]
+# _seeds = seeds_pool[0:2]
+# _seeds = seeds_pool[2:4]
+_seeds = seeds_pool[4:6]
+# _seeds = seeds_pool[6:8]
 
 headers = ['train_path: %s, eval_path: %s, tag: %s, nds_rate: %f, re_calibration: %s' % (
     train_path, eval_path, tag, nds_rate, str(re_calibration)),
@@ -224,10 +235,10 @@ def early_stop(step, eval_auc):
 def train():
     if 'LR' in algo:
         model = LR(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _min_val,
-                   _max_val, _seeds, _learning_rate, _lambda, _epsilon)
+                   _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
     elif 'FM' in algo:
         model = FM(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts,
-                   rank, _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon)
+                   rank, _min_val, _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
     elif 'FNN' in algo:
         model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols,
                     eval_wts, rank, _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon)
