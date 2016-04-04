@@ -49,17 +49,15 @@ model_path = '../model/%s.pickle' % tag
 
 print log_path, model_path
 
-batch_size = 10
-epoch = 1000
 buffer_size = 1000000
 eval_size = 10000
-ckpt = 10 * epoch
-least_step = 1000 * epoch
 skip_window = 1
 smooth_window = 100
 stop_window = 10
 
 if 'LR' in algo:
+    batch_size = 10
+    epoch = 1000
     _learning_rate = 1e-6
     _min_val = -0.001
     _alpha = 0
@@ -67,37 +65,43 @@ if 'LR' in algo:
     _epsilon = 1e-8
     _stddev = 0.001
 elif 'FM' in algo:
-    _learning_rate = 1e-8
-    _min_val = 1e-3
+    batch_size = 10
+    epoch = 1000
+    _learning_rate = 1e-6
+    _min_val = -1e-3
     _alpha = 0.01
     _lambda = 0.01
     _epsilon = 1e-8
     _stddev = 0.001
 elif 'FNN' in algo:
-    _learning_rate = 1e-5
-    _min_val = -0.001
+    batch_size = 10
+    epoch = 10
+    _learning_rate = 1e-4
+    _min_val = -1e-2
     _alpha = 0
-    _lambda = 0.001
+    _lambda = 0
     _epsilon = 1e-8
     _stddev = 0.001
-    epoch = 100
-    ckpt = 10 * epoch
-    least_step = 1000 * epoch
+    _keep_prob = 0.5
 else:
+    batch_size = 10
+    epoch = 1000
     _learning_rate = 1e-5
     _min_val = -0.001
     _alpha = 0
     _lambda = 0.001
     _epsilon = 1e-8
     _stddev = 0.001
+    _keep_prob = 0.5
 
-_keep_prob = 0.5
+ckpt = 10 * epoch
+least_step = 1000 * epoch
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
 _max_val = -1 * _min_val
-seeds_pool = [0x0123, 0x4567, 0x89AB, 0xCDEF, 0x3210, 0x7654, 0xBA98, 0xFEDC]
+seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC]
 # _seeds = seeds_pool[0:2]
-_seeds = seeds_pool[2:]
+_seeds = seeds_pool
 # _seeds = seeds_pool[4:6]
 # _seeds = seeds_pool[6:8]
 
@@ -220,7 +224,7 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
     batch_rmse = np.float32(np.sqrt(mean_squared_error(batch_labels, batch_preds)))
     eval_rmse = np.float32(np.sqrt(mean_squared_error(eval_labels, eval_preds)))
     eval_ntrp = np.float32(log_loss(eval_labels, eval_preds))
-    batch_ntrp = np.float32(log_loss(batch_labels, eval_preds))
+    batch_ntrp = np.float32(log_loss(batch_labels, batch_preds))
     write_log([step, batch_ntrp, eval_ntrp, batch_auc, eval_auc, batch_rmse, eval_rmse, batch_loss])
     return {'batch_loss': batch_loss, 'batch_entropy': batch_ntrp, 'eval_entropy': eval_ntrp, 'batch_auc': batch_auc,
             'eval_auc': eval_auc,
@@ -258,7 +262,9 @@ def train():
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
         model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
-                    _max_val, _seeds, _learning_rate, _alpha, _lambda)
+                    _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon, _keep_prob)
+    else:
+        return
 
     with tf.Session(graph=model.graph, config=sess_config) as sess:
         tf.initialize_all_variables().run()
@@ -293,6 +299,7 @@ def train():
                 batch_labels.extend(_labels)
                 if step % epoch == 0:
                     print 'step: %d\ttime: %d' % (step, time.time() - start_time)
+                    print model.eval_logits.eval()
                     start_time = time.time()
                     metrics = watch_train(step, l, batch_labels, batch_preds, model.eval_preds.eval())
                     print metrics
