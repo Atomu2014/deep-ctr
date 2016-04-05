@@ -37,7 +37,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FNN10'
+algo = 'FM2'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 if 'FM' in algo:
     rank = int(algo[2:])
@@ -56,20 +56,20 @@ smooth_window = 100
 stop_window = 10
 
 if 'LR' in algo:
-    batch_size = 10
+    batch_size = 1
     epoch = 1000
-    _learning_rate = 1e-6
-    _min_val = -0.001
+    _learning_rate = 1e-4
+    _min_val = -1e-2
     _alpha = 0
     _lambda = 0.001
     _epsilon = 1e-8
     _stddev = 0.001
 elif 'FM' in algo:
-    batch_size = 10
+    batch_size = 1
     epoch = 1000
-    _learning_rate = 1e-6
+    _learning_rate = 1e-8
     _min_val = -1e-3
-    _alpha = 0.01
+    _alpha = 0
     _lambda = 0.01
     _epsilon = 1e-8
     _stddev = 0.001
@@ -82,7 +82,6 @@ elif 'FNN' in algo:
     _lambda = 0
     _epsilon = 1e-8
     _stddev = 0.001
-    _keep_prob = 0.5
 else:
     batch_size = 10
     epoch = 1000
@@ -92,8 +91,8 @@ else:
     _lambda = 0.001
     _epsilon = 1e-8
     _stddev = 0.001
-    _keep_prob = 0.5
 
+_keep_prob = 0.5
 ckpt = 10 * epoch
 least_step = 1000 * epoch
 # 'normal', 't-normal', 'uniform'(default)
@@ -101,7 +100,7 @@ _init_method = 'uniform'
 _max_val = -1 * _min_val
 seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC]
 # _seeds = seeds_pool[0:2]
-_seeds = seeds_pool
+_seeds = seeds_pool[2:]
 # _seeds = seeds_pool[4:6]
 # _seeds = seeds_pool[6:8]
 
@@ -191,8 +190,10 @@ with open(eval_path, 'r') as eval_set:
     for line in eval_set:
         buf.append(line)
         eval_cnt += 1
-        if eval_cnt == eval_size:
+        if eval_cnt == 10 * eval_size:
             break
+    np.random.shuffle(buf)
+    buf = buf[:eval_size]
     for line in buf:
         y, f, x = get_fxy(line)
         eval_cols.extend(f)
@@ -257,7 +258,7 @@ def train():
                    _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
     elif 'FM' in algo:
         model = FM(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank,
-                   _min_val, _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
+                   _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon)
     elif 'FNN' in algo:
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
