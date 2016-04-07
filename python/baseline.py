@@ -12,9 +12,9 @@ gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
 sess_config = tf.ConfigProto(gpu_options=gpu_options)
 
 train_path = '../data/nds.2.5.shuf.ind.10'
-eval_path = '../data/test.nds.2.5.shuf.ind.10'
+eval_path = '../data/test.unif.2.5.shuf.ind.10'
 nds_rate = 0.025
-re_calibration = 'nds' not in '../data/test.nds.2.5.shuf.ind.10'
+re_calibration = 'nds' not in eval_path
 train_set = None
 
 # nds = 0.1, ind = 10
@@ -37,7 +37,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FM2'
+algo = 'LR'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 if 'FM' in algo:
     rank = int(algo[2:])
@@ -58,27 +58,26 @@ stop_window = 10
 if 'LR' in algo:
     batch_size = 1
     epoch = 1000
-    _learning_rate = 1e-4
-    _min_val = -1e-2
-    _alpha = 0
+    _optimizer = 'adam'
+    _learning_rate = 1e-5
+    _min_val = -0.01
     _lambda = 0.001
     _epsilon = 1e-8
     _stddev = 0.001
 elif 'FM' in algo:
     batch_size = 1
-    epoch = 1000
-    _learning_rate = 1e-8
+    epoch = 100
+    _optimizer = 'ftrl'
+    _learning_rate = 1e-4
     _min_val = -1e-3
-    _alpha = 0
-    _lambda = 0.01
-    _epsilon = 1e-8
+    _lambda = 1e-3
+    _epsilon = 1e-4
     _stddev = 0.001
 elif 'FNN' in algo:
     batch_size = 10
     epoch = 10
     _learning_rate = 1e-4
     _min_val = -1e-2
-    _alpha = 0
     _lambda = 0
     _epsilon = 1e-8
     _stddev = 0.001
@@ -87,14 +86,13 @@ else:
     epoch = 1000
     _learning_rate = 1e-5
     _min_val = -0.001
-    _alpha = 0
     _lambda = 0.001
     _epsilon = 1e-8
     _stddev = 0.001
 
 _keep_prob = 0.5
 ckpt = 10 * epoch
-least_step = 1000 * epoch
+least_step = 100 * epoch
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
 _max_val = -1 * _min_val
@@ -108,8 +106,8 @@ headers = ['train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration
     train_path, eval_path, tag, nds_rate, str(re_calibration)),
            'batch_size: %d, epoch: %d, buffer_size: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % (
                batch_size, epoch, buffer_size, eval_size, ckpt, least_step, skip_window, smooth_window, stop_window),
-           'learning_rate: %g, alpha:%g, lambda: %g, epsilon:%g, keep_prob: %g' % (
-               _learning_rate, _alpha, _lambda, _epsilon, _keep_prob),
+           'optimizer: %s, learning_rate: %g, lambda: %g, epsilon:%g, keep_prob: %g' % (
+               _optimizer, _learning_rate, _lambda, _epsilon, _keep_prob),
            'init_method: %s, stddev: %g, interval: [%g, %g], seeds: %s' % (
                _init_method, _stddev, _min_val, _max_val, str(_seeds))]
 
@@ -232,9 +230,9 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
             'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
 
 
-def early_stop(step, eval_auc):
+def early_stop(step, errs):
     if step > least_step:
-        skip_auc = eval_auc[::skip_window]
+        skip_auc = errs[::skip_window]
         smooth_auc = np.array(skip_auc[smooth_window - 1:])
         for i in range(smooth_window - 1):
             smooth_auc += skip_auc[i:(i - smooth_window + 1)]
@@ -242,7 +240,7 @@ def early_stop(step, eval_auc):
         if len(smooth_auc) < stop_window:
             return False
         smooth_error = smooth_auc[stop_window - 1:] - smooth_auc[:1 - stop_window]
-        if smooth_error[-1] < 0:
+        if smooth_error[-1] > 0:
             print 'early stop at step %d' % step
             print 'smoothed error', str(smooth_error)
             return True
@@ -255,7 +253,7 @@ def train():
 
     if 'LR' in algo:
         model = LR(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _min_val,
-                   _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon)
+                   _max_val, _seeds, _optimizer, _learning_rate, _lambda, _epsilon)
     elif 'FM' in algo:
         model = FM(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank,
                    _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon)
@@ -263,7 +261,7 @@ def train():
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
         model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
-                    _max_val, _seeds, _learning_rate, _alpha, _lambda, _epsilon, _keep_prob)
+                    _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob)
     else:
         return
 
@@ -274,7 +272,7 @@ def train():
         step = 0
         batch_preds = []
         batch_labels = []
-        auc_track = []
+        err_rcds = []
         while True:
             labels, _, cols, vals = get_batch_xy(buffer_size)
             for _i in range(labels.shape[0] / batch_size):
@@ -286,7 +284,7 @@ def train():
                 if 'LR' in algo:
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.lbl_hldr: _labels}
                 elif 'FM' in algo:
-                    _vals2 = _vals ** 2
+                    _vals2 = np.array(_vals) ** 2
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
                                  model.lbl_hldr: _labels}
                 elif 'FNN' in algo:
@@ -300,17 +298,19 @@ def train():
                 batch_labels.extend(_labels)
                 if step % epoch == 0:
                     print 'step: %d\ttime: %d' % (step, time.time() - start_time)
-                    print model.eval_logits.eval()
                     start_time = time.time()
-                    metrics = watch_train(step, l, batch_labels, batch_preds, model.eval_preds.eval())
+                    eval_preds = model.eval_preds.eval()
+                    if re_calibration:
+                        eval_preds = eval_preds / (eval_preds + (1 - eval_preds) / nds_rate)
+                    metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds)
                     print metrics
-                    auc_track.append(metrics['eval_auc'])
-                    auc_track = auc_track[-2 * skip_window * (stop_window + smooth_window):]
+                    err_rcds.append(metrics['eval_entropy'])
+                    err_rcds = err_rcds[-2 * skip_window * (stop_window + smooth_window):]
                     batch_preds = []
                     batch_labels = []
                     if step % ckpt == 0:
-                        model.dump(model_path)
-                    if early_stop(step, auc_track):
+                        model.dump(model_path + '_%d' % step)
+                    if early_stop(step, err_rcds):
                         return
 
 

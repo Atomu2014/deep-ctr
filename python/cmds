@@ -1,20 +1,3 @@
-# show normal logs
-python show_plots.py Wed Mar 23 15:25:03 2016 FM2 all 0 0
-python show_plots.py Wed Mar 23 15:53:17 2016 LR all 0 0
-python show_plots.py Wed Mar 23 17:58:33 2016 FM2 all 0 0
-
-python show_plots.py Thu Mar 24 09:53:00 2016 LR all 0 0
-python show_plots.py Thu Mar 24 09:51:51 2016 FM2 all 0 0
-python show_plots.py Thu Mar 24 13:42:27 2016 LR all 0 0 10 10
-python show_plots.py Thu Mar 24 13:45:48 2016 FM2 all 0 0
-python show_plots.py Thu Mar 24 19:00:11 2016 FM2 all 0 0
-
-python show_plots.py Fri Mar 25 09:12:49 2016 FM2 all 0 0 1 100
-python show_plots.py Fri Mar 25 15:19:43 2016 LR all 0 0 1 100
-python show_plots.py Fri_Mar_25_15:28:12_2016_LR all 0 0 1 10
-python show_plots.py Fri_Mar_25_17:01:13_2016_LR all 0 0 1 10
-
-python show_plots.py Mon_Mar_28_14:07:21_2016_LR all 0 0 1 10
-
-python show_plots.py Tue_Mar_29_17:57:55_2016_LR all 0 0 10 10
-python show_plots.py Tue_Mar_29_23:35:45_2016_LR all 0 0 100 10
+python show_plots.py model Thu_Apr__7_16:06:41_2016_FM2.pickle_1000
+python show_plots.py log Thu_Apr__7_16:13:19_2016_FM2 10
+python show_plots.py stop Wed_Apr__6_18:20:46_2016_FM10 1 100 10
