@@ -71,7 +71,7 @@ elif 'FM' in algo:
     _learning_rate = 1e-3
     _min_val = -1e-3
     _lambda = 1e-2
-    _epsilon = 1e-4
+    _epsilon = 1e-8
     _stddev = 0.001
 elif 'FNN' in algo:
     batch_size = 1
@@ -264,7 +264,7 @@ def train():
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
         model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
-                    _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob, init_path=_init_path)
+                    _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob, _init_path=_init_path)
     else:
         return
 

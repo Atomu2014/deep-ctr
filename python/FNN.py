@@ -5,7 +5,7 @@ import tensorflow as tf
 
 class FNN:
     def __init__(self, cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
-                 _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob, init_path=None):
+                 _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob, _init_path=None):
         self.graph = tf.Graph()
         self.keep_prob = _keep_prob
         sp_fld_inds = []
@@ -19,16 +19,13 @@ class FNN:
         h2_dim = 400
         print mbdng_dim, h1_dim, h2_dim
 
-        if init_path:
-            init_model = open(init_path, 'rb')
-            var_map = pickle.load(init_model)
-            init_model.close()
+        if _init_path:
+            var_map = pickle.load(open(_init_path, 'rb'))
         else:
             var_map = {}
 
         with self.graph.as_default():
             self.feed_var_map(var_map, X_dim, rank, mbdng_dim, h1_dim, h2_dim, _min_val, _max_val, _seeds)
-
             self.fm_w = tf.Variable(var_map['W'])
             self.fm_v = tf.Variable(var_map['V'])
             self.fm_b = tf.Variable(var_map['b'])
@@ -61,7 +58,8 @@ class FNN:
                                        eval_wts[:, 13:], sp_eval_fld_inds)
             self.eval_preds = tf.sigmoid(eval_logits)
 
-    def feed_var_map(self, var_map, X_dim, rank, mbdng_dim, h1_dim, h2_dim, _min_val, _max_val, _seeds):
+    @staticmethod
+    def feed_var_map(var_map, X_dim, rank, mbdng_dim, h1_dim, h2_dim, _min_val, _max_val, _seeds):
         if 'W' not in var_map.keys():
             var_map['W'] = tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val, seed=_seeds[0])
         if 'V' not in var_map.keys():
