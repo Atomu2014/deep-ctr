@@ -37,7 +37,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'LR'
+algo = 'FM2'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 if 'FM' in algo:
     rank = int(algo[2:])
@@ -65,12 +65,12 @@ if 'LR' in algo:
     _epsilon = 1e-8
     _stddev = 0.001
 elif 'FM' in algo:
-    batch_size = 1
+    batch_size = 10
     epoch = 100
     _optimizer = 'ftrl'
-    _learning_rate = 1e-4
+    _learning_rate = 1e-3
     _min_val = -1e-3
-    _lambda = 1e-3
+    _lambda = 1e-2
     _epsilon = 1e-4
     _stddev = 0.001
 elif 'FNN' in algo:
@@ -98,7 +98,7 @@ _init_method = 'uniform'
 _max_val = -1 * _min_val
 seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC]
 # _seeds = seeds_pool[0:2]
-_seeds = seeds_pool[2:]
+_seeds = seeds_pool[4:]
 # _seeds = seeds_pool[4:6]
 # _seeds = seeds_pool[6:8]
 
