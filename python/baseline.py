@@ -37,7 +37,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FM2'
+algo = 'FNN10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 if 'FM' in algo:
     rank = int(algo[2:])
@@ -65,7 +65,7 @@ if 'LR' in algo:
     _epsilon = 1e-8
     _stddev = 0.001
 elif 'FM' in algo:
-    batch_size = 10
+    batch_size = 1
     epoch = 100
     _optimizer = 'ftrl'
     _learning_rate = 1e-3
@@ -74,11 +74,13 @@ elif 'FM' in algo:
     _epsilon = 1e-4
     _stddev = 0.001
 elif 'FNN' in algo:
-    batch_size = 10
-    epoch = 10
+    batch_size = 1
+    epoch = 100
+    _init_path = None
+    _optimizer = 'adam'
     _learning_rate = 1e-4
     _min_val = -1e-2
-    _lambda = 0
+    _lambda = 1e-3
     _epsilon = 1e-8
     _stddev = 0.001
 else:
@@ -96,7 +98,8 @@ least_step = 100 * epoch
 # 'normal', 't-normal', 'uniform'(default)
 _init_method = 'uniform'
 _max_val = -1 * _min_val
-seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC]
+seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x0123, 0x4567, 0x3210, 0x7654, 0x89AB,
+              0xCDEF, 0xBA98, 0xFEDC]
 # _seeds = seeds_pool[0:2]
 _seeds = seeds_pool[4:]
 # _seeds = seeds_pool[4:6]
@@ -261,7 +264,7 @@ def train():
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
         model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
-                    _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob)
+                    _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob, init_path=_init_path)
     else:
         return
 
@@ -284,7 +287,7 @@ def train():
                 if 'LR' in algo:
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.lbl_hldr: _labels}
                 elif 'FM' in algo:
-                    _vals2 = np.array(_vals) ** 2
+                    _vals2 = _vals ** 2
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
                                  model.lbl_hldr: _labels}
                 elif 'FNN' in algo:

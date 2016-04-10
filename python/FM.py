@@ -1,11 +1,11 @@
 import cPickle as pickle
 
-import numpy as np
 import tensorflow as tf
 
 
 class FM:
-    def __init__(self, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank, _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon):
+    def __init__(self, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank,
+                 _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon):
         self.graph = tf.Graph()
         eval_wts2 = eval_wts ** 2
 
@@ -26,13 +26,14 @@ class FM:
             self.b = tf.Variable(0.0)
 
             logits = self.factorization(sp_ids, sp_wts, sp_wts2)
-            self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
+            self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
+                tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
             # self.ptmzr = tf.train.AdamOptimizer(learning_rate=_learning_rate, beta1=_beta1, beta2=_beta2, epsilon=_epsilon).minimize(self.loss)
             self.ptmzr = tf.train.FtrlOptimizer(_learning_rate).minimize(self.loss)
             self.train_preds = tf.sigmoid(logits)
             eval_logits = self.factorization(sp_eval_ids, sp_eval_wts, sp_eval_wts2)
             self.eval_preds = tf.sigmoid(eval_logits)
-            
+
     def factorization(self, sp_ids, sp_weights, sp_weights2):
         yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_weights, combiner='sum') + self.b
         _Vx = tf.nn.embedding_lookup_sparse(self.V, sp_ids, sp_weights, combiner='sum')
