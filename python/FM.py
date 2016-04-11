@@ -1,21 +1,20 @@
-import cPickle as pickle
-
-import tensorflow as tf
+from tf_util import *
 
 
 class FM:
-    def __init__(self, batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank,
-                 _min_val, _max_val, _seeds, _learning_rate, _lambda, _init_path=None):
+    def __init__(self, batch_size, eval_size, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _rch_argv,
+                 _init_argv, _ptmzr_argv, _reg_argv):
         self.graph = tf.Graph()
         eval_wts2 = eval_wts ** 2
 
-        if _init_path:
-            var_map = pickle.load(open(_init_path))
-        else:
-            var_map = {}
-
         with self.graph.as_default():
-            self.feed_var_map(var_map, X_dim, rank, _min_val, _max_val, _seeds)
+            X_dim, X_feas, rank = _rch_argv
+            _lambda = _reg_argv[0]
+            self.log = 'input dim: %d, features: %d, rank: %d, ' % (X_dim, X_feas, rank)
+            var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
+                                                     ('V', [X_dim, rank], 'random'),
+                                                     ('b', [1], 'zero')])
+            self.log += log
             self.W = tf.Variable(var_map['W'])
             self.V = tf.Variable(var_map['V'])
             self.b = tf.Variable(var_map['b'])
@@ -35,20 +34,11 @@ class FM:
             logits = self.factorization(sp_ids, sp_wts, sp_wts2)
             self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
                 tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
-            # self.ptmzr = tf.train.AdamOptimizer(learning_rate=_learning_rate, beta1=_beta1, beta2=_beta2, epsilon=_epsilon).minimize(self.loss)
-            self.ptmzr = tf.train.FtrlOptimizer(_learning_rate).minimize(self.loss)
+            self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
+            self.log += '%s, lambda(l2): %g' % (log, _lambda)
             self.train_preds = tf.sigmoid(logits)
             eval_logits = self.factorization(sp_eval_ids, sp_eval_wts, sp_eval_wts2)
             self.eval_preds = tf.sigmoid(eval_logits)
-
-    @staticmethod
-    def feed_var_map(var_map, X_dim, rank, _min_val, _max_val, _seeds):
-        if 'W' not in var_map.keys():
-            var_map['W'] = tf.random_uniform([X_dim, 1], minval=_min_val, maxval=_max_val, seed=_seeds[0])
-        if 'V' not in var_map.keys():
-            var_map['V'] = tf.random_uniform([X_dim, rank], minval=_min_val, maxval=_max_val, seed=_seeds[1])
-        if 'b' not in var_map.keys():
-            var_map['b'] = tf.zeros([1])
 
     def factorization(self, sp_ids, sp_weights, sp_weights2):
         yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_weights, combiner='sum') + self.b

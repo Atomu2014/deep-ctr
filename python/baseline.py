@@ -26,7 +26,6 @@ max_vals = np.array([65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8,
 cat_sizes = np.array([284414, 22289, 15249, 7022, 18956, 3, 6730, 1286, 50, 253234, 93011, 81371,
                       10, 2187, 8396, 61, 4, 932, 14, 286828, 190408, 274540, 79781, 9690, 70, 33])
 cat_sizes += 1
-# brute feature selection
 offsets = [13 + sum(cat_sizes[:i]) for i in range(len(cat_sizes))]
 X_dim = 13 + np.sum(cat_sizes)
 # num of fields
@@ -34,16 +33,10 @@ X_feas = 13 + len(cat_sizes)
 
 print 'max_vals:', max_vals
 print 'cat_sizes (including \'other\'):', cat_sizes
-print 'dimension: %d, features: %d' % (X_dim, X_feas)
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FNN10'
+algo = 'LR'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
-if 'FM' in algo:
-    rank = int(algo[2:])
-if 'FNN' in algo:
-    rank = int(algo[3:])
-    fnn_init_path = ''
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
 
@@ -55,78 +48,58 @@ skip_window = 1
 smooth_window = 100
 stop_window = 10
 
-if 'LR' in algo:
-    batch_size = 1
-    epoch = 1000
-    _optimizer = 'adam'
-    _learning_rate = 1e-5
-    _min_val = -0.01
-    _lambda = 0.001
-    _epsilon = 1e-8
-    _stddev = 0.001
-elif 'FM' in algo:
-    batch_size = 1
-    epoch = 100
-    _optimizer = 'ftrl'
-    _learning_rate = 1e-3
-    _min_val = -1e-3
-    _lambda = 1e-2
-    _epsilon = 1e-8
-    _stddev = 0.001
-elif 'FNN' in algo:
-    batch_size = 1
-    epoch = 100
-    _init_path = None
-    _optimizer = 'adam'
-    _learning_rate = 1e-4
-    _min_val = -1e-2
-    _lambda = 1e-3
-    _epsilon = 1e-8
-    _stddev = 0.001
-else:
-    batch_size = 10
-    epoch = 1000
-    _learning_rate = 1e-5
-    _min_val = -0.001
-    _lambda = 0.001
-    _epsilon = 1e-8
-    _stddev = 0.001
-
-_keep_prob = 0.5
-ckpt = 10 * epoch
-least_step = 100 * epoch
-# 'normal', 't-normal', 'uniform'(default)
-_init_method = 'uniform'
-_max_val = -1 * _min_val
 seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x0123, 0x4567, 0x3210, 0x7654, 0x89AB,
               0xCDEF, 0xBA98, 0xFEDC]
-# _seeds = seeds_pool[0:2]
-_seeds = seeds_pool[4:]
-# _seeds = seeds_pool[4:6]
-# _seeds = seeds_pool[6:8]
 
-headers = ['train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration: %s' % (
-    train_path, eval_path, tag, nds_rate, str(re_calibration)),
-           'batch_size: %d, epoch: %d, buffer_size: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % (
-               batch_size, epoch, buffer_size, eval_size, ckpt, least_step, skip_window, smooth_window, stop_window),
-           'optimizer: %s, learning_rate: %g, lambda: %g, epsilon:%g, keep_prob: %g' % (
-               _optimizer, _learning_rate, _lambda, _epsilon, _keep_prob),
-           'init_method: %s, stddev: %g, interval: [%g, %g], seeds: %s' % (
-               _init_method, _stddev, _min_val, _max_val, str(_seeds))]
+if 'LR' in algo:
+    batch_size = 1
+    epoch = 100
+    _rch_argv = [X_dim, X_feas]
+    _min_val = -0.01
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5], None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8]
+    _reg_argv = [0.001]
+elif 'FM' in algo:
+    rank = int(algo[2:])
+    batch_size = 1
+    epoch = 100
+    _rch_argv = [X_dim, X_feas, rank]
+    _min_val = -1e-3
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4], None]
+    _ptmzr_argv = ['ftrl', 1e-3]
+    _reg_argv = [1e-2]
+elif 'FNN' in algo:
+    rank = int(algo[3:])
+    batch_size = 1
+    epoch = 100
+    _rch_argv = [X_dim, X_feas, rank, 400, 400]
+    _min_val = -1e-2
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8]
+    _reg_argv = [1e-3, 0.5]
+else:
+    exit(0)
+
+ckpt = 10 * epoch
+least_step = 100 * epoch
+header = 'train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration: %s\n' \
+         'batch_size: %d, epoch: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % \
+         (train_path, eval_path, tag, nds_rate, str(re_calibration), batch_size, epoch, eval_size, ckpt, least_step,
+          skip_window, smooth_window, stop_window)
 
 
-def write_log(argvs, erase=False):
+def write_log(_line, erase=False, echo=False):
     if erase:
         mode = 'w'
     else:
         mode = 'a'
     with open(log_path, mode) as log_in:
-        log_in.write('\t'.join([str(_x) for _x in argvs]) + '\n')
+        log_in.write(_line + '\n')
+        if echo:
+            print _line
 
 
-for h in headers:
-    write_log([h], h == headers[0])
-    print h
+write_log(header, erase=True, echo=True)
 
 
 def get_fxy(_line):
@@ -227,10 +200,11 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
     eval_rmse = np.float32(np.sqrt(mean_squared_error(eval_labels, eval_preds)))
     eval_ntrp = np.float32(log_loss(eval_labels, eval_preds))
     batch_ntrp = np.float32(log_loss(batch_labels, batch_preds))
-    write_log([step, batch_ntrp, eval_ntrp, batch_auc, eval_auc, batch_rmse, eval_rmse, batch_loss])
+    log = '%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t' % \
+          (step, batch_ntrp, eval_ntrp, batch_auc, eval_auc, batch_rmse, eval_rmse, batch_loss)
+    write_log(log)
     return {'batch_loss': batch_loss, 'batch_entropy': batch_ntrp, 'eval_entropy': eval_ntrp, 'batch_auc': batch_auc,
-            'eval_auc': eval_auc,
-            'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
+            'eval_auc': eval_auc, 'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
 
 
 def early_stop(step, errs):
@@ -255,18 +229,19 @@ def train():
     global eval_cols, eval_wts, eval_labels
 
     if 'LR' in algo:
-        model = LR(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _min_val,
-                   _max_val, _seeds, _optimizer, _learning_rate, _lambda, _epsilon)
+        model = LR(batch_size, eval_size, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _rch_argv, _init_argv,
+                   _ptmzr_argv, _reg_argv)
     elif 'FM' in algo:
-        model = FM(batch_size, eval_size, X_dim, X_feas, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, rank,
-                   _min_val, _max_val, _seeds, _learning_rate, _lambda, _epsilon)
+        model = FM(batch_size, eval_size, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _rch_argv, _init_argv,
+                   _ptmzr_argv, _reg_argv)
     elif 'FNN' in algo:
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
-        model = FNN(cat_sizes, offsets, batch_size, eval_size, X_dim, X_feas, eval_cols, eval_wts, rank, _min_val,
-                    _max_val, _seeds, _learning_rate, _lambda, _epsilon, _keep_prob, _init_path=_init_path)
+        model = FNN(cat_sizes, offsets, batch_size, eval_size, eval_cols, eval_wts, _rch_argv, _init_argv, _ptmzr_argv,
+                    _reg_argv)
     else:
         return
+    write_log(model.log, echo=True)
 
     with tf.Session(graph=model.graph, config=sess_config) as sess:
         tf.initialize_all_variables().run()
@@ -304,7 +279,7 @@ def train():
                     start_time = time.time()
                     eval_preds = model.eval_preds.eval()
                     if re_calibration:
-                        eval_preds = eval_preds / (eval_preds + (1 - eval_preds) / nds_rate)
+                        eval_preds /= eval_preds + (1 - eval_preds) / nds_rate
                     metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds)
                     print metrics
                     err_rcds.append(metrics['eval_entropy'])
