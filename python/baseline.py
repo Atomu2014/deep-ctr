@@ -8,7 +8,7 @@ from FM import FM
 from FNN import FNN
 from LR import LR
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
 sess_config = tf.ConfigProto(gpu_options=gpu_options)
 
 train_path = '../data/nds.2.5.shuf.ind.10'
@@ -35,7 +35,7 @@ print 'max_vals:', max_vals
 print 'cat_sizes (including \'other\'):', cat_sizes
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'LR'
+algo = 'FM10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -64,9 +64,9 @@ elif 'FM' in algo:
     batch_size = 1
     epoch = 100
     _rch_argv = [X_dim, X_feas, rank]
-    _min_val = -1e-3
+    _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4], None]
-    _ptmzr_argv = ['ftrl', 1e-3]
+    _ptmzr_argv = ['ftrl', 1e-2]
     _reg_argv = [1e-2]
 elif 'FNN' in algo:
     rank = int(algo[3:])
