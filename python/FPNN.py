@@ -1,9 +1,8 @@
 from tf_util import *
 
 
-class FNN:
-    def __init__(self, cat_sizes, offsets, batch_size, eval_size, eval_cols, eval_wts, _rch_argv, _init_argv,
-                 _ptmzr_argv, _reg_argv):
+class FPNN:
+    def __init__(self, cat_sizes, offsets, batch_size, eval_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv):
         sp_fld_inds = []
         for _i in range(batch_size):
             sp_fld_inds.append([_i, 0])
@@ -15,7 +14,7 @@ class FNN:
         self.graph = tf.Graph()
         with self.graph.as_default():
             X_dim, X_feas, rank, h1_dim, h2_dim = _rch_argv
-            mbdng_dim = X_feas * (rank + 1) + 1
+            mbdng_dim = X_feas * ((X_feas - 1) / 2 + rank + 1) + 1
             self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, ' % \
                        (X_dim, X_feas, rank, mbdng_dim, h1_dim, h2_dim)
             var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
@@ -59,20 +58,26 @@ class FNN:
             self.log += '%s, lambda(l2): %g, keep_prob(drop_out): %g' % (log, self._lambda, self._keep_prob)
 
             self.train_preds = tf.sigmoid(logits)
-            eval_logits = self.forward(eval_size, X_feas, eval_wts[:, :13], eval_cols[:, 13:] - offsets,
-                                       eval_wts[:, 13:], sp_eval_fld_inds)
+
+            self.eval_id_hldr = tf.placeholder(tf.int64)
+            self.eval_wts_hldr = tf.placeholder(tf.float32)
+            eval_logits = self.forward(eval_size, X_feas, self.eval_wts_hldr[:, :13], self.eval_id_hldr[:, 13:] - offsets,
+                                       self.eval_wts_hldr[:, 13:], sp_eval_fld_inds)
             self.eval_preds = tf.sigmoid(eval_logits)
 
     def forward(self, N, M, v_wts, c_ids, c_wts, sp_inds, drop_out=False):
-        v_mbd = tf.concat(1, [tf.matmul(tf.reshape(v_wts[:, _i], [N, 1]), self.v_fld_w[_i]) for _i in range(13)])
-        c_fld_ids = [tf.SparseTensor(sp_inds, c_ids[:, _i], shape=[N, 1]) for _i in range(M - 13)]
-        c_fld_wts = [tf.SparseTensor(sp_inds, c_wts[:, _i], shape=[N, 1]) for _i in range(M - 13)]
-        c_mbd = tf.concat(1, [
-            tf.nn.embedding_lookup_sparse(self.c_fld_w[_i], c_fld_ids[_i], c_fld_wts[_i], combiner='sum') for _i in
-            range(M - 13)])
-        b_mbd = tf.reshape(tf.concat(0, [tf.identity(self.fm_b) for _i in range(N)]), [N, 1])
-
-        z1 = tf.concat(1, [v_mbd, c_mbd, b_mbd])
+        mbd = [tf.matmul(tf.reshape(v_wts[:, _i], [-1, 1]), self.v_fld_w[_i]) for _i in range(13)]
+        c_fld_ids = [tf.SparseTensor(sp_inds, c_ids[:, _i], shape=[-1, 1]) for _i in range(M - 13)]
+        c_fld_wts = [tf.SparseTensor(sp_inds, c_wts[:, _i], shape=[-1, 1]) for _i in range(M - 13)]
+        mbd.extend([tf.nn.embedding_lookup_sparse(self.c_fld_w[_i], c_fld_ids[_i], c_fld_wts[_i], combiner='sum')
+                    for _i in range(M - 13)])
+        p_mbd = tf.transpose(tf.concat(0, [tf.concat(1, [tf.matmul(tf.reshape(mbd[_i][_k, :], [1, -1]),
+                                                                   tf.reshape(mbd[_j][_k, :], [-1, 1]))
+                                                         for _k in range(N)])
+                                           for _i in range(len(mbd) - 1) for _j in range(_i + 1, len(mbd))]))
+        b_mbd = tf.reshape(tf.concat(0, [tf.identity(self.fm_b) for _i in range(N)]), [-1, 1])
+        mbd = tf.concat(1, mbd)
+        z1 = tf.concat(1, [mbd, p_mbd, b_mbd])
         if drop_out:
             l2 = tf.matmul(tf.nn.dropout(tf.tanh(z1), keep_prob=self._keep_prob), self.h1_w) + self.h1_b
             l3 = tf.matmul(tf.nn.dropout(tf.tanh(l2), keep_prob=self._keep_prob), self.h2_w) + self.h2_b

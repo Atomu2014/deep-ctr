@@ -6,6 +6,7 @@ from sklearn.metrics import roc_auc_score, mean_squared_error, log_loss
 
 from FM import FM
 from FNN import FNN
+from FPNN import FPNN
 from LR import LR
 
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
@@ -35,7 +36,7 @@ print 'max_vals:', max_vals
 print 'cat_sizes (including \'other\'):', cat_sizes
 
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FM10'
+algo = 'FPNN10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -74,7 +75,17 @@ elif 'FNN' in algo:
     epoch = 100
     _rch_argv = [X_dim, X_feas, rank, 400, 400]
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:7], None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8]
+    _reg_argv = [1e-3, 0.5]
+elif 'FPNN' in algo:
+    rank = int(algo[4:])
+    batch_size = 1
+    eval_batch_size = 50
+    epoch = 100
+    _rch_argv = [X_dim, X_feas, rank, 400, 400]
+    _min_val = -1e-2
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:7], None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
 else:
@@ -195,7 +206,10 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
         batch_auc = np.float32(roc_auc_score(batch_labels, batch_preds))
     except ValueError:
         batch_auc = -1
-    eval_auc = np.float32(roc_auc_score(eval_labels, eval_preds))
+    try:
+        eval_auc = np.float32(roc_auc_score(eval_labels, eval_preds))
+    except ValueError:
+        eval_auc = -1
     batch_rmse = np.float32(np.sqrt(mean_squared_error(batch_labels, batch_preds)))
     eval_rmse = np.float32(np.sqrt(mean_squared_error(eval_labels, eval_preds)))
     eval_ntrp = np.float32(log_loss(eval_labels, eval_preds))
@@ -239,6 +253,10 @@ def train():
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
         model = FNN(cat_sizes, offsets, batch_size, eval_size, eval_cols, eval_wts, _rch_argv, _init_argv, _ptmzr_argv,
                     _reg_argv)
+    elif 'FPNN' in algo:
+        eval_cols = eval_cols.reshape((eval_size, X_feas))
+        eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
+        model = FPNN(cat_sizes, offsets, batch_size, eval_batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv)
     else:
         return
     write_log(model.log, echo=True)
@@ -270,6 +288,11 @@ def train():
                     _vals = _vals.reshape((batch_size, X_feas))
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
+                elif 'FPNN' in algo:
+                    _cols = _cols.reshape((batch_size, X_feas))
+                    _vals = _vals.reshape((batch_size, X_feas))
+                    feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
+                                 model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
                 _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
                 batch_preds.extend(_x[0] for _x in p)
@@ -277,7 +300,15 @@ def train():
                 if step % epoch == 0:
                     print 'step: %d\ttime: %d' % (step, time.time() - start_time)
                     start_time = time.time()
-                    eval_preds = model.eval_preds.eval()
+                    if 'FPNN' in algo:
+                        eval_preds = []
+                        for _i in range(eval_size / eval_batch_size):
+                            eval_preds.append(model.eval_preds.eval(feed_dict={
+                                model.eval_id_hldr: eval_cols[_i * eval_batch_size:(_i + 1) * eval_batch_size, :],
+                                model.eval_wts_hldr: eval_wts[_i * eval_batch_size:(_i + 1) * eval_batch_size, :]}))
+                        eval_preds = np.reshape(eval_preds, (-1,))
+                    else:
+                        eval_preds = model.eval_preds.eval()
                     if re_calibration:
                         eval_preds /= eval_preds + (1 - eval_preds) / nds_rate
                     metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds)

@@ -37,11 +37,14 @@ def init_var_map(_init_argv, vars):
         for _i in range(len(vars)):
             key, shape, action = vars[_i]
             if key not in var_map.keys():
+                print '%s random init' % key
                 if action == 'random':
                     var_map[key] = tf.random_normal(shape, _mean, _stddev, seed=_seeds[_j])
                     _j += 1
                 else:
                     var_map[key] = tf.zeros(shape)
+            else:
+                print '%s already set' % key
     else:
         _min_val, _max_val, _seeds = _init_argv[1:-1]
         log += 'init method: %s(minval=%g, maxval=%g), seeds: %s\n' % (
@@ -50,10 +53,12 @@ def init_var_map(_init_argv, vars):
         for _i in range(len(vars)):
             key, shape, action = vars[_i]
             if key not in var_map.keys():
+                print '%s random init' % key
                 if action == 'random':
                     var_map[key] = tf.random_uniform(shape, _min_val, _max_val, seed=_seeds[_j])
                     _j += 1
                 else:
                     var_map[key] = tf.zeros(shape)
-
+            else:
+                print '%s already set' % key
     return var_map, log

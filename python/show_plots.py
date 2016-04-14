@@ -37,7 +37,7 @@ def show_log(argv):
     log_path = '../log/%s' % argv[0]
     p1 = int(argv[1])
 
-    logs = np.loadtxt(log_path, delimiter='\t', skiprows=4)
+    logs = np.loadtxt(log_path, delimiter='\t', skiprows=4, usecols=range(8))
     fig = plt.figure()
     ax0 = fig.add_subplot(311)
     ax1 = fig.add_subplot(312)
