@@ -67,7 +67,7 @@ elif 'FM' in algo:
     _rch_argv = [X_dim, X_feas, rank]
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4], None]
-    _ptmzr_argv = ['ftrl', 1e-2]
+    _ptmzr_argv = ['ftrl', 2e-3]
     _reg_argv = [1e-2]
 elif 'FNN' in algo:
     rank = int(algo[3:])
