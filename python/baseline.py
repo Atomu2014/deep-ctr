@@ -75,17 +75,17 @@ elif 'FNN' in algo:
     epoch = 100
     _rch_argv = [X_dim, X_feas, rank, 400, 400]
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:7], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
 elif 'FPNN' in algo:
     rank = int(algo[4:])
-    batch_size = 1
+    batch_size = 10
     eval_batch_size = 50
     epoch = 100
-    _rch_argv = [X_dim, X_feas, rank, 400, 400]
+    _rch_argv = [X_dim, X_feas, rank, 600, 200]
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:7], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10], None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
 else:
@@ -293,6 +293,11 @@ def train():
                     _vals = _vals.reshape((batch_size, X_feas))
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
+                    _ = sess.run([model.p_v_0, model.p_v_1, model.p_v_p, model.f_p, model.p_mbd], feed_dict=feed_dict)
+                    for _x in _:
+                        print _x
+                        print _x.shape
+                    exit(0)
 
                 _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
                 batch_preds.extend(_x[0] for _x in p)
