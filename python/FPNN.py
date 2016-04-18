@@ -14,15 +14,15 @@ class FPNN:
         self.graph = tf.Graph()
         with self.graph.as_default():
             X_dim, X_feas, rank, h1_dim, h2_dim = _rch_argv
-            mbd_dim = X_feas * (rank + 1) + 1
-            p_mbd_dim = X_feas * (X_feas - 1) / 2
+            mbd_dim = X_feas * (rank + 1)
+            p_mbd_dim = X_feas * (X_feas - 1) / 2 + 1
             self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, ' % \
                        (X_dim, X_feas, rank, mbd_dim, h1_dim, h2_dim)
             var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
                                                      ('V', [X_dim, rank], 'random'),
                                                      ('b', [1], 'zero'),
-                                                     ('p_v', [p_mbd_dim, rank], 'random'),
-                                                     ('h1_w', [mbd_dim + p_mbd_dim, h1_dim], 'random'),
+                                                     # ('p_v', [p_mbd_dim, mbd_dim + p_mbd_dim], 'random'),
+                                                     ('h1_w', [p_mbd_dim, h1_dim], 'random'),
                                                      ('h1_b', [h1_dim], 'zero'),
                                                      ('h2_w', [h1_dim, h2_dim], 'random'),
                                                      ('h2_b', [h2_dim], 'zero'),
@@ -32,7 +32,7 @@ class FPNN:
             self.fm_w = tf.Variable(var_map['W'])
             self.fm_v = tf.Variable(var_map['V'])
             self.fm_b = tf.Variable(var_map['b'])
-            self.p_v = tf.Variable(var_map['p_v'])
+            # self.p_v = tf.Variable(var_map['p_v'])
             self.h1_w = tf.Variable(var_map['h1_w'])
             self.h1_b = tf.Variable(var_map['h1_b'])
             self.h2_w = tf.Variable(var_map['h2_w'])
@@ -81,16 +81,13 @@ class FPNN:
         c_fld_wts = [tf.SparseTensor(sp_inds, c_wts[:, _i], shape=[-1, 1]) for _i in range(M - 13)]
         mbd.extend([tf.nn.embedding_lookup_sparse(self.c_fld_w[_i], c_fld_ids[_i], c_fld_wts[_i], combiner='sum')
                     for _i in range(M - 13)])
-        p_mbd = tf.transpose(tf.concat(0, [
-            tf.concat(1, [tf.matmul(tf.reshape(self.p_v[_i, :], [1, -1]),
-                                    tf.reshape(self.p_v[_j, :], [-1, 1])) *
-                          tf.matmul(tf.reshape(mbd[_i][_k, :], [1, -1]),
-                                    tf.reshape(mbd[_j][_k, :], [-1, 1]))
-                          for _k in range(N)])
-            for _i in range(len(mbd) - 1) for _j in range(_i + 1, len(mbd))]))
+        p_mbd = tf.transpose(tf.concat(0, [tf.concat(1, [tf.matmul(tf.reshape(mbd[_i][_k, :], [1, -1]),
+                                                                   tf.reshape(mbd[_j][_k, :], [-1, 1]))
+                                                         for _k in range(N)])
+                                           for _i in range(len(mbd) - 1) for _j in range(_i + 1, len(mbd))]))
         b_mbd = tf.reshape(tf.concat(0, [tf.identity(self.fm_b) for _i in range(N)]), [-1, 1])
-        mbd = tf.concat(1, mbd)
-        z1 = tf.concat(1, [mbd, p_mbd, b_mbd])
+        # mbd = tf.concat(1, mbd)
+        z1 = tf.concat(1, [p_mbd, b_mbd])
         if drop_out:
             l2 = tf.matmul(tf.nn.dropout(tf.tanh(z1), keep_prob=self._keep_prob), self.h1_w) + self.h1_b
             l3 = tf.matmul(tf.nn.dropout(tf.tanh(l2), keep_prob=self._keep_prob), self.h2_w) + self.h2_b
