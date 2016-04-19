@@ -82,8 +82,8 @@ elif 'FPNN' in algo:
     rank = int(algo[4:])
     batch_size = 1
     eval_batch_size = 20
-    epoch = 100
-    _rch_argv = [X_dim, X_feas, rank, 400, 400]
+    epoch = 1000
+    _rch_argv = [X_dim, X_feas, rank, 800, 400]
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
