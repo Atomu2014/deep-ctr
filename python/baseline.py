@@ -14,9 +14,10 @@ sess_config = tf.ConfigProto(gpu_options=gpu_options)
 
 train_path = '../data/nds.2.5.shuf.ind.10'
 eval_path = '../data/test.unif.2.5.shuf.ind.10'
+test_path = eval_path
 nds_rate = 0.025
 re_calibration = 'nds' not in eval_path
-train_set = None
+data_set = None
 
 # nds = 0.1, ind = 10
 # max_vals = [65535, 8000, 705, 249000, 7974, 14159, 946, 43970, 5448, 11, 471, 35070017, 8376]
@@ -35,8 +36,9 @@ X_feas = 13 + len(cat_sizes)
 print 'max_vals:', max_vals
 print 'cat_sizes (including \'other\'):', cat_sizes
 
+mode = 'test'
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FPNN10'
+algo = 'LR'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -54,10 +56,12 @@ seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x
 
 if 'LR' in algo:
     batch_size = 1
+    test_batch_size = 1000
     epoch = 100
     _rch_argv = [X_dim, X_feas]
     _min_val = -0.01
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5],
+                  '../model/Thu_Apr__7_20_14_33_2016_LR.pickle_1890000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [0.001]
 elif 'FM' in algo:
@@ -99,18 +103,15 @@ header = 'train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration: 
           skip_window, smooth_window, stop_window)
 
 
-def write_log(_line, erase=False, echo=False):
-    if erase:
-        mode = 'w'
-    else:
-        mode = 'a'
-    with open(log_path, mode) as log_in:
+def write_log(_line, echo=False):
+    global mode
+    if mode == 'test':
+        return
+
+    with open(log_path, 'a') as log_in:
         log_in.write(_line + '\n')
         if echo:
             print _line
-
-
-write_log(header, erase=True, echo=True)
 
 
 def get_fxy(_line):
@@ -125,9 +126,12 @@ def get_fxy(_line):
 
 
 def get_batch_sparse_tensor(size, row_start=0):
-    global train_set
-    if train_set is None:
-        train_set = open(train_path, 'rb')
+    global data_set
+    if data_set is None:
+        if mode == 'train':
+            data_set = open(train_path, 'rb')
+        else:
+            data_set = open(test_path, 'rb')
     _labels = []
     _cols = []
     _vals = []
@@ -135,7 +139,7 @@ def get_batch_sparse_tensor(size, row_start=0):
     row_num = row_start
     for _i in range(size):
         try:
-            _line = next(train_set)
+            _line = next(data_set)
             if len(_line.strip()):
                 _y, _f, _x = get_fxy(_line)
                 _rows.extend([row_num] * len(_f))
@@ -147,7 +151,7 @@ def get_batch_sparse_tensor(size, row_start=0):
                 break
         except StopIteration as e:
             print e
-            train_set = None
+            data_set = None
             break
 
     return _labels, _rows, _cols, _vals
@@ -166,42 +170,7 @@ def get_batch_xy(size):
     return np.array(_labels), np.array(_rows), np.array(_cols), np.array(_vals)
 
 
-eval_labels = []
-eval_cols = []
-eval_wts = []
-eval_cnt = 0
-with open(eval_path, 'r') as eval_set:
-    buf = []
-    for line in eval_set:
-        buf.append(line)
-        eval_cnt += 1
-        if eval_cnt == 10 * eval_size:
-            break
-    np.random.shuffle(buf)
-    buf = buf[:eval_size]
-    for line in buf:
-        y, f, x = get_fxy(line)
-        eval_cols.extend(f)
-        eval_wts.extend(x)
-        eval_labels.append(y)
-eval_cols = np.array(eval_cols)
-eval_wts = np.array(eval_wts)
-eval_labels = np.array(eval_labels)
-
-sp_eval_inds = []
-for i in range(eval_size):
-    for j in range(X_feas):
-        sp_eval_inds.append([i, j])
-sp_eval_inds = np.array(sp_eval_inds)
-
-sp_train_inds = []
-for i in range(batch_size):
-    for j in range(X_feas):
-        sp_train_inds.append([i, j])
-sp_train_inds = np.array(sp_train_inds)
-
-
-def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds):
+def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds, eval_labels):
     try:
         batch_auc = np.float32(roc_auc_score(batch_labels, batch_preds))
     except ValueError:
@@ -240,25 +209,43 @@ def early_stop(step, errs):
 
 
 def train():
-    global eval_cols, eval_wts, eval_labels
+    eval_labels = []
+    eval_cols = []
+    eval_wts = []
+    eval_cnt = 0
+    with open(eval_path, 'r') as eval_set:
+        buf = []
+        for line in eval_set:
+            buf.append(line)
+            eval_cnt += 1
+            if eval_cnt == 10 * eval_size:
+                break
+        np.random.shuffle(buf)
+        buf = buf[:eval_size]
+        for line in buf:
+            y, f, x = get_fxy(line)
+            eval_cols.extend(f)
+            eval_wts.extend(x)
+            eval_labels.append(y)
+    eval_cols = np.array(eval_cols)
+    eval_wts = np.array(eval_wts)
+    eval_labels = np.array(eval_labels)
 
     if 'LR' in algo:
-        model = LR(batch_size, eval_size, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _rch_argv, _init_argv,
-                   _ptmzr_argv, _reg_argv)
+        model = LR(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size, eval_cols, eval_wts)
     elif 'FM' in algo:
-        model = FM(batch_size, eval_size, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _rch_argv, _init_argv,
-                   _ptmzr_argv, _reg_argv)
+        model = FM(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size, eval_cols, eval_wts)
     elif 'FNN' in algo:
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
-        model = FNN(cat_sizes, offsets, batch_size, eval_size, eval_cols, eval_wts, _rch_argv, _init_argv, _ptmzr_argv,
-                    _reg_argv)
+        model = FNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size,
+                    eval_cols, eval_wts)
     elif 'FPNN' in algo:
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
-        model = FPNN(cat_sizes, offsets, batch_size, eval_batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv)
-    else:
-        return
+        model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
+                     eval_batch_size)
+
     write_log(model.log, echo=True)
 
     with tf.Session(graph=model.graph, config=sess_config) as sess:
@@ -311,7 +298,7 @@ def train():
                         eval_preds = model.eval_preds.eval()
                     if re_calibration:
                         eval_preds /= eval_preds + (1 - eval_preds) / nds_rate
-                    metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds)
+                    metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds, eval_labels)
                     print metrics
                     err_rcds.append(metrics['eval_entropy'])
                     err_rcds = err_rcds[-2 * skip_window * (stop_window + smooth_window):]
@@ -323,5 +310,71 @@ def train():
                         return
 
 
+def test():
+    if 'LR' in algo:
+        model = LR(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
+    elif 'FM' in algo:
+        model = FM(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', eval_size, None, None)
+    elif 'FNN' in algo:
+        model = FNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', eval_size,
+                    None, None)
+    elif 'FPNN' in algo:
+        model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', None)
+
+    with tf.Session(graph=model.graph, config=sess_config) as sess:
+        tf.initialize_all_variables().run()
+        print 'model initialized'
+        test_preds = []
+        test_labels = []
+        step = 0
+        start_time = time.time()
+        while True:
+            labels, _, cols, vals = get_batch_sparse_tensor(buffer_size)
+            labels, cols, vals = np.array(labels), np.array(cols), np.array(vals)
+            for _i in range(labels.shape[0] / test_batch_size):
+                step += 1
+                _labels = labels[_i * test_batch_size: (_i + 1) * test_batch_size]
+                _cols = cols[_i * test_batch_size * X_feas: (_i + 1) * test_batch_size * X_feas]
+                _vals = vals[_i * test_batch_size * X_feas: (_i + 1) * test_batch_size * X_feas]
+
+                if 'LR' in algo:
+                    feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.lbl_hldr: _labels}
+                elif 'FM' in algo:
+                    _vals2 = _vals ** 2
+                    feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
+                                 model.lbl_hldr: _labels}
+                elif 'FNN' in algo:
+                    _cols = _cols.reshape((batch_size, X_feas))
+                    _vals = _vals.reshape((batch_size, X_feas))
+                    feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
+                                 model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
+                elif 'FPNN' in algo:
+                    _cols = _cols.reshape((batch_size, X_feas))
+                    _vals = _vals.reshape((batch_size, X_feas))
+                    feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
+                                 model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
+
+                p = model.test_preds.eval(feed_dict=feed_dict)
+                p /= p + (1 - p) / nds_rate
+
+                test_preds.extend(_x[0] for _x in p)
+                test_labels.extend(_labels)
+                if step % 100000 == 0:
+                    print 'test-auc: %g' % roc_auc_score(test_labels, test_preds)
+                    print 'test-rmse: %g' % np.sqrt(mean_squared_error(test_labels, test_preds))
+                    print 'test-log-loss: %g' % log_loss(test_labels, test_preds)
+                    print time.time() - start_time
+                    start_time = time.time()
+
+        if len(labels) < buffer_size:
+            print 'test-auc: %g' % roc_auc_score(test_labels, test_preds)
+            print 'test-rmse: %g' % np.sqrt(mean_squared_error(test_labels, test_preds))
+            print 'test-log-loss: %g' % log_loss(test_labels, test_preds)
+            exit(0)
+
+
 if __name__ == '__main__':
-    train()
+    if mode == 'train':
+        train()
+    else:
+        test()

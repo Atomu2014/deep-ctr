@@ -1,13 +1,17 @@
+import numpy as np
+
 from tf_util import *
 
 
 class LR:
-    def __init__(self, batch_size, eval_size, sp_train_inds, sp_eval_inds, eval_cols, eval_wts, _rch_argv, _init_argv,
-                 _ptmzr_argv, _reg_argv):
+    def __init__(self, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size, eval_cols, eval_wts):
         self.graph = tf.Graph()
-
         X_dim, X_feas = _rch_argv
-        _lambda = _reg_argv[0]
+
+        sp_train_inds = build_inds(batch_size, X_feas)
+        if mode == 'train':
+            sp_eval_inds = build_inds(eval_size, X_feas)
+
         self.log = 'input dim: %d, features: %d, ' % (X_dim, X_feas)
         with self.graph.as_default():
             self.log = 'input dim: %d, features: %d, ' % (X_dim, X_feas)
@@ -23,19 +27,24 @@ class LR:
 
             sp_ids = tf.SparseTensor(sp_train_inds, self.sp_id_hldr, shape=[batch_size, X_feas])
             sp_wts = tf.SparseTensor(sp_train_inds, self.sp_wt_hldr, shape=[batch_size, X_feas])
-            sp_eval_ids = tf.SparseTensor(sp_eval_inds, eval_cols, shape=[eval_size, X_feas])
-            sp_eval_wts = tf.SparseTensor(sp_eval_inds, eval_wts, shape=[eval_size, X_feas])
 
-            logits = self.regression(sp_ids, sp_wts)
-            self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
-                tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.b))
+            if mode == 'train':
+                _lambda = _reg_argv[0]
+                logits = self.regression(sp_ids, sp_wts)
+                self.train_preds = tf.sigmoid(logits)
+                sp_eval_ids = tf.SparseTensor(sp_eval_inds, eval_cols, shape=[eval_size, X_feas])
+                sp_eval_wts = tf.SparseTensor(sp_eval_inds, eval_wts, shape=[eval_size, X_feas])
+                self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
+                    tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.b))
 
-            self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-            self.log += '%s, lambda(l2): %g' % (log, _lambda)
+                self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
+                self.log += '%s, lambda(l2): %g' % (log, _lambda)
 
-            self.train_preds = tf.sigmoid(logits)
-            eval_logits = self.regression(sp_eval_ids, sp_eval_wts)
-            self.eval_preds = tf.sigmoid(eval_logits)
+                eval_logits = self.regression(sp_eval_ids, sp_eval_wts)
+                self.eval_preds = tf.sigmoid(eval_logits)
+            else:
+                logits = self.regression(sp_ids, sp_wts)
+                self.test_preds = tf.sigmoid(logits)
 
     def regression(self, sp_ids, sp_wts):
         yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_wts, combiner='sum') + self.b

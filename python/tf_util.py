@@ -1,6 +1,14 @@
 import cPickle as pickle
-
+import numpy as np
 import tensorflow as tf
+
+
+def build_inds(N, M):
+    inds = []
+    for i in range(N):
+        for j in range(M):
+            inds.append([i, j])
+    return np.array(inds)
 
 
 def builf_optimizer(_ptmzr_argv, loss):

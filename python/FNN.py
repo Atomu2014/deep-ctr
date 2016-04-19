@@ -2,14 +2,15 @@ from tf_util import *
 
 
 class FNN:
-    def __init__(self, cat_sizes, offsets, batch_size, eval_size, eval_cols, eval_wts, _rch_argv, _init_argv,
-                 _ptmzr_argv, _reg_argv):
+    def __init__(self, cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size,
+                 eval_cols, eval_wts):
         sp_fld_inds = []
         for _i in range(batch_size):
             sp_fld_inds.append([_i, 0])
-        sp_eval_fld_inds = []
-        for _i in range(eval_size):
-            sp_eval_fld_inds.append([_i, 0])
+        if mode == 'train':
+            sp_eval_fld_inds = []
+            for _i in range(eval_size):
+                sp_eval_fld_inds.append([_i, 0])
 
         self._lambda, self._keep_prob = _reg_argv
         self.graph = tf.Graph()
@@ -48,20 +49,25 @@ class FNN:
             self.c_fld_w = [tf.slice(self.fm_wv, [offsets[_i], 0], [cat_sizes[_i], rank + 1]) for _i in
                             range(X_feas - 13)]
 
-            logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds, True)
-            self.loss = tf.reduce_mean(
-                tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + self._lambda * (
-                tf.nn.l2_loss(self.fm_w) + tf.nn.l2_loss(self.fm_v) + tf.nn.l2_loss(self.fm_b) + tf.nn.l2_loss(
-                    self.h1_w) + tf.nn.l2_loss(self.h1_b) + tf.nn.l2_loss(self.h2_w) + tf.nn.l2_loss(
-                    self.h2_b) + tf.nn.l2_loss(self.h3_w) + tf.nn.l2_loss(self.h3_b))
+            if mode == 'train':
+                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds,
+                                      True)
+                self.loss = tf.reduce_mean(
+                    tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + self._lambda * (
+                    tf.nn.l2_loss(self.fm_w) + tf.nn.l2_loss(self.fm_v) + tf.nn.l2_loss(self.fm_b) + tf.nn.l2_loss(
+                        self.h1_w) + tf.nn.l2_loss(self.h1_b) + tf.nn.l2_loss(self.h2_w) + tf.nn.l2_loss(
+                        self.h2_b) + tf.nn.l2_loss(self.h3_w) + tf.nn.l2_loss(self.h3_b))
 
-            self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-            self.log += '%s, lambda(l2): %g, keep_prob(drop_out): %g' % (log, self._lambda, self._keep_prob)
+                self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
+                self.log += '%s, lambda(l2): %g, keep_prob(drop_out): %g' % (log, self._lambda, self._keep_prob)
 
-            self.train_preds = tf.sigmoid(logits)
-            eval_logits = self.forward(eval_size, X_feas, eval_wts[:, :13], eval_cols[:, 13:] - offsets,
-                                       eval_wts[:, 13:], sp_eval_fld_inds)
-            self.eval_preds = tf.sigmoid(eval_logits)
+                self.train_preds = tf.sigmoid(logits)
+                eval_logits = self.forward(eval_size, X_feas, eval_wts[:, :13], eval_cols[:, 13:] - offsets,
+                                           eval_wts[:, 13:], sp_eval_fld_inds)
+                self.eval_preds = tf.sigmoid(eval_logits)
+            else:
+                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds)
+                self.test_preds = tf.sigmoid(logits)
 
     def forward(self, N, M, v_wts, c_ids, c_wts, sp_inds, drop_out=False):
         v_mbd = tf.concat(1, [tf.matmul(tf.reshape(v_wts[:, _i], [N, 1]), self.v_fld_w[_i]) for _i in range(13)])
