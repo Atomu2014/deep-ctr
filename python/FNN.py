@@ -15,7 +15,7 @@ class FNN:
         self._lambda, self._keep_prob = _reg_argv
         self.graph = tf.Graph()
         with self.graph.as_default():
-            X_dim, X_feas, rank, h1_dim, h2_dim = _rch_argv
+            X_dim, X_feas, rank, h1_dim, h2_dim, act_func = _rch_argv
             mbdng_dim = X_feas * (rank + 1) + 1
             self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, ' % \
                        (X_dim, X_feas, rank, mbdng_dim, h1_dim, h2_dim)
@@ -51,7 +51,7 @@ class FNN:
 
             if mode == 'train':
                 logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds,
-                                      True)
+                                      act_func, True)
                 self.loss = tf.reduce_mean(
                     tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + self._lambda * (
                     tf.nn.l2_loss(self.fm_w) + tf.nn.l2_loss(self.fm_v) + tf.nn.l2_loss(self.fm_b) + tf.nn.l2_loss(
@@ -63,13 +63,14 @@ class FNN:
 
                 self.train_preds = tf.sigmoid(logits)
                 eval_logits = self.forward(eval_size, X_feas, eval_wts[:, :13], eval_cols[:, 13:] - offsets,
-                                           eval_wts[:, 13:], sp_eval_fld_inds)
+                                           eval_wts[:, 13:], sp_eval_fld_inds, act_func, False)
                 self.eval_preds = tf.sigmoid(eval_logits)
             else:
-                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds)
+                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds,
+                                      act_func, False)
                 self.test_preds = tf.sigmoid(logits)
 
-    def forward(self, N, M, v_wts, c_ids, c_wts, sp_inds, drop_out=False):
+    def forward(self, N, M, v_wts, c_ids, c_wts, sp_inds, act_func='tanh', drop_out=False):
         v_mbd = tf.concat(1, [tf.matmul(tf.reshape(v_wts[:, _i], [N, 1]), self.v_fld_w[_i]) for _i in range(13)])
         c_fld_ids = [tf.SparseTensor(sp_inds, c_ids[:, _i], shape=[N, 1]) for _i in range(M - 13)]
         c_fld_wts = [tf.SparseTensor(sp_inds, c_wts[:, _i], shape=[N, 1]) for _i in range(M - 13)]
@@ -80,13 +81,13 @@ class FNN:
 
         z1 = tf.concat(1, [v_mbd, c_mbd, b_mbd])
         if drop_out:
-            l2 = tf.matmul(tf.nn.dropout(tf.tanh(z1), keep_prob=self._keep_prob), self.h1_w) + self.h1_b
-            l3 = tf.matmul(tf.nn.dropout(tf.tanh(l2), keep_prob=self._keep_prob), self.h2_w) + self.h2_b
-            yhat = tf.matmul(tf.nn.dropout(tf.tanh(l3), keep_prob=self._keep_prob), self.h3_w) + self.h3_b
+            l2 = tf.matmul(tf.nn.dropout(activate(act_func, z1), keep_prob=self._keep_prob), self.h1_w) + self.h1_b
+            l3 = tf.matmul(tf.nn.dropout(activate(act_func, l2), keep_prob=self._keep_prob), self.h2_w) + self.h2_b
+            yhat = tf.matmul(tf.nn.dropout(activate(act_func, l3), keep_prob=self._keep_prob), self.h3_w) + self.h3_b
         else:
-            l2 = tf.matmul(tf.tanh(z1), self.h1_w) + self.h1_b
-            l3 = tf.matmul(tf.tanh(l2), self.h2_w) + self.h2_b
-            yhat = tf.matmul(tf.tanh(l3), self.h3_w) + self.h3_b
+            l2 = tf.matmul(activate(act_func, z1), self.h1_w) + self.h1_b
+            l3 = tf.matmul(activate(act_func, l2), self.h2_w) + self.h2_b
+            yhat = tf.matmul(activate(act_func, l3), self.h3_w) + self.h3_b
         return yhat
 
     def dump(self, model_path):

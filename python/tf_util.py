@@ -1,4 +1,5 @@
 import cPickle as pickle
+
 import numpy as np
 import tensorflow as tf
 
@@ -26,6 +27,15 @@ def builf_optimizer(_ptmzr_argv, loss):
         ptmzr = tf.train.GradientDescentOptimizer(learning_rate=_learning_rate).minimize(loss)
         log = 'optimizer: %s, learning rate: %g' % (_ptmzr, _learning_rate)
     return ptmzr, log
+
+
+def activate(act_func, x):
+    if act_func == 'tanh':
+        return tf.tanh(x)
+    elif act_func == 'relu':
+        return tf.nn.relu(x)
+    else:
+        return tf.sigmoid(x)
 
 
 def init_var_map(_init_argv, vars):

@@ -12,8 +12,8 @@ from LR import LR
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
 sess_config = tf.ConfigProto(gpu_options=gpu_options)
 
-train_path = '../data/nds.2.5.shuf.ind.10'
-eval_path = '../data/test.unif.2.5.shuf.ind.10'
+train_path = '../data/nds.2.5.shuf.ind.100'
+eval_path = '../data/test.unif.2.5.shuf.ind.100'
 test_path = eval_path
 nds_rate = 0.025
 re_calibration = 'nds' not in eval_path
@@ -24,9 +24,14 @@ data_set = None
 # cat_sizes = np.array([631838, 25296, 15533, 7108, 19272, 3, 6753, 1302, 54, 527814, 147690, 110673,
 #                       10, 2201, 9022, 62, 4, 945, 14, 639541, 357566, 600327, 118441, 10216, 77, 33])
 # nds = 0.025, ind = 10
-max_vals = np.array([65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8, 221, 3023897, 8072])
-cat_sizes = np.array([284414, 22289, 15249, 7022, 18956, 3, 6730, 1286, 50, 253234, 93011, 81371,
-                      10, 2187, 8396, 61, 4, 932, 14, 286828, 190408, 274540, 79781, 9690, 70, 33])
+# max_vals = np.array([65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8, 221, 3023897, 8072])
+# cat_sizes = np.array([284414, 22289, 15249, 7022, 18956, 3, 6730, 1286, 50, 253234, 93011, 81371,
+#                       10, 2187, 8396, 61, 4, 932, 14, 286828, 190408, 274540, 79781, 9690, 70, 33])
+# nds = 0.025, ind = 100
+max_vals = [65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8, 221, 3023897, 8072]
+cat_sizes = np.array(
+    [31088, 13592, 13296, 6690, 17915, 3, 6497, 1217, 35, 34870, 24267, 32179, 10, 1959, 6076, 55, 4, 900, 14,
+     30404, 34948, 32786, 22420, 8392, 50, 33])
 cat_sizes += 1
 offsets = [13 + sum(cat_sizes[:i]) for i in range(len(cat_sizes))]
 X_dim = 13 + np.sum(cat_sizes)
@@ -36,7 +41,7 @@ X_feas = 13 + len(cat_sizes)
 print 'max_vals:', max_vals
 print 'cat_sizes (including \'other\'):', cat_sizes
 
-mode = 'test'
+mode = 'train'
 # 'LR', 'FMxxx', 'FNN'
 algo = 'LR'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
@@ -57,13 +62,12 @@ seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x
 if 'LR' in algo:
     batch_size = 1
     test_batch_size = 1000
-    epoch = 100
+    epoch = 10000
     _rch_argv = [X_dim, X_feas]
     _min_val = -0.01
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5],
-                  '../model/Thu_Apr__7_20_14_33_2016_LR.pickle_1890000']
-    _ptmzr_argv = ['adam', 1e-4, 1e-8]
-    _reg_argv = [0.001]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5], None]
+    _ptmzr_argv = ['ftrl', 1e-3]
+    _reg_argv = [1e-4]
 elif 'FM' in algo:
     rank = int(algo[2:])
     batch_size = 1
@@ -77,7 +81,7 @@ elif 'FNN' in algo:
     rank = int(algo[3:])
     batch_size = 1
     epoch = 100
-    _rch_argv = [X_dim, X_feas, rank, 400, 400]
+    _rch_argv = [X_dim, X_feas, rank, 400, 400, 'tanh']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
@@ -87,7 +91,7 @@ elif 'FPNN' in algo:
     batch_size = 1
     eval_batch_size = 20
     epoch = 1000
-    _rch_argv = [X_dim, X_feas, rank, 800, 400]
+    _rch_argv = [X_dim, X_feas, rank, 800, 400, 'tanh']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8]

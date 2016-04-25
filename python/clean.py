@@ -166,8 +166,8 @@ def make_index(fin_path, fout_path, inds, fltr):
 
     num_lines = 0
     with open(fout_path, 'wb') as fout:
+        start_time = time.time()
         while True:
-            start_time = time.time()
             buf = collect(fin)
             num_lines += len(buf)
 
@@ -184,6 +184,35 @@ def make_index(fin_path, fout_path, inds, fltr):
             fout.write(out_buf)
             if num_lines % 1000000 == 0:
                 print num_lines, time.time() - start_time
+                start_time = time.time()
+
+
+def cnt_pos_neg_with_inds(log_path, inds):
+    print log_path
+    fin = open(log_path, 'rb')
+
+    num_lines = 0
+    body_cnts = np.array([[0.0, 0.0] for _i in range(26)])
+    tail_cnts = np.array([[0.0, 0.0] for _i in range(26)])
+    while True:
+        start_time = time.time()
+        buf = collect(fin)
+        num_lines += len(buf)
+        if len(buf) < 1:
+            print body_cnts[:, 1] / body_cnts.sum(axis=1)
+            print tail_cnts[:, 1] / tail_cnts.sum(axis=1)
+            print time.time() - start_time
+            return
+
+        for line in buf:
+            fields = line.strip().split('\t')
+            label = int(fields[0])
+            cats = [int(max(x, '0'), 16) for x in fields[14:]]
+            for _i in range(26):
+                if cats[_i] in inds[_i]:
+                    body_cnts[_i][label] += 1
+                else:
+                    tail_cnts[_i][label] += 1
 
 
 if __name__ == '__main__':
@@ -204,22 +233,24 @@ if __name__ == '__main__':
     # pickle.dump({'ind': indices, 'tri': trivial}, open('../data/stat.index.pickle', 'wb'))
     save = pickle.load(open('../data/2.5.stat.pickle'))
     cats = save['sets']
-    for fltr in [10, 20, 50, 100]:
+    for fltr in [100]:
+        print fltr
         inds = build_indices(cats, fltr)
-        make_index('../data/nds.2.5.shuf', '../data/nds.2.5.shuf.ind.%d' % fltr, inds, fltr)
         print [len(x) for x in inds]
         make_index('../data/test.nds.2.5.shuf', '../data/test.nds.2.5.shuf.ind.%d' % fltr, inds, fltr)
-        print [len(x) for x in inds]
         make_index('../data/test.unif.2.5.shuf', '../data/test.unif.2.5.shuf.ind.%d' % fltr, inds, fltr)
-        print [len(x) for x in inds]
+        make_index('../data/nds.2.5.shuf', '../data/nds.2.5.shuf.ind.%d' % fltr, inds, fltr)
+        # cnt_pos_neg_with_inds('../data/test.nds.2.5', inds)
+        # cnt_pos_neg_with_inds('../data/test.unif.2.5', inds)
+        # cnt_pos_neg_with_inds('../data/nds.2.5', inds)
 
-    # shuffle and merge files
-    # file_list = ['../data/nds.2.5.' + str(i) for i in range(1, 20)]
-    # merge_file(file_list, '../data/nds.2.5.shuf')
-    # print 'shuffle %s finish' % '../data/nds.2.5.shuf'
-    # file_list = ['../data/test.nds.2.5.' + str(i) for i in range(1, 4)]
-    # merge_file(file_list, '../data/test.nds.2.5.shuf')
-    # print 'shuffle %s finish' % '../data/test.nds.2.5.shuf'
-    # file_list = ['../data/test.unif.2.5.' + str(i) for i in range(1, 3)]
-    # merge_file(file_list, '../data/test.unif.2.5.shuf')
-    # print 'shuffle %s finish' % '../data/test.unif.2.5.shuf'
+        # shuffle and merge files
+        # file_list = ['../data/nds.2.5.' + str(i) for i in range(1, 20)]
+        # merge_file(file_list, '../data/nds.2.5.shuf')
+        # print 'shuffle %s finish' % '../data/nds.2.5.shuf'
+        # file_list = ['../data/test.nds.2.5.' + str(i) for i in range(1, 4)]
+        # merge_file(file_list, '../data/test.nds.2.5.shuf')
+        # print 'shuffle %s finish' % '../data/test.nds.2.5.shuf'
+        # file_list = ['../data/test.unif.2.5.' + str(i) for i in range(1, 3)]
+        # merge_file(file_list, '../data/test.unif.2.5.shuf')
+        # print 'shuffle %s finish' % '../data/test.unif.2.5.shuf'
