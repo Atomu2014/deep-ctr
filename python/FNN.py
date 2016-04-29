@@ -11,8 +11,8 @@ class FNN:
             sp_eval_fld_inds = []
             for _i in range(eval_size):
                 sp_eval_fld_inds.append([_i, 0])
+            self._lambda, self._keep_prob = _reg_argv
 
-        self._lambda, self._keep_prob = _reg_argv
         self.graph = tf.Graph()
         with self.graph.as_default():
             X_dim, X_feas, rank, h1_dim, h2_dim, act_func = _rch_argv

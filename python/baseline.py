@@ -61,39 +61,45 @@ seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x
 
 if 'LR' in algo:
     batch_size = 1
-    test_batch_size = 1000
-    epoch = 10000
+    test_batch_size = 100
+    epoch = 1000
     _rch_argv = [X_dim, X_feas]
     _min_val = -0.01
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5],
+                  '../model/Thu_Apr__7_20_14_33_2016_LR.pickle_1890000']
     _ptmzr_argv = ['ftrl', 1e-3]
     _reg_argv = [1e-4]
 elif 'FM' in algo:
     rank = int(algo[2:])
     batch_size = 1
+    test_batch_size = 100
     epoch = 100
     _rch_argv = [X_dim, X_feas, rank]
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4],
+                  '../model/Mon_Apr_11_09_42_50_2016_FM10.pickle_1335000']
     _ptmzr_argv = ['ftrl', 2e-3]
     _reg_argv = [1e-2]
 elif 'FNN' in algo:
     rank = int(algo[3:])
     batch_size = 1
-    epoch = 100
+    test_batch_size = 1
+    epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 400, 400, 'tanh']
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
+                  '../model/Mon_Apr_11_15:30:11_2016_FNN10.pickle_38000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
 elif 'FPNN' in algo:
     rank = int(algo[4:])
     batch_size = 1
     eval_batch_size = 20
+    test_batch_size = 20
     epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 'tanh']
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], None]
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], '../model/Wed_Apr_20_18:00:08_2016_FPNN10.pickle_160000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
 else:
@@ -194,19 +200,23 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds, eval_la
             'eval_auc': eval_auc, 'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
 
 
-def early_stop(step, errs):
+def early_stop(step, errs, metric='auc'):
     if step > least_step:
-        skip_auc = errs[::skip_window]
-        smooth_auc = np.array(skip_auc[smooth_window - 1:])
+        skip_metric = errs[::skip_window]
+        smooth_metric = np.array(skip_metric[smooth_window - 1:])
         for i in range(smooth_window - 1):
-            smooth_auc += skip_auc[i:(i - smooth_window + 1)]
-        smooth_auc /= smooth_window
-        if len(smooth_auc) < stop_window:
+            smooth_metric += skip_metric[i:(i - smooth_window + 1)]
+        smooth_metric /= smooth_window
+        if len(smooth_metric) < stop_window:
             return False
-        smooth_error = smooth_auc[stop_window - 1:] - smooth_auc[:1 - stop_window]
-        if smooth_error[-1] > 0:
+        smooth_error = smooth_metric[stop_window - 1:] - smooth_metric[:1 - stop_window]
+        if metric == 'rmse' and smooth_error[-1] > 0:
             print 'early stop at step %d' % step
-            print 'smoothed error', str(smooth_error)
+            print 'smoothed rmse error', str(smooth_error)
+            return True
+        elif metric == 'auc' and smooth_error[-1] < 0:
+            print 'early stop at step %d' % step
+            print 'smoothed auc error', str(smooth_error)
             return True
         return False
     return False
@@ -304,7 +314,7 @@ def train():
                         eval_preds /= eval_preds + (1 - eval_preds) / nds_rate
                     metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds, eval_labels)
                     print metrics
-                    err_rcds.append(metrics['eval_entropy'])
+                    err_rcds.append(metrics['eval_auc'])
                     err_rcds = err_rcds[-2 * skip_window * (stop_window + smooth_window):]
                     batch_preds = []
                     batch_labels = []
@@ -318,12 +328,11 @@ def test():
     if 'LR' in algo:
         model = LR(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
     elif 'FM' in algo:
-        model = FM(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', eval_size, None, None)
+        model = FM(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
     elif 'FNN' in algo:
-        model = FNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', eval_size,
-                    None, None)
+        model = FNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
     elif 'FPNN' in algo:
-        model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', None)
+        model = FPNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', None)
 
     with tf.Session(graph=model.graph, config=sess_config) as sess:
         tf.initialize_all_variables().run()
@@ -348,13 +357,13 @@ def test():
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
                                  model.lbl_hldr: _labels}
                 elif 'FNN' in algo:
-                    _cols = _cols.reshape((batch_size, X_feas))
-                    _vals = _vals.reshape((batch_size, X_feas))
+                    _cols = _cols.reshape((test_batch_size, X_feas))
+                    _vals = _vals.reshape((test_batch_size, X_feas))
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
                 elif 'FPNN' in algo:
-                    _cols = _cols.reshape((batch_size, X_feas))
-                    _vals = _vals.reshape((batch_size, X_feas))
+                    _cols = _cols.reshape((test_batch_size, X_feas))
+                    _vals = _vals.reshape((test_batch_size, X_feas))
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
@@ -363,7 +372,7 @@ def test():
 
                 test_preds.extend(_x[0] for _x in p)
                 test_labels.extend(_labels)
-                if step % 100000 == 0:
+                if step % epoch == 0:
                     print 'test-auc: %g' % roc_auc_score(test_labels, test_preds)
                     print 'test-rmse: %g' % np.sqrt(mean_squared_error(test_labels, test_preds))
                     print 'test-log-loss: %g' % log_loss(test_labels, test_preds)

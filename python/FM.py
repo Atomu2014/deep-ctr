@@ -6,13 +6,12 @@ class FM:
         self.graph = tf.Graph()
         X_dim, X_feas, rank = _rch_argv
 
-        eval_wts2 = eval_wts ** 2
         sp_train_inds = build_inds(batch_size, X_feas)
         if mode == 'train':
+            eval_wts2 = eval_wts ** 2
             sp_eval_inds = build_inds(eval_size, X_feas)
 
         with self.graph.as_default():
-            _lambda = _reg_argv[0]
             self.log = 'input dim: %d, features: %d, rank: %d, ' % (X_dim, X_feas, rank)
             var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
                                                      ('V', [X_dim, rank], 'random'),
@@ -35,6 +34,7 @@ class FM:
                 sp_eval_ids = tf.SparseTensor(sp_eval_inds, eval_cols, shape=[eval_size, X_feas])
                 sp_eval_wts = tf.SparseTensor(sp_eval_inds, eval_wts, shape=[eval_size, X_feas])
                 sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, eval_wts2, shape=[eval_size, X_feas])
+                _lambda = _reg_argv[0]
 
                 logits = self.factorization(sp_ids, sp_wts, sp_wts2)
                 self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
