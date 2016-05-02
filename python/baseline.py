@@ -32,6 +32,7 @@ max_vals = [65535, 8000, 715, 376613, 7995, 1430, 2191, 25462, 5337, 8, 221, 302
 cat_sizes = np.array(
     [31088, 13592, 13296, 6690, 17915, 3, 6497, 1217, 35, 34870, 24267, 32179, 10, 1959, 6076, 55, 4, 900, 14,
      30404, 34948, 32786, 22420, 8392, 50, 33])
+
 cat_sizes += 1
 offsets = [13 + sum(cat_sizes[:i]) for i in range(len(cat_sizes))]
 X_dim = 13 + np.sum(cat_sizes)
@@ -60,13 +61,13 @@ seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x
               0xCDEF, 0xBA98, 0xFEDC]
 
 if 'LR' in algo:
-    batch_size = 1
+    batch_size = 10
     test_batch_size = 100
-    epoch = 1000
+    epoch = 10000
     _rch_argv = [X_dim, X_feas]
     _min_val = -0.01
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5],
-                  '../model/Thu_Apr__7_20_14_33_2016_LR.pickle_1890000']
+                  '../model/Sun_Apr_24_15:03:10_2016_LR.pickle_21200000']
     _ptmzr_argv = ['ftrl', 1e-3]
     _reg_argv = [1e-4]
 elif 'FM' in algo:
@@ -99,7 +100,8 @@ elif 'FPNN' in algo:
     epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 'tanh']
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9], '../model/Wed_Apr_20_18:00:08_2016_FPNN10.pickle_160000']
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
+                  '../model/Wed_Apr_20_18:00:08_2016_FPNN10.pickle_160000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
 else:
@@ -122,6 +124,9 @@ def write_log(_line, echo=False):
         log_in.write(_line + '\n')
         if echo:
             print _line
+
+
+write_log(header, True)
 
 
 def get_fxy(_line):
