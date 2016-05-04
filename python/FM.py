@@ -36,6 +36,17 @@ class FM:
                 sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, eval_wts2, shape=[eval_size, X_feas])
                 _lambda = _reg_argv[0]
 
+                # # y = w * x + b
+                # self.yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_wts, combiner='sum') + self.b
+                # # vx = v * x
+                # self._Vx = tf.nn.embedding_lookup_sparse(self.V, sp_ids, sp_wts, combiner='sum')
+                # # v2x2 = v ^ 2 * x ^ 2
+                # self._V2x2 = tf.nn.embedding_lookup_sparse(tf.square(self.V), sp_ids, sp_wts2, combiner='sum')
+                # # y = w * x + b + 1/2 * (sum(vx * vx) - sum(v2x2))
+                # self.s_vx = tf.reduce_sum(tf.square(self._Vx), 1)
+                # self.s_v2x2 = tf.reduce_sum(self._V2x2, 1)
+                # self.yhat += 0.5 * tf.reshape(self.s_vx - self.s_v2x2, shape=[-1, 1])
+
                 logits = self.factorization(sp_ids, sp_wts, sp_wts2)
                 self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
                     tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
@@ -49,11 +60,14 @@ class FM:
                 self.test_preds = tf.sigmoid(logits)
 
     def factorization(self, sp_ids, sp_weights, sp_weights2):
+        # y = w * x + b
         yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_weights, combiner='sum') + self.b
+        # vx = v * x
         _Vx = tf.nn.embedding_lookup_sparse(self.V, sp_ids, sp_weights, combiner='sum')
+        # v2x2 = v ^ 2 * x ^ 2
         _V2x2 = tf.nn.embedding_lookup_sparse(tf.square(self.V), sp_ids, sp_weights2, combiner='sum')
-        yhat += 0.5 * tf.reshape(tf.reduce_sum(tf.matmul(_Vx, _Vx, transpose_b=True), 1) - tf.reduce_sum(_V2x2, 1),
-                                 shape=[-1, 1])
+        # y = w * x + b + 1/2 * (sum(vx * vx) - sum(v2x2))
+        yhat += 0.5 * tf.reshape(tf.reduce_sum(tf.square(_Vx), 1) - tf.reduce_sum(_V2x2, 1), shape=[-1, 1])
         return yhat
 
     def dump(self, model_path):
