@@ -41,10 +41,9 @@ class FM:
 
                 self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size * X_feas])
                 self.eval_wt_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
-                self.eval_wt2_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
                 sp_eval_ids = tf.SparseTensor(sp_eval_inds, self.eval_id_hldr, shape=[eval_size, X_feas])
                 sp_eval_wts = tf.SparseTensor(sp_eval_inds, self.eval_wt_hldr, shape=[eval_size, X_feas])
-                sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, self.eval_wt2_hldr, shape=[eval_size, X_feas])
+                sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, tf.square(self.eval_wt_hldr), shape=[eval_size, X_feas])
                 eval_logits = self.factorization(sp_eval_ids, sp_eval_wts, sp_eval_wts2)
                 self.eval_preds = tf.sigmoid(eval_logits)
             else:

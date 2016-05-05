@@ -52,7 +52,7 @@ model_path = '../model/%s.pickle' % tag
 print log_path, model_path
 
 buffer_size = 1000000
-eval_size = 10000
+eval_buf_size = 100000
 skip_window = 1
 smooth_window = 100
 stop_window = 10
@@ -62,6 +62,7 @@ seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x
 
 if 'LR' in algo:
     batch_size = 10
+    eval_size = 10000
     test_batch_size = 100
     epoch = 10000
     _rch_argv = [X_dim, X_feas]
@@ -73,6 +74,7 @@ if 'LR' in algo:
 elif 'FM' in algo:
     rank = int(algo[2:])
     batch_size = 1
+    eval_size = 10000
     test_batch_size = 100
     epoch = 10000
     _rch_argv = [X_dim, X_feas, rank]
@@ -84,6 +86,7 @@ elif 'FM' in algo:
 elif 'FNN' in algo:
     rank = int(algo[3:])
     batch_size = 1
+    eval_size = 10000
     test_batch_size = 1
     epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 400, 400, 'tanh']
@@ -95,7 +98,7 @@ elif 'FNN' in algo:
 elif 'FPNN' in algo:
     rank = int(algo[4:])
     batch_size = 1
-    eval_batch_size = 20
+    eval_size = 10000
     test_batch_size = 20
     epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 'tanh']
@@ -111,7 +114,7 @@ ckpt = 10 * epoch
 least_step = 100 * epoch
 header = 'train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration: %s\n' \
          'batch_size: %d, epoch: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % \
-         (train_path, eval_path, tag, nds_rate, str(re_calibration), batch_size, epoch, eval_size, ckpt, least_step,
+         (train_path, eval_path, tag, nds_rate, str(re_calibration), batch_size, epoch, eval_buf_size, ckpt, least_step,
           skip_window, smooth_window, stop_window)
 
 
@@ -237,10 +240,10 @@ def train():
         for line in eval_set:
             buf.append(line)
             eval_cnt += 1
-            if eval_cnt == 10 * eval_size:
+            if eval_cnt == 10 * eval_buf_size:
                 break
         np.random.shuffle(buf)
-        buf = buf[:eval_size]
+        buf = buf[:eval_buf_size]
         for line in buf:
             y, f, x = get_fxy(line)
             eval_cols.extend(f)
@@ -262,8 +265,7 @@ def train():
     elif 'FPNN' in algo:
         eval_cols = eval_cols.reshape((eval_size, X_feas))
         eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
-        model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
-                     eval_batch_size)
+        model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
 
     write_log(model.log, echo=True)
 
@@ -306,15 +308,13 @@ def train():
                 if step % epoch == 0:
                     print 'step: %d\ttime: %d' % (step, time.time() - start_time)
                     start_time = time.time()
-                    if 'FPNN' in algo:
-                        eval_preds = []
-                        for _i in range(eval_size / eval_batch_size):
-                            eval_preds.append(model.eval_preds.eval(feed_dict={
-                                model.eval_id_hldr: eval_cols[_i * eval_batch_size:(_i + 1) * eval_batch_size, :],
-                                model.eval_wts_hldr: eval_wts[_i * eval_batch_size:(_i + 1) * eval_batch_size, :]}))
-                        eval_preds = np.reshape(eval_preds, (-1,))
-                    else:
-                        eval_preds = model.eval_preds.eval()
+                    eval_preds = []
+                    for _i in range(eval_buf_size / eval_size):
+                        eval_inds = eval_cols[_i * eval_size:(_i + 1) * eval_size, :]
+                        eval_vals = eval_wts[_i * eval_size:(_i + 1) * eval_size, :]
+                        feed_dict = {model.eval_id_hldr: eval_inds, model.eval_wts_hldr: eval_vals}
+                        eval_preds.extend(model.eval_preds.eval(feed_dict=feed_dict))
+
                     if re_calibration:
                         eval_preds /= eval_preds + (1 - eval_preds) / nds_rate
                     metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds, eval_labels)

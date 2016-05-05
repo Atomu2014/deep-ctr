@@ -2,8 +2,7 @@ from tf_util import *
 
 
 class FNN:
-    def __init__(self, cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size,
-                 eval_cols, eval_wts):
+    def __init__(self, cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size):
         sp_fld_inds = []
         for _i in range(batch_size):
             sp_fld_inds.append([_i, 0])
@@ -62,8 +61,12 @@ class FNN:
                 self.log += '%s, lambda(l2): %g, keep_prob(drop_out): %g' % (log, self._lambda, self._keep_prob)
 
                 self.train_preds = tf.sigmoid(logits)
-                eval_logits = self.forward(eval_size, X_feas, eval_wts[:, :13], eval_cols[:, 13:] - offsets,
-                                           eval_wts[:, 13:], sp_eval_fld_inds, act_func, False)
+
+                self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size * X_feas])
+                self.eval_wt_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
+                eval_logits = self.forward(eval_size, X_feas, self.eval_wt_hldr[:, :13],
+                                           self.eval_id_hldr[:, 13:] - offsets, self.eval_wt_hldr[:, 13:],
+                                           sp_eval_fld_inds, act_func, False)
                 self.eval_preds = tf.sigmoid(eval_logits)
             else:
                 logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds,
