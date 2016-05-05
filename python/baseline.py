@@ -72,13 +72,13 @@ if 'LR' in algo:
     _reg_argv = [1e-4]
 elif 'FM' in algo:
     rank = int(algo[2:])
-    batch_size = 10
+    batch_size = 1
     test_batch_size = 100
-    epoch = 100
+    epoch = 10000
     _rch_argv = [X_dim, X_feas, rank]
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4],
-                  '../model/Mon_Apr_11_09_42_50_2016_FM10.pickle_1335000']
+                  '../model/Mon_Apr_11_09:42:50_2016_FM10.pickle_1335000']
     _ptmzr_argv = ['ftrl', 1e-4]
     _reg_argv = [1e-3]
 elif 'FNN' in algo:

@@ -4,7 +4,7 @@ from tf_util import *
 
 
 class LR:
-    def __init__(self, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size, eval_cols, eval_wts):
+    def __init__(self, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size):
         self.graph = tf.Graph()
         X_dim, X_feas = _rch_argv
 
@@ -32,14 +32,16 @@ class LR:
                 _lambda = _reg_argv[0]
                 logits = self.regression(sp_ids, sp_wts)
                 self.train_preds = tf.sigmoid(logits)
-                sp_eval_ids = tf.SparseTensor(sp_eval_inds, eval_cols, shape=[eval_size, X_feas])
-                sp_eval_wts = tf.SparseTensor(sp_eval_inds, eval_wts, shape=[eval_size, X_feas])
                 self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
                     tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.b))
 
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
                 self.log += '%s, lambda(l2): %g' % (log, _lambda)
 
+                self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size * X_feas])
+                self.eval_wt_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
+                sp_eval_ids = tf.SparseTensor(sp_eval_inds, self.eval_id_hldr, shape=[eval_size, X_feas])
+                sp_eval_wts = tf.SparseTensor(sp_eval_inds, self.eval_wt_hldr, shape=[eval_size, X_feas])
                 eval_logits = self.regression(sp_eval_ids, sp_eval_wts)
                 self.eval_preds = tf.sigmoid(eval_logits)
             else:
