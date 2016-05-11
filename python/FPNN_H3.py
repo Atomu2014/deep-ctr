@@ -1,7 +1,7 @@
 from tf_util import *
 
 
-class FPNN:
+class FPNN_H3:
     def __init__(self, cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, mode, eval_size):
         sp_fld_inds = []
         for _i in range(batch_size):
@@ -11,13 +11,13 @@ class FPNN:
             for _i in range(eval_size):
                 sp_eval_fld_inds.append([_i, 0])
 
-        self._lambda, self._keep_prob = _reg_argv
+        self._keep_prob = _reg_argv[0]
         self.graph = tf.Graph()
         with self.graph.as_default():
-            X_dim, X_feas, rank, h1_dim, h2_dim, act_func = _rch_argv
+            X_dim, X_feas, rank, h1_dim, h2_dim, h3_dim, act_func = _rch_argv
             mbd_dim = X_feas * (rank + 1) + X_feas * (X_feas - 1) / 2 + 1
-            self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, ' % \
-                       (X_dim, X_feas, rank, mbd_dim, h1_dim, h2_dim)
+            self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, h3: %d' % \
+                       (X_dim, X_feas, rank, mbd_dim, h1_dim, h2_dim, h3_dim)
             var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
                                                      ('V', [X_dim, rank], 'random'),
                                                      ('b', [1], 'zero'),
@@ -25,8 +25,10 @@ class FPNN:
                                                      ('h1_b', [h1_dim], 'zero'),
                                                      ('h2_w', [h1_dim, h2_dim], 'random'),
                                                      ('h2_b', [h2_dim], 'zero'),
-                                                     ('h3_w', [h2_dim, 1], 'random'),
-                                                     ('h3_b', [1], 'zero')])
+                                                     ('h3_w', [h2_dim, h3_dim], 'random'),
+                                                     ('h3_b', [h3_dim], 'zero'),
+                                                     ('h4_w', [h3_dim, 1], 'random'),
+                                                     ('h4_b', [1], 'zero')])
             self.log += log
             self.fm_w = tf.Variable(var_map['W'])
             self.fm_v = tf.Variable(var_map['V'])
@@ -37,6 +39,8 @@ class FPNN:
             self.h2_b = tf.Variable(var_map['h2_b'])
             self.h3_w = tf.Variable(var_map['h3_w'])
             self.h3_b = tf.Variable(var_map['h3_b'])
+            self.h4_w = tf.Variable(var_map['h4_w'])
+            self.h4_b = tf.Variable(var_map['h4_b'])
 
             self.v_wt_hldr = tf.placeholder(tf.float32, shape=[batch_size, 13])
             self.c_id_hldr = tf.placeholder(tf.int64, shape=[batch_size, 26])
@@ -57,19 +61,15 @@ class FPNN:
                         for _i in range(X_feas - 13)])
 
             if mode == 'train':
-                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds,
-                                      act_func, True)
-                self.loss = tf.reduce_mean(
-                    tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + self._lambda * (
-                    tf.nn.l2_loss(self.fm_w) + tf.nn.l2_loss(self.fm_v) + tf.nn.l2_loss(self.fm_b) + tf.nn.l2_loss(
-                        self.h1_w) + tf.nn.l2_loss(self.h1_b) + tf.nn.l2_loss(self.h2_w) + tf.nn.l2_loss(
-                        self.h2_b) + tf.nn.l2_loss(self.h3_w) + tf.nn.l2_loss(self.h3_b))
-
+                self.logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr,
+                                           sp_fld_inds, act_func, True)
+                self.ce = tf.nn.sigmoid_cross_entropy_with_logits(self.logits, self.lbl_hldr)
+                self.loss = tf.reduce_mean(self.ce)
+                self.train_preds = tf.sigmoid(self.logits)
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-                self.log += '%s, lambda(l2): %g, keep_prob(drop_out): %g' % (log, self._lambda, self._keep_prob)
-                self.train_preds = tf.sigmoid(logits)
-                self.eval_id_hldr = tf.placeholder(tf.int64)
-                self.eval_wts_hldr = tf.placeholder(tf.float32)
+                self.log += '%s, keep_prob(drop_out): %g' % (log, self._keep_prob)
+                self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size, X_feas])
+                self.eval_wts_hldr = tf.placeholder(tf.float32, shape=[eval_size, X_feas])
                 eval_logits = self.forward(eval_size, X_feas, self.eval_wts_hldr[:, :13],
                                            self.eval_id_hldr[:, 13:] - offsets,
                                            self.eval_wts_hldr[:, 13:], sp_eval_fld_inds, act_func, False)
@@ -95,16 +95,19 @@ class FPNN:
         if drop_out:
             l2 = tf.matmul(tf.nn.dropout(activate(act_func, z1), keep_prob=self._keep_prob), self.h1_w) + self.h1_b
             l3 = tf.matmul(tf.nn.dropout(activate(act_func, l2), keep_prob=self._keep_prob), self.h2_w) + self.h2_b
-            yhat = tf.matmul(tf.nn.dropout(activate(act_func, l3), keep_prob=self._keep_prob), self.h3_w) + self.h3_b
+            l4 = tf.matmul(tf.nn.dropout(activate(act_func, l3), keep_prob=self._keep_prob), self.h3_w) + self.h3_b
+            yhat = tf.matmul(tf.nn.dropout(activate(act_func, l4), keep_prob=self._keep_prob), self.h4_w) + self.h4_b
         else:
             l2 = tf.matmul(activate(act_func, z1), self.h1_w) + self.h1_b
             l3 = tf.matmul(activate(act_func, l2), self.h2_w) + self.h2_b
-            yhat = tf.matmul(activate(act_func, l3), self.h3_w) + self.h3_b
+            l4 = tf.matmul(activate(act_func, l3), self.h3_w) + self.h3_b
+            yhat = tf.matmul(activate(act_func, l4), self.h4_w) + self.h4_b
         return tf.reshape(yhat, [-1, ])
 
     def dump(self, model_path):
         var_map = {'W': self.fm_w.eval(), 'V': self.fm_v.eval(), 'b': self.fm_b.eval(), 'h1_w': self.h1_w.eval(),
                    'h1_b': self.h1_b.eval(), 'h2_w': self.h2_w.eval(), 'h2_b': self.h2_b.eval(),
-                   'h3_w': self.h3_w.eval(), 'h3_b': self.h3_b.eval()}
+                   'h3_w': self.h3_w.eval(), 'h3_b': self.h3_b.eval(), 'h4_w': self.h4_w.eval(),
+                   'h4_b': self.h4_b.eval()}
         pickle.dump(var_map, open(model_path, 'wb'))
         print 'model dumped at %s' % model_path

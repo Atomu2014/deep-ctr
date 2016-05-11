@@ -23,11 +23,10 @@ class FM:
             self.sp_id_hldr = tf.placeholder(tf.int64, shape=[batch_size * X_feas])
             self.sp_wt_hldr = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
             self.lbl_hldr = tf.placeholder(tf.float32)
-            self.sp_wt2_hldr = tf.placeholder(tf.float32, shape=[batch_size * X_feas])
 
             sp_ids = tf.SparseTensor(sp_train_inds, self.sp_id_hldr, shape=[batch_size, X_feas])
             sp_wts = tf.SparseTensor(sp_train_inds, self.sp_wt_hldr, shape=[batch_size, X_feas])
-            sp_wts2 = tf.SparseTensor(sp_train_inds, self.sp_wt2_hldr, shape=[batch_size, X_feas])
+            sp_wts2 = tf.SparseTensor(sp_train_inds, tf.square(self.sp_wt_hldr), shape=[batch_size, X_feas])
 
             if mode == 'train':
                 _lambda = _reg_argv[0]
@@ -59,7 +58,7 @@ class FM:
         _V2x2 = tf.nn.embedding_lookup_sparse(tf.square(self.V), sp_ids, sp_weights2, combiner='sum')
         # y = w * x + b + 1/2 * (sum(vx * vx) - sum(v2x2))
         yhat += 0.5 * tf.reshape(tf.reduce_sum(tf.square(_Vx), 1) - tf.reduce_sum(_V2x2, 1), shape=[-1, 1])
-        return yhat
+        return tf.reshape(yhat, [-1, ])
 
     def dump(self, model_path):
         var_map = {'W': self.W.eval(), 'V': self.V.eval(), 'b': self.b.eval()}

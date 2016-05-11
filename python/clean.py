@@ -154,7 +154,7 @@ def build_indices(sets, fltr):
     return inds
 
 
-def make_index(fin_path, fout_path, inds, fltr):
+def make_index(fin_path, fout_path, inds):
     print 'processing', fin_path
     fin = open(fin_path, 'rb')
 

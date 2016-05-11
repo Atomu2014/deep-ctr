@@ -50,7 +50,7 @@ class LR:
 
     def regression(self, sp_ids, sp_wts):
         yhat = tf.nn.embedding_lookup_sparse(self.W, sp_ids, sp_wts, combiner='sum') + self.b
-        return yhat
+        return tf.reshape(yhat, [-1, ])
 
     def dump(self, model_path):
         var_map = {'W': self.W.eval(), 'b': self.b.eval()}

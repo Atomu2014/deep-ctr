@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 import tensorflow as tf
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, mean_squared_error
 
 from FM import FM
 from LR import LR
@@ -20,12 +20,9 @@ def collect(fin, size=100000):
     return buf
 
 
-def load_ipinyou_data(path):
+def stat(path):
     fin = open(path)
 
-    X_ind = []
-    X_val = []
-    y = []
     max_fea = 0
     max_dim = 0
     while True:
@@ -36,15 +33,36 @@ def load_ipinyou_data(path):
         for line in buf:
             fields = line.strip().split()
             max_fea = max(max_fea, len(fields) - 2)
-            y.append(int(fields[0]))
             x_ind = [int(x.split(':')[0]) for x in fields[2:]]
             max_dim = max(max_dim, max(x_ind))
-            l = len(x_ind)
-            x_val = [1] * l
-            X_ind.append(x_ind)
-            X_val.append(x_val)
 
-    return X_ind, X_val, y, max_dim, max_fea
+    return max_dim, max_fea
+
+
+def load_ipinyou_data(fin, size, max_dim, max_fea):
+    X_ind = []
+    X_val = []
+    y = []
+    buf = collect(fin, size)
+    if len(buf) < 1:
+        return None, None, None
+
+    for line in buf:
+        fields = line.strip().split()
+        y.append(int(fields[0]))
+        x_ind = [int(x.split(':')[0]) for x in fields[2:]]
+        l = len(x_ind)
+        x_val = [1] * l
+        X_ind.append(x_ind)
+        X_val.append(x_val)
+        X_ind[-1].extend([max_dim] * (max_fea - l))
+        X_val[-1].extend([0] * (max_fea - l))
+
+    X_ind = np.array(X_ind)
+    X_val = np.array(X_val)
+    y = np.array(y)
+
+    return X_ind, X_val, y
 
 
 def feed_zero(X_ind, X_val, y, max_dim, max_fea):
@@ -71,89 +89,111 @@ def feed_zero(X_ind, X_val, y, max_dim, max_fea):
     return X_ind, X_val, y
 
 
+def write_log(_line, echo=False):
+    with open(log_path, 'a') as log_in:
+        log_in.write(_line + '\n')
+        if echo:
+            print _line
+
+
+def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds, eval_labels):
+    try:
+        batch_auc = np.float32(roc_auc_score(batch_labels, batch_preds))
+    except ValueError:
+        batch_auc = -1
+    try:
+        eval_auc = np.float32(roc_auc_score(eval_labels, eval_preds))
+    except ValueError:
+        eval_auc = -1
+    log = '%d\t%g\t%g\t%g\t' % (step, batch_auc, eval_auc, batch_loss)
+    write_log(log)
+    print 'train auc: %g\teval auc: %g' % (batch_auc, eval_auc)
+
+
 if __name__ == '__main__':
-    cam = 2997
-    X_train_ind, X_train_val, y_train, X_dim_train, X_feas_train = load_ipinyou_data(
-        '../data/ipinyou-data/%d/train.yzx.txt' % cam)
-    X_test_ind, X_test_val, y_test, X_dim_test, X_feas_test = load_ipinyou_data(
-        '../data/ipinyou-data/%d/test.yzx.txt' % cam)
+    cam = 'all'
+    train_path = '../data/ipinyou-data/%s/train.yzx.txt.shuf' % cam
+    test_path = '../data/ipinyou-data/%s/test.yzx.txt.shuf' % cam
 
-    print 'positive ratio', 1.0 * np.count_nonzero(y_train) / len(y_train)
-
+    X_dim_train, X_feas_train = stat(train_path)
+    X_dim_test, X_feas_test = stat(test_path)
     X_dim = max(X_dim_train, X_dim_test) + 2
     X_feas = max(X_feas_train, X_feas_test)
 
-    X_train_ind, X_train_val, y_train = feed_zero(X_train_ind, X_train_val, y_train, X_dim - 1, X_feas)
-    X_test_ind, X_test_val, y_test = feed_zero(X_test_ind, X_test_val, y_test, X_dim - 1, X_feas)
-
-    batch_size = 1
     algo = 'FM'
-    print cam, batch_size, algo
+
+    tag = (str(cam) + ' ' + time.strftime('%c') + ' ' + algo).replace(' ', '_')
+    log_path = '../log/%s' % tag
+    print log_path
 
     if 'LR' in algo:
+        batch_size = 1
         epoch = 100000
-        eval_size = 10000
-        model = LR(batch_size, [X_dim, X_feas], ['uniform', -0.001, 0.001, [0x89AB], None], ['sgd', 1e-3], [1e-4],
+        eval_size = 100000
+        model = LR(batch_size, [X_dim, X_feas], ['uniform', -0.001, 0.001, [0x89AB], None], ['sgd', 1e-3], [1e-3],
                    'train', eval_size)
     elif 'FM' in algo:
-        epoch = 100000
-        eval_size = 10000
-        model = FM(batch_size, [X_dim, X_feas, 10], ['uniform', -0.001, 0.001, [0x3210, 0x7654], None], ['ftrl', 1e-3],
-                   [1e-3], 'train', eval_size)
+        batch_size = 1
+        epoch = 10000
+        eval_size = 100000
+        model = FM(batch_size, [X_dim, X_feas, 10], ['uniform', -0.001, 0.001, [0x3210, 0x7654], None], ['sgd', 1e-3],
+                   [1e-2], 'train', eval_size)
 
-    print model.log
+    print batch_size, epoch, eval_size
+
+    write_log(model.log, True)
+
     with tf.Session(graph=model.graph) as sess:
         tf.initialize_all_variables().run()
         print 'model initialized'
-        start_time = time.time()
-        step = 0
-        batch_preds = []
-        batch_labels = []
-        err_rcds = []
+
         it = 0
         while True:
             it += 1
             print 'iteration %d' % it
-            for step in range(X_train_ind.shape[0] / batch_size):
-                labels = y_train[step * batch_size:(step + 1) * batch_size]
-                ids = X_train_ind[step * batch_size:(step + 1) * batch_size, :]
-                wts = X_train_val[step * batch_size:(step + 1) * batch_size, :]
-                ids = ids.reshape((X_feas * batch_size))
-                wts = wts.reshape((X_feas * batch_size))
 
-                wts2 = wts ** 2
-                if 'LR' in algo:
-                    feed_dict = {model.lbl_hldr: labels, model.sp_id_hldr: ids, model.sp_wt_hldr: wts}
-                elif 'FM' in algo:
-                    feed_dict = {model.sp_id_hldr: ids, model.sp_wt_hldr: wts, model.sp_wt2_hldr: wts2,
-                                 model.lbl_hldr: labels}
+            train_data_set = open(train_path, 'rb')
+            start_time = time.time()
+            step = 0
 
-                _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
-                batch_preds.extend(_x[0] for _x in p)
-                batch_labels.extend(labels)
+            while True:
+                batch_ids, batch_wts, batch_labels = load_ipinyou_data(train_data_set, epoch, X_dim - 1, X_feas)
+
+                if batch_ids is None:
+                    break
+
+                wts2 = batch_wts ** 2
+                batch_preds = []
+                for _i in range(len(batch_labels) / batch_size):
+                    feed_dict = {model.lbl_hldr: batch_labels[_i * batch_size: (_i + 1) * batch_size],
+                                 model.sp_id_hldr: batch_ids[_i * batch_size: (_i + 1) * batch_size].flatten(),
+                                 model.sp_wt_hldr: batch_wts[_i * batch_size: (_i + 1) * batch_size].flatten()}
+
+                    _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
+                    batch_preds.extend(_x[0] for _x in p)
+
+                step += len(batch_ids)
                 if step % epoch == 0:
                     print 'step: %d\ttime: %d\tloss: %g' % (step * batch_size, time.time() - start_time, l)
+                    test_data_set = open(test_path, 'rb')
                     start_time = time.time()
                     eval_preds = []
-                    for j in range(X_test_ind.shape[0] / eval_size):
-                        eval_val = X_test_val[j * eval_size: (j + 1) * eval_size, :].reshape(
-                            (eval_size * X_test_val.shape[1]))
-                        eval_label = y_test[j * eval_size: (j + 1) * eval_size]
+                    eval_labels = []
 
-                        eval_ind = X_test_ind[j * eval_size: (j + 1) * eval_size, :].reshape(
-                            (eval_size * X_test_ind.shape[1]))
+                    while True:
+                        _ids, _wts, _labels = load_ipinyou_data(test_data_set, eval_size, X_dim - 1, X_feas)
 
-                        if 'LR' in algo:
-                            feed_dict = {model.eval_id_hldr: eval_ind, model.eval_wt_hldr: eval_val}
-                        elif 'FM' in algo:
-                            feed_dict = {model.eval_id_hldr: eval_ind, model.eval_wt_hldr: eval_val,
-                                         model.eval_wt2_hldr: eval_val ** 2}
+                        if _ids is None or _ids.shape[0] < eval_size:
+                            break
 
+                        _ids = _ids.flatten()
+                        _wts = _wts.flatten()
+
+                        feed_dict = {model.eval_id_hldr: _ids, model.eval_wt_hldr: _wts}
                         eval_preds.extend(model.eval_preds.eval(feed_dict=feed_dict))
+                        eval_labels.extend(_labels)
 
-                    try:
-                        print 'train auc: %g' % roc_auc_score(batch_labels, batch_preds)
-                        print 'eval auc: %g' % roc_auc_score(y_test[:len(eval_preds)], eval_preds)
-                    except ValueError as e:
-                        print 'train auc: None'
-                        print 'eval auc: %g' % roc_auc_score(y_test[:len(eval_preds)], eval_preds)
+                        if step % (10 * epoch) != 0 and len(eval_labels) >= 10 * eval_size:
+                            break
+
+                    watch_train(step, l, batch_labels, batch_preds, eval_preds, eval_labels)

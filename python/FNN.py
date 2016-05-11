@@ -91,7 +91,7 @@ class FNN:
             l2 = tf.matmul(activate(act_func, z1), self.h1_w) + self.h1_b
             l3 = tf.matmul(activate(act_func, l2), self.h2_w) + self.h2_b
             yhat = tf.matmul(activate(act_func, l3), self.h3_w) + self.h3_b
-        return yhat
+        return tf.reshape(yhat, [-1, ])
 
     def dump(self, model_path):
         var_map = {'W': self.fm_w.eval(), 'V': self.fm_v.eval(), 'b': self.fm_b.eval(), 'h1_w': self.h1_w.eval(),

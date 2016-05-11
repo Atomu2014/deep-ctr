@@ -7,6 +7,7 @@ from sklearn.metrics import roc_auc_score, mean_squared_error, log_loss
 from FM import FM
 from FNN import FNN
 from FPNN import FPNN
+from FPNN_H3 import FPNN_H3
 from LR import LR
 
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
@@ -44,7 +45,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 
 mode = 'train'
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FM10'
+algo = 'FPNN_H3_10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -63,8 +64,8 @@ seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x
 if 'LR' in algo:
     batch_size = 10
     eval_size = 10000
-    test_batch_size = 100
-    epoch = 10000
+    test_batch_size = 1000
+    epoch = 100000
     _rch_argv = [X_dim, X_feas]
     _min_val = -0.01
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:5],
@@ -75,12 +76,12 @@ elif 'FM' in algo:
     rank = int(algo[2:])
     batch_size = 1
     eval_size = 10000
-    test_batch_size = 100
-    epoch = 10000
+    test_batch_size = 1000
+    epoch = 100000
     _rch_argv = [X_dim, X_feas, rank]
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4],
-                  '../model/Mon_Apr_11_09:42:50_2016_FM10.pickle_1335000']
+                  '../model/Wed_May__4_19_53_08_2016_FM10.pickle_7000000']
     _ptmzr_argv = ['ftrl', 1e-4]
     _reg_argv = [1e-3]
 elif 'FNN' in algo:
@@ -95,23 +96,34 @@ elif 'FNN' in algo:
                   '../model/Mon_Apr_11_15:30:11_2016_FNN10.pickle_38000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8]
     _reg_argv = [1e-3, 0.5]
+elif 'FPNN_H3_' in algo:
+    rank = int(algo[8:])
+    batch_size = 1
+    eval_size = 25
+    test_batch_size = 20
+    epoch = 10000
+    _rch_argv = [X_dim, X_feas, rank, 800, 400, 400, 'tanh']
+    _min_val = -1e-2
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10], None]
+    _ptmzr_argv = ['adam', 1e-3, 1e-8]
+    _reg_argv = [0.5]
 elif 'FPNN' in algo:
     rank = int(algo[4:])
     batch_size = 1
-    eval_size = 10000
+    eval_size = 100
     test_batch_size = 20
     epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 'tanh']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
                   '../model/Wed_Apr_20_18:00:08_2016_FPNN10.pickle_160000']
-    _ptmzr_argv = ['adam', 1e-4, 1e-8]
-    _reg_argv = [1e-3, 0.5]
+    _ptmzr_argv = ['sgd', 1e-4]
+    _reg_argv = [1e-4, 0.5]
 else:
     exit(0)
 
-ckpt = 10 * epoch
-least_step = 100 * epoch
+ckpt = epoch
+least_step = 10 * epoch
 header = 'train_path: %s, eval_path: %s, tag: %s, nds_rate: %g, re_calibration: %s\n' \
          'batch_size: %d, epoch: %d, eval_size: %d, ckpt: %d, least_step: %d, skip_window: %d, smooth_window: %d, stop_window: %d' % \
          (train_path, eval_path, tag, nds_rate, str(re_calibration), batch_size, epoch, eval_buf_size, ckpt, least_step,
@@ -160,9 +172,9 @@ def get_batch_sparse_tensor(size, row_start=0):
             _line = next(data_set)
             if len(_line.strip()):
                 _y, _f, _x = get_fxy(_line)
-                _rows.extend([row_num] * len(_f))
-                _cols.extend(_f)
-                _vals.extend(_x)
+                _rows.append([row_num] * len(_f))
+                _cols.append(_f)
+                _vals.append(_x)
                 _labels.append(_y)
                 row_num += 1
             else:
@@ -188,7 +200,7 @@ def get_batch_xy(size):
     return np.array(_labels), np.array(_rows), np.array(_cols), np.array(_vals)
 
 
-def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds, eval_labels):
+def watch_train(step, batch_labels, batch_preds, eval_preds, eval_labels):
     try:
         batch_auc = np.float32(roc_auc_score(batch_labels, batch_preds))
     except ValueError:
@@ -199,13 +211,9 @@ def watch_train(step, batch_loss, batch_labels, batch_preds, eval_preds, eval_la
         eval_auc = -1
     batch_rmse = np.float32(np.sqrt(mean_squared_error(batch_labels, batch_preds)))
     eval_rmse = np.float32(np.sqrt(mean_squared_error(eval_labels, eval_preds)))
-    eval_ntrp = np.float32(log_loss(eval_labels, eval_preds))
-    batch_ntrp = np.float32(log_loss(batch_labels, batch_preds))
-    log = '%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t' % \
-          (step, batch_ntrp, eval_ntrp, batch_auc, eval_auc, batch_rmse, eval_rmse, batch_loss)
+    log = '%d\t%g\t%g\t%g\t%g\t' % (step, batch_auc, eval_auc, batch_rmse, eval_rmse)
     write_log(log)
-    return {'batch_loss': batch_loss, 'batch_entropy': batch_ntrp, 'eval_entropy': eval_ntrp, 'batch_auc': batch_auc,
-            'eval_auc': eval_auc, 'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
+    return {'batch_auc': batch_auc, 'eval_auc': eval_auc, 'batch_rmse': batch_rmse, 'eval_rmse': eval_rmse}
 
 
 def early_stop(step, errs, metric='auc'):
@@ -240,31 +248,28 @@ def train():
         for line in eval_set:
             buf.append(line)
             eval_cnt += 1
-            if eval_cnt == 10 * eval_buf_size:
+            if eval_cnt == eval_buf_size:
                 break
         np.random.shuffle(buf)
-        buf = buf[:eval_buf_size]
         for line in buf:
             y, f, x = get_fxy(line)
-            eval_cols.extend(f)
-            eval_wts.extend(x)
+            eval_cols.append(f)
+            eval_wts.append(x)
             eval_labels.append(y)
     eval_cols = np.array(eval_cols)
-    eval_wts = np.array(eval_wts)
+    eval_wts = np.float32(np.array(eval_wts))
     eval_labels = np.array(eval_labels)
 
     if 'LR' in algo:
-        model = LR(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size, eval_cols, eval_wts)
+        model = LR(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
     elif 'FM' in algo:
-        model = FM(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size, eval_cols, eval_wts)
+        model = FM(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
     elif 'FNN' in algo:
-        eval_cols = eval_cols.reshape((eval_size, X_feas))
-        eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
-        model = FNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size,
-                    eval_cols, eval_wts)
+        model = FNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
+    elif 'FPNN_H3' in algo:
+        model = FPNN_H3(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
+                        eval_size)
     elif 'FPNN' in algo:
-        eval_cols = eval_cols.reshape((eval_size, X_feas))
-        eval_wts = np.float32(eval_wts.reshape((eval_size, X_feas)))
         model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
 
     write_log(model.log, echo=True)
@@ -282,8 +287,8 @@ def train():
             for _i in range(labels.shape[0] / batch_size):
                 step += 1
                 _labels = labels[_i * batch_size: (_i + 1) * batch_size]
-                _cols = cols[_i * batch_size * X_feas: (_i + 1) * batch_size * X_feas]
-                _vals = vals[_i * batch_size * X_feas: (_i + 1) * batch_size * X_feas]
+                _cols = cols[_i * batch_size: (_i + 1) * batch_size, :]
+                _vals = vals[_i * batch_size: (_i + 1) * batch_size, :]
 
                 if 'LR' in algo:
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.lbl_hldr: _labels}
@@ -292,32 +297,28 @@ def train():
                     feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
                                  model.lbl_hldr: _labels}
                 elif 'FNN' in algo:
-                    _cols = _cols.reshape((batch_size, X_feas))
-                    _vals = _vals.reshape((batch_size, X_feas))
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
                 elif 'FPNN' in algo:
-                    _cols = _cols.reshape((batch_size, X_feas))
-                    _vals = _vals.reshape((batch_size, X_feas))
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
                 _, l, p = sess.run([model.ptmzr, model.loss, model.train_preds], feed_dict=feed_dict)
-                batch_preds.extend(_x[0] for _x in p)
+                batch_preds.extend(p)
                 batch_labels.extend(_labels)
                 if step % epoch == 0:
-                    print 'step: %d\ttime: %d' % (step, time.time() - start_time)
+                    print 'step: %d\tloss: %g\ttime: %d' % (step, l, time.time() - start_time)
                     start_time = time.time()
                     eval_preds = []
                     for _i in range(eval_buf_size / eval_size):
-                        eval_inds = eval_cols[_i * eval_size:(_i + 1) * eval_size, :]
-                        eval_vals = eval_wts[_i * eval_size:(_i + 1) * eval_size, :]
+                        eval_inds = eval_cols[_i * eval_size:(_i + 1) * eval_size]
+                        eval_vals = eval_wts[_i * eval_size:(_i + 1) * eval_size]
                         feed_dict = {model.eval_id_hldr: eval_inds, model.eval_wts_hldr: eval_vals}
                         eval_preds.extend(model.eval_preds.eval(feed_dict=feed_dict))
-
+                    eval_preds = np.array(eval_preds)
                     if re_calibration:
                         eval_preds /= eval_preds + (1 - eval_preds) / nds_rate
-                    metrics = watch_train(step, l, batch_labels, batch_preds, eval_preds, eval_labels)
+                    metrics = watch_train(step, batch_labels, batch_preds, eval_preds, eval_labels)
                     print metrics
                     err_rcds.append(metrics['eval_auc'])
                     err_rcds = err_rcds[-2 * skip_window * (stop_window + smooth_window):]
@@ -331,11 +332,11 @@ def train():
 
 def test():
     if 'LR' in algo:
-        model = LR(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
+        model = LR(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FM' in algo:
-        model = FM(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
+        model = FM(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FNN' in algo:
-        model = FNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None, None, None)
+        model = FNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FPNN' in algo:
         model = FPNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', None)
 
@@ -350,16 +351,16 @@ def test():
             labels, _, cols, vals = get_batch_sparse_tensor(buffer_size)
             labels, cols, vals = np.array(labels), np.array(cols), np.array(vals)
             for _i in range(labels.shape[0] / test_batch_size):
-                step += 1
+                step += test_batch_size
                 _labels = labels[_i * test_batch_size: (_i + 1) * test_batch_size]
-                _cols = cols[_i * test_batch_size * X_feas: (_i + 1) * test_batch_size * X_feas]
-                _vals = vals[_i * test_batch_size * X_feas: (_i + 1) * test_batch_size * X_feas]
+                _cols = cols[_i * test_batch_size: (_i + 1) * test_batch_size, :]
+                _vals = vals[_i * test_batch_size: (_i + 1) * test_batch_size, :]
 
                 if 'LR' in algo:
-                    feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.lbl_hldr: _labels}
+                    feed_dict = {model.sp_id_hldr: _cols.flatten(), model.sp_wt_hldr: _vals.flatten(),
+                                 model.lbl_hldr: _labels}
                 elif 'FM' in algo:
-                    _vals2 = _vals ** 2
-                    feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
+                    feed_dict = {model.sp_id_hldr: _cols.flatten(), model.sp_wt_hldr: _vals.flatten(),
                                  model.lbl_hldr: _labels}
                 elif 'FNN' in algo:
                     _cols = _cols.reshape((test_batch_size, X_feas))
@@ -375,20 +376,20 @@ def test():
                 p = model.test_preds.eval(feed_dict=feed_dict)
                 p /= p + (1 - p) / nds_rate
 
-                test_preds.extend(_x[0] for _x in p)
+                test_preds.extend(p)
                 test_labels.extend(_labels)
                 if step % epoch == 0:
-                    print 'test-auc: %g' % roc_auc_score(test_labels, test_preds)
-                    print 'test-rmse: %g' % np.sqrt(mean_squared_error(test_labels, test_preds))
-                    print 'test-log-loss: %g' % log_loss(test_labels, test_preds)
-                    print time.time() - start_time
+                    print 'test-auc: %g\trmse: %g\tlog-loss: %g' % (
+                        roc_auc_score(test_labels, test_preds), np.sqrt(mean_squared_error(test_labels, test_preds)),
+                        log_loss(test_labels, test_preds))
+                    print 'step: %d\ttime: %g' % (step, time.time() - start_time)
                     start_time = time.time()
 
-        if len(labels) < buffer_size:
-            print 'test-auc: %g' % roc_auc_score(test_labels, test_preds)
-            print 'test-rmse: %g' % np.sqrt(mean_squared_error(test_labels, test_preds))
-            print 'test-log-loss: %g' % log_loss(test_labels, test_preds)
-            exit(0)
+            if len(labels) < buffer_size:
+                print 'test-auc: %g\trmse: %g\tlog-loss: %g' % (
+                    roc_auc_score(test_labels, test_preds), np.sqrt(mean_squared_error(test_labels, test_preds)),
+                    log_loss(test_labels, test_preds))
+                exit(0)
 
 
 if __name__ == '__main__':
