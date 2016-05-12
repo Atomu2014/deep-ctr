@@ -10,8 +10,8 @@ class FPNN_H3:
             sp_eval_fld_inds = []
             for _i in range(eval_size):
                 sp_eval_fld_inds.append([_i, 0])
-
-        self._keep_prob = _reg_argv[0]
+            self._keep_prob = _reg_argv[0]
+            
         self.graph = tf.Graph()
         with self.graph.as_default():
             X_dim, X_feas, rank, h1_dim, h2_dim, h3_dim, act_func = _rch_argv

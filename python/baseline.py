@@ -100,12 +100,12 @@ elif 'FPNN_H3_' in algo:
     rank = int(algo[8:])
     batch_size = 10
     eval_size = 50
-    test_batch_size = 20
-    epoch = 1000
+    test_batch_size = 100
+    epoch = 10000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10], None]
-    _ptmzr_argv = ['adam', 1e-3, 1e-8, 'sum']
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10], '../model/Wed_May_11_15:59:27_2016_FPNN_H3_10.pickle_29000']
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 elif 'FPNN' in algo:
     rank = int(algo[4:])
@@ -337,8 +337,10 @@ def test():
         model = FM(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FNN' in algo:
         model = FNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
+    elif 'FPNN_H3' in algo:
+        model = FPNN_H3(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FPNN' in algo:
-        model = FPNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'test', None)
+        model = FPNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
 
     with tf.Session(graph=model.graph, config=sess_config) as sess:
         tf.initialize_all_variables().run()
@@ -356,20 +358,10 @@ def test():
                 _cols = cols[_i * test_batch_size: (_i + 1) * test_batch_size, :]
                 _vals = vals[_i * test_batch_size: (_i + 1) * test_batch_size, :]
 
-                if 'LR' in algo:
+                if 'LR' in algo or 'FM' in algo:
                     feed_dict = {model.sp_id_hldr: _cols.flatten(), model.sp_wt_hldr: _vals.flatten(),
                                  model.lbl_hldr: _labels}
-                elif 'FM' in algo:
-                    feed_dict = {model.sp_id_hldr: _cols.flatten(), model.sp_wt_hldr: _vals.flatten(),
-                                 model.lbl_hldr: _labels}
-                elif 'FNN' in algo:
-                    _cols = _cols.reshape((test_batch_size, X_feas))
-                    _vals = _vals.reshape((test_batch_size, X_feas))
-                    feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
-                                 model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
-                elif 'FPNN' in algo:
-                    _cols = _cols.reshape((test_batch_size, X_feas))
-                    _vals = _vals.reshape((test_batch_size, X_feas))
+                elif 'FNN' in algo or 'FPNN' in algo:
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
