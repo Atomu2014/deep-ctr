@@ -63,11 +63,14 @@ class FPNN_H3:
             if mode == 'train':
                 self.logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr,
                                            sp_fld_inds, act_func, True)
-                self.ce = tf.nn.sigmoid_cross_entropy_with_logits(self.logits, self.lbl_hldr)
-                self.loss = tf.reduce_mean(self.ce)
+                self.log_loss = tf.nn.sigmoid_cross_entropy_with_logits(self.logits, self.lbl_hldr)
+                if _ptmzr_argv[-1] == 'sum':
+                    self.loss = tf.reduce_sum(self.log_loss)
+                else:
+                    self.loss = tf.reduce_mean(self.log_loss)
                 self.train_preds = tf.sigmoid(self.logits)
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-                self.log += '%s, keep_prob(drop_out): %g' % (log, self._keep_prob)
+                self.log += '%s, reduce by: %s\tkeep_prob(drop_out): %g' % (log, _ptmzr_argv[-1], self._keep_prob)
                 self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size, X_feas])
                 self.eval_wts_hldr = tf.placeholder(tf.float32, shape=[eval_size, X_feas])
                 eval_logits = self.forward(eval_size, X_feas, self.eval_wts_hldr[:, :13],

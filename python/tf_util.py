@@ -15,7 +15,7 @@ def build_inds(N, M):
 def builf_optimizer(_ptmzr_argv, loss):
     _ptmzr = _ptmzr_argv[0]
     if _ptmzr == 'adam':
-        _learning_rate, _epsilon = _ptmzr_argv[1:]
+        _learning_rate, _epsilon = _ptmzr_argv[1:3]
         ptmzr = tf.train.AdamOptimizer(learning_rate=_learning_rate, epsilon=_epsilon).minimize(loss)
         log = 'optimizer: %s, learning rate: %g, epsilon: %g' % (_ptmzr, _learning_rate, _epsilon)
     elif _ptmzr == 'ftrl':
