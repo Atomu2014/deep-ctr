@@ -37,53 +37,40 @@ def show_log(argv):
     log_path = '../log/%s' % argv[0]
     p1 = int(argv[1])
 
-    logs = np.loadtxt(log_path, delimiter='\t', skiprows=4, usecols=range(8))
+    logs = np.loadtxt(log_path, delimiter='\t', skiprows=4, usecols=range(5))
     fig = plt.figure()
-    ax0 = fig.add_subplot(311)
-    ax1 = fig.add_subplot(312)
-    ax2 = fig.add_subplot(313)
+    ax0 = fig.add_subplot(111)
+    # ax1 = fig.add_subplot(212)
 
     step = logs[:, 0]
-    batch_loss = logs[:, 1]
-    eval_loss = logs[:, 2]
-    batch_auc = logs[:, 3]
-    eval_auc = logs[:, 4]
-    batch_rmse = logs[:, 5]
-    eval_rmse = logs[:, 6]
+    batch_auc = logs[:, 1]
+    eval_auc = logs[:, 2]
+    # batch_rmse = logs[:, 3]
+    # eval_rmse = logs[:, 4]
 
-    smooth_loss = np.array(eval_loss[p1 - 1:])
     smooth_auc = np.array(eval_auc[p1 - 1:])
-    smooth_rmse = np.array(eval_rmse[p1 - 1:])
+    # smooth_rmse = np.array(eval_rmse[p1 - 1:])
     for i in range(p1 - 1):
-        smooth_loss += eval_loss[i:(i - p1 + 1)]
         smooth_auc += eval_auc[i:(i - p1 + 1)]
-        smooth_rmse += eval_rmse[i:(i - p1 + 1)]
-    smooth_loss /= p1
+        # smooth_rmse += eval_rmse[i:(i - p1 + 1)]
     smooth_auc /= p1
-    smooth_rmse /= p1
+    # smooth_rmse /= p1
 
-    ax0.plot(step, batch_loss, label='batch-loss', color=colors[0])
-    ax0.plot(step, eval_loss, label='eval-loss', color=colors[1])
-    ax0.plot(step[p1 - 1:], smooth_loss, label='smoothed eval-loss', color=colors[2])
-    ax1.plot(step, batch_auc, label='batch-auc', color=colors[3])
-    ax1.plot(step, eval_auc, label='eval-auc', color=colors[4])
-    ax1.plot(step[p1 - 1:], smooth_auc, label='smoothed eval-auc', color=colors[5])
-    ax2.plot(step, batch_rmse, label='batch-rmse', color=colors[0])
-    ax2.plot(step, eval_rmse, label='eval-rmse', color=colors[1])
-    ax2.plot(step[p1 - 1:], smooth_rmse, label='smoothed eval-rmse', color=colors[2])
+    ax0.plot(step, batch_auc, label='batch-auc', color=colors[3])
+    ax0.plot(step, eval_auc, label='eval-auc', color=colors[4])
+    ax0.plot(step[p1 - 1:], smooth_auc, label='smoothed eval-auc', color=colors[5])
+    # ax1.plot(step, batch_rmse, label='batch-rmse', color=colors[0])
+    # ax1.plot(step, eval_rmse, label='eval-rmse', color=colors[1])
+    # ax1.plot(step[p1 - 1:], smooth_rmse, label='smoothed eval-rmse', color=colors[2])
 
     ax0.legend()
     ax0.set_title(log_path)
     ax0.set_xlabel('step')
-    ax1.legend()
-    ax1.set_title(log_path)
-    ax1.set_xlabel('step')
-    ax2.legend()
-    ax2.set_title(log_path)
-    ax2.set_xlabel('step')
+    # ax1.legend()
+    # ax1.set_title(log_path)
+    # ax1.set_xlabel('step')
     fig.canvas.draw()
     plt.show()
-    return smooth_auc
 
 
 def early_stop(argv):

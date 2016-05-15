@@ -10,8 +10,8 @@ from FPNN import FPNN
 from FPNN_H3 import FPNN_H3
 from LR import LR
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
-sess_config = tf.ConfigProto(gpu_options=gpu_options)
+# gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
+# sess_config = tf.ConfigProto(gpu_options=gpu_options)
 
 train_path = '../data/nds.2.5.shuf.ind.10'
 eval_path = '../data/test.unif.2.5.shuf.ind.10'
@@ -55,7 +55,7 @@ print log_path, model_path
 buffer_size = 1000000
 eval_buf_size = 100000
 skip_window = 1
-smooth_window = 100
+smooth_window = 10
 stop_window = 10
 
 seeds_pool = [0x0123, 0x4567, 0x3210, 0x7654, 0x89AB, 0xCDEF, 0xBA98, 0xFEDC, 0x0123, 0x4567, 0x3210, 0x7654, 0x89AB,
@@ -101,7 +101,7 @@ elif 'FPNN_H3_' in algo:
     batch_size = 10
     eval_size = 50
     test_batch_size = 100
-    epoch = 10000
+    epoch = 1000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10], '../model/Wed_May_11_15:59:27_2016_FPNN_H3_10.pickle_29000']
@@ -274,7 +274,8 @@ def train():
 
     write_log(model.log, echo=True)
 
-    with tf.Session(graph=model.graph, config=sess_config) as sess:
+    # with tf.Session(graph=model.graph, config=sess_config) as sess:
+    with tf.Session(graph=model.graph) as sess:
         tf.initialize_all_variables().run()
         print 'model initialized'
         start_time = time.time()
@@ -307,7 +308,7 @@ def train():
                 batch_preds.extend(p)
                 batch_labels.extend(_labels)
                 if step % epoch == 0:
-                    print 'step: %d\tloss: %g\ttime: %d' % (step, l, time.time() - start_time)
+                    print 'step: %d\tloss: %g\ttime: %d' % (step * batch_size, l, time.time() - start_time)
                     start_time = time.time()
                     eval_preds = []
                     for _i in range(eval_buf_size / eval_size):
@@ -342,7 +343,8 @@ def test():
     elif 'FPNN' in algo:
         model = FPNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
 
-    with tf.Session(graph=model.graph, config=sess_config) as sess:
+    # with tf.Session(graph=model.graph, config=sess_config) as sess:
+    with tf.Session(graph=model.graph) as sess:
         tf.initialize_all_variables().run()
         print 'model initialized'
         test_preds = []
@@ -374,7 +376,7 @@ def test():
                     print 'test-auc: %g\trmse: %g\tlog-loss: %g' % (
                         roc_auc_score(test_labels, test_preds), np.sqrt(mean_squared_error(test_labels, test_preds)),
                         log_loss(test_labels, test_preds))
-                    print 'step: %d\ttime: %g' % (step, time.time() - start_time)
+                    print 'step: %d\ttime: %g' % (step * test_batch_size, time.time() - start_time)
                     start_time = time.time()
 
             if len(labels) < buffer_size:
