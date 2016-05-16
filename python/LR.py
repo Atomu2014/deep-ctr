@@ -1,5 +1,3 @@
-import numpy as np
-
 from tf_util import *
 
 
@@ -32,11 +30,15 @@ class LR:
                 _lambda = _reg_argv[0]
                 logits = self.regression(sp_ids, sp_wts)
                 self.train_preds = tf.sigmoid(logits)
-                self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
-                    tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.b))
+                log_loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)
+                if _ptmzr_argv[-1] == 'sum':
+                    self.loss = tf.reduce_sum(log_loss)
+                else:
+                    self.loss = tf.reduce_mean(log_loss)
+                self.loss += _lambda * (tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.b))
 
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-                self.log += '%s, lambda(l2): %g' % (log, _lambda)
+                self.log += '%s, lambda(l2): %g, reduce by: %s' % (log, _lambda, _ptmzr_argv[-1])
 
                 self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size * X_feas])
                 self.eval_wt_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])

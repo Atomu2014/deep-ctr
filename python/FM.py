@@ -30,19 +30,22 @@ class FM:
 
             if mode == 'train':
                 _lambda = _reg_argv[0]
-
                 logits = self.factorization(sp_ids, sp_wts, sp_wts2)
-                self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + _lambda * (
-                    tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
+                log_loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)
+                if _ptmzr_argv[-1] == 'sum':
+                    self.loss = tf.reduce_sum(log_loss)
+                else:
+                    self.loss = tf.reduce_mean(log_loss)
+                self.loss += _lambda * (tf.nn.l2_loss(self.W) + tf.nn.l2_loss(self.V) + tf.nn.l2_loss(self.b))
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-                self.log += '%s, lambda(l2): %g' % (log, _lambda)
+                self.log += '%s, lambda(l2): %g, reduce by: %s' % (log, _lambda, _ptmzr_argv[-1])
                 self.train_preds = tf.sigmoid(logits)
 
                 self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size * X_feas])
-                self.eval_wt_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
+                self.eval_wts_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
                 sp_eval_ids = tf.SparseTensor(sp_eval_inds, self.eval_id_hldr, shape=[eval_size, X_feas])
-                sp_eval_wts = tf.SparseTensor(sp_eval_inds, self.eval_wt_hldr, shape=[eval_size, X_feas])
-                sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, tf.square(self.eval_wt_hldr), shape=[eval_size, X_feas])
+                sp_eval_wts = tf.SparseTensor(sp_eval_inds, self.eval_wts_hldr, shape=[eval_size, X_feas])
+                sp_eval_wts2 = tf.SparseTensor(sp_eval_inds, tf.square(self.eval_wts_hldr), shape=[eval_size, X_feas])
                 eval_logits = self.factorization(sp_eval_ids, sp_eval_wts, sp_eval_wts2)
                 self.eval_preds = tf.sigmoid(eval_logits)
             else:

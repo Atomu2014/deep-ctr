@@ -6,7 +6,6 @@ from sklearn.metrics import roc_auc_score, mean_squared_error, log_loss
 
 from FM import FM
 from FNN import FNN
-from FPNN import FPNN
 from FPNN_H3 import FPNN_H3
 from LR import LR
 
@@ -45,7 +44,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 
 mode = 'train'
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FPNN_H3_10'
+algo = 'FNN10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -74,37 +73,44 @@ if 'LR' in algo:
     _reg_argv = [1e-4]
 elif 'FM' in algo:
     rank = int(algo[2:])
-    batch_size = 1
-    eval_size = 10000
+    batch_size = 100
+    eval_size = 100
     test_batch_size = 1000
     epoch = 100000
     _rch_argv = [X_dim, X_feas, rank]
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[2:4],
-                  '../model/Wed_May__4_19_53_08_2016_FM10.pickle_7000000']
-    _ptmzr_argv = ['ftrl', 1e-4]
+                  # None]
+                  # FM50
+                  # '../model/Sat_May_14_17:41:41_2016_FM50.pickle_22000']
+                  # FM10
+                  # '../model/Wed_May__4_19_53_08_2016_FM10.pickle_7000000']
+                  # FM100
+                  '../model/Sat_May_14_18:43:20_2016_FM100.pickle_30000']
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [1e-3]
 elif 'FNN' in algo:
     rank = int(algo[3:])
-    batch_size = 1
-    eval_size = 10000
-    test_batch_size = 1
+    batch_size = 100
+    eval_size = 1000
+    test_batch_size = 1000
     epoch = 1000
-    _rch_argv = [X_dim, X_feas, rank, 400, 400, 'tanh']
+    _rch_argv = [X_dim, X_feas, rank, 400, 400, 'sigmoid']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
-                  '../model/Mon_Apr_11_15:30:11_2016_FNN10.pickle_38000']
-    _ptmzr_argv = ['adam', 1e-4, 1e-8]
-    _reg_argv = [1e-3, 0.5]
+                  '../model/Thu_May_12_14:17:57_2016_FNN10.pickle_100000']
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
+    _reg_argv = [0.5]
 elif 'FPNN_H3_' in algo:
     rank = int(algo[8:])
     batch_size = 10
     eval_size = 50
-    test_batch_size = 100
-    epoch = 1000
+    test_batch_size = 50
+    epoch = 10000
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
     _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10], '../model/Wed_May_11_15:59:27_2016_FPNN_H3_10.pickle_29000']
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10],
+                  '../model/Wed_May_11_15:59:27_2016_FPNN_H3_10.pickle_44000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 elif 'FPNN' in algo:
@@ -269,8 +275,6 @@ def train():
     elif 'FPNN_H3' in algo:
         model = FPNN_H3(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
                         eval_size)
-    elif 'FPNN' in algo:
-        model = FPNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
 
     write_log(model.log, echo=True)
 
@@ -291,16 +295,10 @@ def train():
                 _cols = cols[_i * batch_size: (_i + 1) * batch_size, :]
                 _vals = vals[_i * batch_size: (_i + 1) * batch_size, :]
 
-                if 'LR' in algo:
-                    feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.lbl_hldr: _labels}
-                elif 'FM' in algo:
-                    _vals2 = _vals ** 2
-                    feed_dict = {model.sp_id_hldr: _cols, model.sp_wt_hldr: _vals, model.sp_wt2_hldr: _vals2,
+                if 'LR' in algo or 'FM' in algo:
+                    feed_dict = {model.sp_id_hldr: _cols.flatten(), model.sp_wt_hldr: _vals.flatten(),
                                  model.lbl_hldr: _labels}
-                elif 'FNN' in algo:
-                    feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
-                                 model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
-                elif 'FPNN' in algo:
+                elif 'FNN' in algo or 'FPNN' in algo:
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
@@ -314,7 +312,11 @@ def train():
                     for _i in range(eval_buf_size / eval_size):
                         eval_inds = eval_cols[_i * eval_size:(_i + 1) * eval_size]
                         eval_vals = eval_wts[_i * eval_size:(_i + 1) * eval_size]
-                        feed_dict = {model.eval_id_hldr: eval_inds, model.eval_wts_hldr: eval_vals}
+                        if 'LR' in algo or 'FM' in algo:
+                            feed_dict = {model.eval_id_hldr: eval_inds.flatten(),
+                                         model.eval_wts_hldr: eval_vals.flatten()}
+                        elif 'FNN' in algo or 'FPNN' in algo:
+                            feed_dict = {model.eval_id_hldr: eval_inds, model.eval_wts_hldr: eval_vals}
                         eval_preds.extend(model.eval_preds.eval(feed_dict=feed_dict))
                     eval_preds = np.array(eval_preds)
                     if re_calibration:
@@ -340,8 +342,6 @@ def test():
         model = FNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FPNN_H3' in algo:
         model = FPNN_H3(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
-    elif 'FPNN' in algo:
-        model = FPNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
 
     # with tf.Session(graph=model.graph, config=sess_config) as sess:
     with tf.Session(graph=model.graph) as sess:
@@ -376,7 +376,7 @@ def test():
                     print 'test-auc: %g\trmse: %g\tlog-loss: %g' % (
                         roc_auc_score(test_labels, test_preds), np.sqrt(mean_squared_error(test_labels, test_preds)),
                         log_loss(test_labels, test_preds))
-                    print 'step: %d\ttime: %g' % (step * test_batch_size, time.time() - start_time)
+                    print 'step: %d\ttime: %g' % (step, time.time() - start_time)
                     start_time = time.time()
 
             if len(labels) < buffer_size:

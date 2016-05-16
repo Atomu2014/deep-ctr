@@ -16,8 +16,8 @@ class FPNN_H3:
         with self.graph.as_default():
             X_dim, X_feas, rank, h1_dim, h2_dim, h3_dim, act_func = _rch_argv
             mbd_dim = X_feas * (rank + 1) + X_feas * (X_feas - 1) / 2 + 1
-            self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, h3: %d' % \
-                       (X_dim, X_feas, rank, mbd_dim, h1_dim, h2_dim, h3_dim)
+            self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, h3: %d, activate: %s' % \
+                       (X_dim, X_feas, rank, mbd_dim, h1_dim, h2_dim, h3_dim, act_func)
             var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
                                                      ('V', [X_dim, rank], 'random'),
                                                      ('b', [1], 'zero'),
@@ -61,14 +61,14 @@ class FPNN_H3:
                         for _i in range(X_feas - 13)])
 
             if mode == 'train':
-                self.logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr,
-                                           sp_fld_inds, act_func, True)
-                self.log_loss = tf.nn.sigmoid_cross_entropy_with_logits(self.logits, self.lbl_hldr)
+                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr,
+                                      sp_fld_inds, act_func, True)
+                log_loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)
                 if _ptmzr_argv[-1] == 'sum':
-                    self.loss = tf.reduce_sum(self.log_loss)
+                    self.loss = tf.reduce_sum(log_loss)
                 else:
-                    self.loss = tf.reduce_mean(self.log_loss)
-                self.train_preds = tf.sigmoid(self.logits)
+                    self.loss = tf.reduce_mean(log_loss)
+                self.train_preds = tf.sigmoid(logits)
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
                 self.log += '%s, reduce by: %s\tkeep_prob(drop_out): %g' % (log, _ptmzr_argv[-1], self._keep_prob)
                 self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size, X_feas])

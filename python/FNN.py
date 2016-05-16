@@ -10,14 +10,14 @@ class FNN:
             sp_eval_fld_inds = []
             for _i in range(eval_size):
                 sp_eval_fld_inds.append([_i, 0])
-            self._lambda, self._keep_prob = _reg_argv
+            self._keep_prob = _reg_argv[0]
 
         self.graph = tf.Graph()
         with self.graph.as_default():
             X_dim, X_feas, rank, h1_dim, h2_dim, act_func = _rch_argv
             mbdng_dim = X_feas * (rank + 1) + 1
-            self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, ' % \
-                       (X_dim, X_feas, rank, mbdng_dim, h1_dim, h2_dim)
+            self.log = 'input dim: %d, features: %d, rank: %d, embedding: %d, h1: %d, h2: %d, activate: %s' % \
+                       (X_dim, X_feas, rank, mbdng_dim, h1_dim, h2_dim, act_func)
             var_map, log = init_var_map(_init_argv, [('W', [X_dim, 1], 'random'),
                                                      ('V', [X_dim, rank], 'random'),
                                                      ('b', [1], 'zero'),
@@ -49,23 +49,23 @@ class FNN:
                             range(X_feas - 13)]
 
             if mode == 'train':
-                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr, sp_fld_inds,
-                                      act_func, True)
-                self.loss = tf.reduce_mean(
-                    tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)) + self._lambda * (
-                    tf.nn.l2_loss(self.fm_w) + tf.nn.l2_loss(self.fm_v) + tf.nn.l2_loss(self.fm_b) + tf.nn.l2_loss(
-                        self.h1_w) + tf.nn.l2_loss(self.h1_b) + tf.nn.l2_loss(self.h2_w) + tf.nn.l2_loss(
-                        self.h2_b) + tf.nn.l2_loss(self.h3_w) + tf.nn.l2_loss(self.h3_b))
+                logits = self.forward(batch_size, X_feas, self.v_wt_hldr, self.c_id_hldr, self.c_wt_hldr,
+                                      sp_fld_inds, act_func, True)
+                log_loss = tf.nn.sigmoid_cross_entropy_with_logits(logits, self.lbl_hldr)
+                if _ptmzr_argv[-1] == 'sum':
+                    self.loss = tf.reduce_sum(log_loss)
+                else:
+                    self.loss = tf.reduce_mean(log_loss)
 
                 self.ptmzr, log = builf_optimizer(_ptmzr_argv, self.loss)
-                self.log += '%s, lambda(l2): %g, keep_prob(drop_out): %g' % (log, self._lambda, self._keep_prob)
+                self.log += '%s, reduce by: %s, keep_prob(drop_out): %g' % (log, _ptmzr_argv[-1], self._keep_prob)
 
                 self.train_preds = tf.sigmoid(logits)
 
-                self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size * X_feas])
-                self.eval_wt_hldr = tf.placeholder(tf.float32, shape=[eval_size * X_feas])
-                eval_logits = self.forward(eval_size, X_feas, self.eval_wt_hldr[:, :13],
-                                           self.eval_id_hldr[:, 13:] - offsets, self.eval_wt_hldr[:, 13:],
+                self.eval_id_hldr = tf.placeholder(tf.int64, shape=[eval_size, X_feas])
+                self.eval_wts_hldr = tf.placeholder(tf.float32, shape=[eval_size, X_feas])
+                eval_logits = self.forward(eval_size, X_feas, self.eval_wts_hldr[:, :13],
+                                           self.eval_id_hldr[:, 13:] - offsets, self.eval_wts_hldr[:, 13:],
                                            sp_eval_fld_inds, act_func, False)
                 self.eval_preds = tf.sigmoid(eval_logits)
             else:
