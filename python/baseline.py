@@ -6,7 +6,10 @@ from sklearn.metrics import roc_auc_score, mean_squared_error, log_loss
 
 from FM import FM
 from FNN import FNN
-from FPNN_H3 import FPNN_H3
+from FNN_IP_L3 import FNN_IP_L3
+from FNN_IP_L5 import FNN_IP_L5
+from FNN_IP_L7 import FNN_IP_L7
+from FNN_OP_L3 import FNN_OP_L3
 from LR import LR
 
 # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
@@ -44,7 +47,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 
 mode = 'train'
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FNN10'
+algo = 'FNN_IP_L5_10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -89,20 +92,8 @@ elif 'FM' in algo:
                   '../model/Sat_May_14_18:43:20_2016_FM100.pickle_30000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [1e-3]
-elif 'FNN' in algo:
-    rank = int(algo[3:])
-    batch_size = 100
-    eval_size = 1000
-    test_batch_size = 1000
-    epoch = 1000
-    _rch_argv = [X_dim, X_feas, rank, 400, 400, 'sigmoid']
-    _min_val = -1e-2
-    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
-                  '../model/Thu_May_12_14:17:57_2016_FNN10.pickle_100000']
-    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
-    _reg_argv = [0.5]
-elif 'FPNN_H3_' in algo:
-    rank = int(algo[8:])
+elif 'FNN_IP_L3_' in algo:
+    rank = int(algo[10:])
     batch_size = 10
     eval_size = 50
     test_batch_size = 50
@@ -110,21 +101,61 @@ elif 'FPNN_H3_' in algo:
     _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10],
-                  '../model/Wed_May_11_15:59:27_2016_FPNN_H3_10.pickle_44000']
+                  '../model/Thu_May_12_16:35:29_2016_FPNN_H3_10.pickle_194000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
-elif 'FPNN' in algo:
-    rank = int(algo[4:])
-    batch_size = 1
-    eval_size = 100
-    test_batch_size = 20
+elif 'FNN_OP_L3_' in algo:
+    rank = int(algo[10:])
+    batch_size = 10
+    eval_size = 50
+    test_batch_size = 50
+    epoch = 10000
+    _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
+    _min_val = -1e-2
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10],
+                  None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
+    _reg_argv = [0.5]
+elif 'FNN_IP_L5_' in algo:
+    rank = int(algo[10:])
+    batch_size = 50
+    eval_size = 10
+    test_batch_size = 50
+    epoch = 2000
+    _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 'tanh']
+    _min_val = -1e-2
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:12],
+                  None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
+    _reg_argv = [0.5]
+elif 'FNN_IP_L7_' in algo:
+    rank = int(algo[10:])
+    batch_size = 10
+    eval_size = 50
+    test_batch_size = 50
+    epoch = 10000
+    _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 100, 50, 'tanh']
+    _min_val = -1e-2
+    _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:14],
+                  None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
+    _reg_argv = [0.5]
+elif 'FNN' in algo:
+    rank = int(algo[3:])
+    batch_size = 100
+    eval_size = 1000
+    test_batch_size = 1000
     epoch = 1000
-    _rch_argv = [X_dim, X_feas, rank, 800, 400, 'tanh']
+    _rch_argv = [X_dim, X_feas, rank, 400, 400, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
-                  '../model/Wed_Apr_20_18:00:08_2016_FPNN10.pickle_160000']
-    _ptmzr_argv = ['sgd', 1e-4]
-    _reg_argv = [1e-4, 0.5]
+                  # tanh
+                  # '../model/Thu_May_12_14:17:57_2016_FNN10.pickle_100000']
+                  # relu
+                  # '../model/Mon_May_16_14:05:17_2016_FNN10.pickle_142000']
+                  None]
+    _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
+    _reg_argv = [0.5]
 else:
     exit(0)
 
@@ -270,11 +301,20 @@ def train():
         model = LR(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
     elif 'FM' in algo:
         model = FM(batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
+    elif 'FNN_IP_L3' in algo:
+        model = FNN_IP_L3(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
+                          eval_size)
+    elif 'FNN_OP_L3' in algo:
+        model = FNN_OP_L3(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
+                          eval_size)
+    elif 'FNN_IP_L5' in algo:
+        model = FNN_IP_L5(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
+                          eval_size)
+    elif 'FNN_IP_L7' in algo:
+        model = FNN_IP_L7(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
+                          eval_size)
     elif 'FNN' in algo:
         model = FNN(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train', eval_size)
-    elif 'FPNN_H3' in algo:
-        model = FPNN_H3(cat_sizes, offsets, batch_size, _rch_argv, _init_argv, _ptmzr_argv, _reg_argv, 'train',
-                        eval_size)
 
     write_log(model.log, echo=True)
 
@@ -298,7 +338,7 @@ def train():
                 if 'LR' in algo or 'FM' in algo:
                     feed_dict = {model.sp_id_hldr: _cols.flatten(), model.sp_wt_hldr: _vals.flatten(),
                                  model.lbl_hldr: _labels}
-                elif 'FNN' in algo or 'FPNN' in algo:
+                elif 'FNN' in algo:
                     feed_dict = {model.v_wt_hldr: _vals[:, :13], model.c_id_hldr: _cols[:, 13:] - offsets,
                                  model.c_wt_hldr: _vals[:, 13:], model.lbl_hldr: _labels}
 
@@ -338,11 +378,16 @@ def test():
         model = LR(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FM' in algo:
         model = FM(test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
+    elif 'FNN_IP_L3' in algo:
+        model = FNN_IP_L3(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
+    elif 'FNN_IP_L5' in algo:
+        model = FNN_IP_L5(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
+    elif 'FNN_IP_ L7' in algo:
+        model = FNN_IP_L7(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
     elif 'FNN' in algo:
         model = FNN(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
-    elif 'FPNN_H3' in algo:
-        model = FPNN_H3(cat_sizes, offsets, test_batch_size, _rch_argv, _init_argv, None, None, 'test', None)
 
+    print 'testing model: %s' % _init_argv[-1]
     # with tf.Session(graph=model.graph, config=sess_config) as sess:
     with tf.Session(graph=model.graph) as sess:
         tf.initialize_all_variables().run()
