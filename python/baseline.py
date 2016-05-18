@@ -9,7 +9,7 @@ from FNN import FNN
 from FNN_IP_L3 import FNN_IP_L3
 from FNN_IP_L5 import FNN_IP_L5
 from FNN_IP_L7 import FNN_IP_L7
-from FNN_OP_L3 import FNN_OP_L3
+# from FNN_OP_L3 import FNN_OP_L3
 from LR import LR
 
 # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
@@ -118,14 +118,14 @@ elif 'FNN_OP_L3_' in algo:
     _reg_argv = [0.5]
 elif 'FNN_IP_L5_' in algo:
     rank = int(algo[10:])
-    batch_size = 50
-    eval_size = 10
+    batch_size = 20
+    eval_size = 50
     test_batch_size = 50
-    epoch = 2000
-    _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 'tanh']
+    epoch = 2500
+    _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:12],
-                  None]
+                  '../model/Wed_May_18_00:04:27_2016_FNN_IP_L5_10.pickle_32500']
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 elif 'FNN_IP_L7_' in algo:

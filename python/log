@@ -659,6 +659,6 @@ FM100 test-auc: 0.750378	rmse: 0.174516	log-loss: 0.129836
 
 FNN10 tanh test-auc: 0.744688	rmse: 0.173893	log-loss: 0.129847
 FNN10 relu test-auc: 0.744959	rmse: 0.177108	log-loss: 0.143126
-FNN10 sigmoid
+FNN10 sigmoid test-auc: 0.742365  rmse: 0.173881  log-loss: 0.13009
 
 FPNN_H3_10: test-auc: 0.74909	rmse: 0.17408	log-loss: 0.130035

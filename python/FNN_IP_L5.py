@@ -124,7 +124,7 @@ class FNN_IP_L5:
         var_map = {'W': self.fm_w.eval(), 'V': self.fm_v.eval(), 'b': self.fm_b.eval(), 'h1_w': self.h1_w.eval(),
                    'h1_b': self.h1_b.eval(), 'h2_w': self.h2_w.eval(), 'h2_b': self.h2_b.eval(),
                    'h3_w': self.h3_w.eval(), 'h3_b': self.h3_b.eval(), 'h4_w': self.h4_w.eval(),
-                   'h4_b': self.h4_b.eval(), 'h5_w': self.h4_w.eval(), 'h5_b': self.h5_b.eval(),
+                   'h4_b': self.h4_b.eval(), 'h5_w': self.h5_w.eval(), 'h5_b': self.h5_b.eval(),
                    'h6_w': self.h6_w.eval(), 'h6_b': self.h6_b.eval()}
         pickle.dump(var_map, open(model_path, 'wb'))
         print 'model dumped at %s' % model_path
