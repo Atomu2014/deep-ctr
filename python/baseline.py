@@ -9,7 +9,7 @@ from FNN import FNN
 from FNN_IP_L3 import FNN_IP_L3
 from FNN_IP_L5 import FNN_IP_L5
 from FNN_IP_L7 import FNN_IP_L7
-# from FNN_OP_L3 import FNN_OP_L3
+from FNN_OP_L3 import FNN_OP_L3
 from LR import LR
 
 # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
@@ -47,7 +47,7 @@ print 'cat_sizes (including \'other\'):', cat_sizes
 
 mode = 'train'
 # 'LR', 'FMxxx', 'FNN'
-algo = 'FNN_IP_L5_10'
+algo = 'FNN_IP_L3_10'
 tag = (time.strftime('%c') + ' ' + algo).replace(' ', '_')
 log_path = '../log/%s' % tag
 model_path = '../model/%s.pickle' % tag
@@ -98,10 +98,11 @@ elif 'FNN_IP_L3_' in algo:
     eval_size = 50
     test_batch_size = 50
     epoch = 10000
-    _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
+    _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10],
-                  '../model/Thu_May_12_16:35:29_2016_FPNN_H3_10.pickle_194000']
+                  # '../model/Thu_May_12_16:35:29_2016_FPNN_H3_10.pickle_194000']
+                  None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 elif 'FNN_OP_L3_' in algo:
@@ -110,7 +111,7 @@ elif 'FNN_OP_L3_' in algo:
     eval_size = 50
     test_batch_size = 50
     epoch = 10000
-    _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'tanh']
+    _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10],
                   None]
@@ -118,10 +119,10 @@ elif 'FNN_OP_L3_' in algo:
     _reg_argv = [0.5]
 elif 'FNN_IP_L5_' in algo:
     rank = int(algo[10:])
-    batch_size = 20
-    eval_size = 50
+    batch_size = 50
+    eval_size = 10
     test_batch_size = 50
-    epoch = 2500
+    epoch = 2000
     _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:12],
@@ -134,7 +135,7 @@ elif 'FNN_IP_L7_' in algo:
     eval_size = 50
     test_batch_size = 50
     epoch = 10000
-    _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 100, 50, 'tanh']
+    _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 100, 50, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:14],
                   None]

@@ -1,3 +1,3 @@
 python show_plots.py model Thu_Apr_14_17:17:25_2016_FPNN10.pickle_1000
-python show_plots.py log Sat_May_14_18:43:20_2016_FM100 10
+python show_plots.py log Tue_May_17_12:44:03_2016_FNN10 10
 python show_plots.py stop Wed_Apr__6_18:20:46_2016_FM10 1 100 10
