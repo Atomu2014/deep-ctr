@@ -95,14 +95,16 @@ elif 'FM' in algo:
 elif 'FNN_IP_L3_' in algo:
     rank = int(algo[10:])
     batch_size = 10
-    eval_size = 50
+    eval_size = 25
     test_batch_size = 50
-    epoch = 10000
-    _rch_argv = [X_dim, X_feas, rank, 800, 400, 200, 'relu']
+    epoch = 1000
+    _rch_argv = [X_dim, X_feas, rank, 400, 400, 200, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:10],
                   # '../model/Thu_May_12_16:35:29_2016_FPNN_H3_10.pickle_194000']
                   None]
+                  # relu
+                  # '../model/Wed_May_18_22:16:53_2016_FNN_IP_L3_10.pickle_19000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 elif 'FNN_OP_L3_' in algo:
@@ -122,11 +124,13 @@ elif 'FNN_IP_L5_' in algo:
     batch_size = 50
     eval_size = 10
     test_batch_size = 50
-    epoch = 2000
+    epoch = 10000
     _rch_argv = [X_dim, X_feas, rank, 1000, 800, 600, 400, 200, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:12],
-                  '../model/Wed_May_18_00:04:27_2016_FNN_IP_L5_10.pickle_32500']
+                  # 0.3, relu
+                  # '../model/Wed_May_18_22:45:43_2016_FNN_IP_L5_10.pickle_19000']
+                  '../model/Wed_May_18_22:45:43_2016_FNN_IP_L5_10.pickle_20000']
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 elif 'FNN_IP_L7_' in algo:
@@ -146,15 +150,16 @@ elif 'FNN' in algo:
     batch_size = 100
     eval_size = 1000
     test_batch_size = 1000
-    epoch = 1000
+    epoch = 100000
     _rch_argv = [X_dim, X_feas, rank, 400, 400, 'relu']
     _min_val = -1e-2
     _init_argv = ['uniform', _min_val, -1 * _min_val, seeds_pool[4:9],
                   # tanh
                   # '../model/Thu_May_12_14:17:57_2016_FNN10.pickle_100000']
                   # relu
-                  # '../model/Mon_May_16_14:05:17_2016_FNN10.pickle_142000']
-                  None]
+                  '../model/Tue_May_17_12:44:03_2016_FNN10.pickle_65000']
+    # '../model/Mon_May_16_14:05:17_2016_FNN10.pickle_142000']
+    # None]
     _ptmzr_argv = ['adam', 1e-4, 1e-8, 'sum']
     _reg_argv = [0.5]
 else:
